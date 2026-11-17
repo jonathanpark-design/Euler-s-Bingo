@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Euler's Bingo</title>
+<meta name="description" content="A free class bingo game. Pitch lecture habits, vote, and play your own shuffled card.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root { color-scheme: light; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+
+/* Layout concept: a lecture-hall handout. One narrow sheet, blue-book navy ink, pencil-blue marks and a highlighter-yellow win line. */
+:root {
+  --bg: #EEF1F8;
+  --surface: #FFFFFF;
+  --ink: #12204A;
+  --muted: #55628A;
+  --line: #C6CFE6;
+  --accent: #2447D6;
+  --accent-ink: #FFFFFF;
+  --win: #FFD23F;
+  --win-ink: #3A2A00;
+  --font-display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1226;
+    --surface: #141C38;
+    --ink: #E8ECFA;
+    --muted: #9AA5C9;
+    --line: #2A3560;
+    --accent: #7C96FF;
+    --accent-ink: #0C1226;
+    --win: #FFD23F;
+    --win-ink: #2A2000;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1226;
+  --surface: #141C38;
+  --ink: #E8ECFA;
+  --muted: #9AA5C9;
+  --line: #2A3560;
+  --accent: #7C96FF;
+  --accent-ink: #0C1226;
+  --win: #FFD23F;
+  --win-ink: #2A2000;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-block: 24px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+
+.eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 11vw, 56px); line-height: 0.95; letter-spacing: -0.02em; margin: 6px 0 10px; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-weight: 800; font-size: 22px; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 48ch; margin: 0; }
+.note { font-size: 12.5px; color: var(--muted); margin: 0; }
+.status { margin: 0; padding: 8px 12px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); font-size: 13.5px; }
+
+label { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+label span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+input[type="text"] { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; min-width: 0; width: 100%; }
+input[type="text"]::placeholder { color: var(--muted); opacity: 0.7; }
+select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; min-width: 0; width: 100%; }
+.hostgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+@media (max-width: 460px) { .hostgrid { grid-template-columns: 1fr; } }
+.row { display: flex; gap: 8px; align-items: flex-end; }
+.row > label { flex: 1; }
+
+.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.sheet-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.stats { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.banner { font-family: var(--font-display); font-weight: 800; font-size: 20px; background: var(--win); color: var(--win-ink); border-radius: 6px; padding: 8px 12px; }
+
+button.btn { font: inherit; font-weight: 600; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; cursor: pointer; }
+button.btn:hover:not(:disabled) { border-color: var(--accent); }
+button.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.cohort-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.cohort-head > div { min-width: 0; }
+.codebox { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.code { font-family: var(--font-mono); font-size: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; user-select: all; overflow-wrap: anywhere; }
+
+.tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.tab { font: inherit; font-weight: 600; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 9px 6px; cursor: pointer; }
+.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+.board { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 5px; }
+.board[data-n="3"] .cell { font-size: clamp(12px, 3.8vw, 17px); }
+.board[data-n="4"] .cell { font-size: clamp(10.5px, 3.2vw, 14.5px); }
+.cell { appearance: none; font: inherit; font-size: clamp(9.5px, 2.7vw, 13px); line-height: 1.2; font-weight: 500; text-align: center; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 5px; aspect-ratio: 1; padding: 3px; display: flex; align-items: center; justify-content: center; overflow-wrap: anywhere; hyphens: auto; cursor: pointer; min-width: 0; transition: background-color 0.12s, color 0.12s, transform 0.12s; }
+.cell:hover { border-color: var(--accent); }
+.cell:active { transform: scale(0.96); }
+.cell.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.cell.win { background: var(--win); border-color: var(--win); color: var(--win-ink); font-weight: 600; }
+.cell.free { font-family: var(--font-mono); font-size: clamp(9px, 2.4vw, 12px); letter-spacing: 0.04em; text-transform: uppercase; cursor: default; }
+@media (prefers-reduced-motion: reduce) { .cell { transition: none; } }
+#shareBox { width: 100%; font-family: var(--font-mono); font-size: 12px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; resize: none; }
+
+.plist, .lb, .recent { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.prompt { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+.vote { font: inherit; font-family: var(--font-mono); font-size: 12px; min-width: 54px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 5px; padding: 5px 8px; cursor: pointer; font-variant-numeric: tabular-nums; }
+.vote.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.ptext { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.rm { font: inherit; color: var(--muted); background: none; border: 0; cursor: pointer; padding: 0 6px; font-size: 18px; line-height: 1; }
+.cut { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-align: center; border-top: 1px dashed var(--line); padding-top: 8px; }
+.hostbox { border: 1px dashed var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+
+.lb li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+.lb li.hit { background: var(--win); border-color: var(--win); color: var(--win-ink); }
+.lb .pos { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.lb li.hit .pos { color: var(--win-ink); }
+.lb .who { overflow-wrap: anywhere; font-weight: 500; }
+.lb .res { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+.recent li { display: flex; gap: 8px; align-items: center; }
+.recent button { flex: 1; text-align: left; }
+
+.rules { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.rules ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+
+</style>
+</head>
+<body>
+<script>
+window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "sb_publishable_tzNxBR1-f9Fc2xUf1Y9JSA_MpnOkTjk" };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.100.0"></script>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Lecture card · free to play</div>
+    <h1>Euler's Bingo</h1>
+    <p class="lede">Your class pitches lecture habits, votes on the best ones, then everyone gets their own shuffled card. No money involved.</p>
+  </header>
+
+  <p class="status" id="status" role="status" hidden></p>
+
+  <section id="home" class="stack" hidden>
+    <div class="sheet">
+      <h2>Start a cohort</h2>
+      <div class="row">
+        <label for="newName"><span>Cohort name</span>
+          <input type="text" id="newName" maxlength="40" placeholder="e.g. ECE 105 · 2029 ECE" autocomplete="off">
+        </label>
+        <button class="btn primary" id="createBtn" type="button">Create</button>
+      </div>
+      <p class="note">Make one cohort per class so each prof gets their own deck. You become the host, set the grid and deck size, and lock the deck when voting is done.</p>
+    </div>
+    <div class="sheet">
+      <h2>Join with a code</h2>
+      <div class="row">
+        <label for="joinCode"><span>Cohort code</span>
+          <input type="text" id="joinCode" maxlength="40" placeholder="e.g. math-135-k7f" autocomplete="off">
+        </label>
+        <button class="btn" id="joinBtn" type="button">Join</button>
+      </div>
+    </div>
+    <div class="sheet" id="recentBox" hidden>
+      <h2>Your cohorts</h2>
+      <ul class="recent" id="recent"></ul>
+    </div>
+    <div class="sheet">
+      <h2>Just want to try it?</h2>
+      <p class="note">A solo card uses the starter deck and keeps nothing.</p>
+      <div class="actions"><button class="btn" id="soloBtn" type="button">Play a solo card</button></div>
+    </div>
+  </section>
+
+  <section id="notFound" class="sheet" hidden>
+    <h2>No cohort with this code yet</h2>
+    <p class="note" id="nfCode"></p>
+    <div class="row">
+      <label for="nfName"><span>Start it as</span>
+        <input type="text" id="nfName" maxlength="40" placeholder="Cohort name" autocomplete="off">
+      </label>
+      <button class="btn primary" id="nfCreate" type="button">Start cohort</button>
+    </div>
+    <div class="actions"><button class="btn" id="nfBack" type="button">Back</button></div>
+  </section>
+
+  <section id="cohort" class="stack" hidden>
+    <div class="cohort-head">
+      <div>
+        <div class="eyebrow" id="cohortEyebrow">Cohort</div>
+        <h2 id="cohortName"></h2>
+      </div>
+      <div class="codebox" id="codeBox">
+        <span class="code" id="cohortCode"></span>
+        <button class="btn" id="copyCode" type="button">Copy code</button>
+        <button class="btn" id="leaveBtn" type="button">All cohorts</button>
+      </div>
+    </div>
+    <div class="actions" id="soloBar" hidden><button class="btn" id="soloBack" type="button">Back</button></div>
+
+    <nav class="tabs" id="tabs" aria-label="Cohort sections">
+      <button class="tab" type="button" data-tab="card" aria-selected="true">My card</button>
+      <button class="tab" type="button" data-tab="vote" aria-selected="false">Pitch &amp; vote</button>
+      <button class="tab" type="button" data-tab="board" aria-selected="false">Leaderboard</button>
+    </nav>
+
+    <div id="panelCard" class="sheet">
+      <div id="waiting" hidden>
+        <h2>Deck not locked yet</h2>
+        <p class="note">The host locks the deck once voting is done, and then your card appears here. Pitch and vote in the meantime.</p>
+      </div>
+      <div id="cardArea" class="stack">
+        <div class="sheet-head">
+          <div class="eyebrow" id="cardTitle">Your card</div>
+          <div class="stats" id="stats">Marked 1 · Lines 0</div>
+        </div>
+        <div class="banner" id="banner" role="status" hidden></div>
+        <div class="board" id="board" role="group" aria-label="Bingo squares"></div>
+        <div class="actions">
+          <button class="btn primary" id="shareBtn" type="button">Share my card</button>
+          <button class="btn" id="clearBtn" type="button">Clear marks</button>
+        </div>
+        <textarea id="shareBox" rows="7" readonly hidden aria-label="Text to copy"></textarea>
+        <p class="note" id="shareNote" role="status" hidden></p>
+      </div>
+    </div>
+
+    <div id="panelVote" class="sheet" hidden>
+      <h2>Pitch &amp; vote</h2>
+      <p class="note">Pitch things your prof does in lecture. Pitches are anonymous. The class votes, the host decides how many top prompts make the deck, and every player gets their own shuffled card.</p>
+      <div class="row">
+        <label for="pitchInput"><span>Your pitch</span>
+          <input type="text" id="pitchInput" maxlength="34" placeholder="Something that happens every lecture" autocomplete="off">
+        </label>
+        <button class="btn primary" id="pitchBtn" type="button">Pitch</button>
+      </div>
+      <p class="note" id="pitchCount"></p>
+      <div class="hostbox" id="hostBox" hidden>
+        <div class="eyebrow">Host controls</div>
+        <div class="hostgrid">
+          <label for="gridSel"><span>Grid size</span>
+            <select id="gridSel">
+              <option value="3">3 × 3</option>
+              <option value="4">4 × 4</option>
+              <option value="5" selected>5 × 5</option>
+            </select>
+          </label>
+          <label for="freeSel"><span>Free squares</span>
+            <select id="freeSel">
+              <option value="0">None</option>
+              <option value="1" selected>1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </label>
+          <label for="deckSize"><span>Deck size (top N)</span>
+            <input type="text" id="deckSize" inputmode="numeric" maxlength="2" value="40" autocomplete="off">
+          </label>
+        </div>
+        <p class="note" id="hostNote"></p>
+        <div class="actions"><button class="btn primary" id="lockBtn" type="button">Lock deck and deal cards</button></div>
+      </div>
+      <p class="note" id="deckState"></p>
+      <ul class="plist" id="promptList"></ul>
+    </div>
+
+    <div id="panelBoard" class="sheet" hidden>
+      <h2>Leaderboard</h2>
+      <p class="note" id="lbNote"></p>
+      <ul class="lb" id="lb"></ul>
+    </div>
+  </section>
+
+  <section class="rules" aria-label="House rules">
+    <div class="eyebrow">House rules</div>
+    <ul>
+      <li>Free to play. No entry fees and no wagers.</li>
+      <li>No exams, grades or marks as prompts.</li>
+      <li>Keep it about lecture habits. Nothing personal about your prof.</li>
+      <li>Professors can ask to opt out, and their cohort gets taken down.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function () {
+  var STARTERS = [
+    "Says “um” 3 times in a row", "“As I said last week”", "Class runs over time", "Slides won't load",
+    "Mic or projector glitch", "A phone goes off", "Question already answered", "Goes on a tangent",
+    "Erases board too soon", "“Does that make sense?”", "Silence after a question", "Mentions own research",
+    "Says “obviously”", "Starts class late", "Someone arrives 15 min late", "Coffee on the podium",
+    "Reads slides word for word", "Typo on a slide", "“Let's take a quick break”", "“Moving on,” then goes back",
+    "Joke gets no laughs", "A pun, fully intended", "Can't find the marker", "Handwriting nobody can read",
+    "Someone leaves early", "Deadline reminder", "Calls on a student by name", "“I'll post it online”",
+    "Corrects their own mistake", "“We'll skip this slide”", "Mentions the weather", "Laptop battery dies",
+    "“Let's go through this quickly”", "Says “so basically”", "Asks for a volunteer", "Draws a graph on the board",
+    "Someone yawns loudly", "Door slams mid-lecture"
+  ];
+  var FREE = "Class starts";
+  var ADJ = ["Quiet", "Curious", "Sleepy", "Caffeinated", "Rigorous", "Bounded", "Convergent", "Orthogonal"];
+  var NOUN = ["Quotient", "Integral", "Vector", "Matrix", "Tangent", "Lemma", "Theorem", "Fourier", "Laplace", "Gradient", "Prime", "Axiom", "Eigenvalue", "Limit", "Sine", "Proof"];
+  var KEY = "euler-bingo.v2";
+  var DECK_SIZE = 40;
+  var MAX_PITCH = 5;
+  var BLOCK = /\b(exams?|midterms?|finals?|grad(e|es|ing)|gpa|bets?|wager(s|ed)?|cash|money)\b|\$/i;
+
+  var LINE_CACHE = {};
+  function linesFor(n) {
+    if (LINE_CACHE[n]) return LINE_CACHE[n];
+    var out = [], r, c, row, col, d1 = [], d2 = [];
+    for (r = 0; r < n; r++) {
+      row = []; col = [];
+      for (c = 0; c < n; c++) { row.push(r * n + c); col.push(c * n + r); }
+      out.push(row, col);
+      d1.push(r * n + r);
+      d2.push(r * n + (n - 1 - r));
+    }
+    out.push(d1, d2);
+    LINE_CACHE[n] = out;
+    return out;
+  }
+
+  function xmur3(str) {
+    var h = 1779033703 ^ str.length;
+    for (var k = 0; k < str.length; k++) { h = Math.imul(h ^ str.charCodeAt(k), 3432918353); h = (h << 13) | (h >>> 19); }
+    h = Math.imul(h ^ (h >>> 16), 2246822507);
+    h = Math.imul(h ^ (h >>> 13), 3266489909);
+    return (h ^ (h >>> 16)) >>> 0;
+  }
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = (a + 0x6D2B79F5) | 0;
+      var t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function shuffled(list, rng) {
+    var a = list.slice();
+    for (var n = a.length - 1; n > 0; n--) {
+      var m = Math.floor(rng() * (n + 1));
+      var t = a[n]; a[n] = a[m]; a[m] = t;
+    }
+    return a;
+  }
+
+  var $ = function (id) { return document.getElementById(id); };
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  var S = {
+    ready: false, db: null, user: null,
+    me: { id: null, name: "" }, canWrite: false, isAdmin: false,
+    slug: null, solo: false, cohort: undefined,
+    prompts: [], votes: [], cards: [], cardsLoaded: false,
+    deck: null, round: 0, grid: 5, freeN: 1, squares: [], marked: new Set(), freeIdx: new Set(), hostInit: false,
+    hydrated: false, firstBingoAt: null, tab: "card", tabSet: false,
+    unsubs: [], boardToken: 0
+  };
+  var statusTimer = null, writeTimer = null, writing = false, dirty = false, confirmTimer = null;
+
+  function setStatus(msg, sticky) {
+    var s = $("status");
+    clearTimeout(statusTimer);
+    if (!msg) { s.hidden = true; s.textContent = ""; return; }
+    s.hidden = false;
+    s.textContent = msg;
+    if (!sticky) statusTimer = setTimeout(function () { s.hidden = true; }, 7000);
+  }
+  function writeFailed(e) {
+    if (e && e.code === "quota_exceeded") setStatus("This page's storage is full, so that wasn't saved.");
+    else setStatus("Couldn't save that. You may need Contributor access to this page.");
+  }
+  function dbError(e) {
+    if (e && e.code === "revoked") setStatus("Your access to this page changed. Reload to try again.", true);
+    else setStatus("Couldn't reach the class database" + (e && e.code ? " (" + e.code + ")" : "") + ".", true);
+  }
+  function guardWrite() {
+    if (!S.db) { setStatus("Cohorts need the Claude viewer with a signed-in account."); return false; }
+    if (!S.canWrite) { setStatus("You can look around, but playing needs Contributor access. Ask the host to invite you."); return false; }
+    return true;
+  }
+
+  /* ---------- storage of recent cohorts (per viewer) ---------- */
+  function recents() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr.filter(function (x) { return x && typeof x.slug === "string"; }).slice(0, 8) : [];
+    } catch (e) { return []; }
+  }
+  function remember(slug, name) {
+    var list = recents().filter(function (x) { return x.slug !== slug; });
+    list.unshift({ slug: slug, name: name || slug });
+    try { localStorage.setItem(KEY, JSON.stringify(list.slice(0, 8))); } catch (e) {}
+  }
+  function renderRecent() {
+    var list = recents();
+    var box = $("recentBox"), ul = $("recent");
+    ul.textContent = "";
+    box.hidden = list.length === 0;
+    list.forEach(function (x) {
+      var li = el("li");
+      var b = el("button", "btn", x.name + " · " + x.slug);
+      b.type = "button";
+      b.addEventListener("click", function () { location.hash = x.slug; });
+      li.appendChild(b);
+      ul.appendChild(li);
+    });
+  }
+
+  /* ---------- routing ---------- */
+  function parseSlug() {
+    var h = (location.hash || "").replace(/^#/, "").toLowerCase();
+    return /^[a-z0-9-]{3,40}$/.test(h) ? h : null;
+  }
+  function hideAll() {
+    ["home", "notFound", "cohort"].forEach(function (id) { $(id).hidden = true; });
+  }
+  function leaveCohort() {
+    if (dirty && S.slug && S.db && S.canWrite && !S.solo) { clearTimeout(writeTimer); flush(); }
+    S.unsubs.forEach(function (u) { try { u(); } catch (e) {} });
+    S.unsubs = [];
+    S.cohort = undefined; S.prompts = []; S.votes = []; S.cards = []; S.cardsLoaded = false;
+    S.deck = null; S.round = 0; S.grid = 5; S.freeN = 1; S.squares = []; S.marked = new Set(); S.freeIdx = new Set();
+    S.hydrated = false; S.firstBingoAt = null; S.tabSet = false; S.hostInit = false;
+  }
+  function route() {
+    leaveCohort();
+    S.slug = parseSlug();
+    S.solo = false;
+    hideAll();
+    setStatus("");
+    if (!S.slug) { $("home").hidden = false; renderRecent(); updateHome(); return; }
+    if (!S.ready) { setStatus("Connecting to the class database…", true); return; }
+    if (!S.db) {
+      $("home").hidden = false; renderRecent(); updateHome();
+      setStatus("Cohorts need the Claude viewer with a signed-in account.", true);
+      return;
+    }
+    enterCohort(S.slug);
+  }
+  function updateHome() {
+    var ok = S.ready && !!S.db;
+    $("createBtn").disabled = !ok; $("joinBtn").disabled = !ok;
+    if (!S.ready) setStatus("Connecting to the class database…", true);
+    else if (!S.db) setStatus("Cohorts need the Claude viewer with a signed-in account. You can still play a solo card.", true);
+    else if (!S.canWrite) setStatus("You can browse cohorts, but starting or playing one needs Contributor access.", true);
+  }
+
+  /* ---------- cohort data ---------- */
+  function enterCohort(slug) {
+    var base = "cohorts/" + slug;
+    var db = S.db;
+    var timer = setTimeout(function () { setStatus("Still connecting to the class database…", true); }, 10000);
+    function done() { clearTimeout(timer); }
+    S.unsubs.push(db.doc(base).onSnapshot(function (snap) { done(); onCohort(snap); }, function (e) { done(); dbError(e); }));
+    S.unsubs.push(db.collection(base + "/prompts").onSnapshot(function (snap) {
+      S.prompts = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      renderVote();
+    }, dbError));
+    S.unsubs.push(db.collection(base + "/votes").onSnapshot(function (snap) {
+      S.votes = snap.docs.map(function (d) { return d.data(); });
+      renderVote();
+    }, dbError));
+    S.unsubs.push(db.collection(base + "/cards").onSnapshot(function (snap) {
+      S.cards = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      S.cardsLoaded = true;
+      hydrate();
+      renderBoard();
+    }, dbError));
+  }
+
+  function onCohort(snap) {
+    if (!snap.exists) {
+      S.cohort = null;
+      hideAll();
+      $("notFound").hidden = false;
+      $("nfCode").textContent = "Code: " + S.slug + ". If you got this code from a classmate, check the spelling. Otherwise you can start it.";
+      $("nfName").value = $("nfName").value || S.slug.replace(/-/g, " ");
+      return;
+    }
+    setStatus("");
+    S.cohort = snap.data();
+    $("notFound").hidden = true;
+    $("home").hidden = true;
+    $("cohort").hidden = false;
+    $("soloBar").hidden = true;
+    $("tabs").hidden = false;
+    $("codeBox").hidden = false;
+    $("cohortEyebrow").textContent = "Cohort";
+    $("cohortName").textContent = S.cohort.name || S.slug;
+    $("cohortCode").textContent = S.slug;
+    remember(S.slug, S.cohort.name);
+    var round = S.cohort.round || 0;
+    var deck = Array.isArray(S.cohort.deck) ? S.cohort.deck : null;
+    var grid = [3, 4, 5].indexOf(S.cohort.grid) !== -1 ? S.cohort.grid : 5;
+    var freeN = typeof S.cohort.free === "number" ? S.cohort.free : 1;
+    if (round !== S.round || (deck && !S.deck) || (!deck && S.deck) || grid !== S.grid || freeN !== S.freeN) {
+      S.round = round;
+      S.deck = deck;
+      S.grid = grid;
+      S.freeN = freeN;
+      S.hydrated = false;
+      S.firstBingoAt = null;
+      buildCard();
+      hydrate();
+    }
+    if (!S.tabSet) { S.tabSet = true; setTab(S.deck ? "card" : "vote"); }
+    renderVote();
+    renderBoard();
+    updateCardVisibility();
+  }
+
+  function hydrate() {
+    if (S.hydrated || !S.cardsLoaded || !S.deck) return;
+    S.hydrated = true;
+    var mine = S.cards.filter(function (c) { return c.id === S.me.id; })[0];
+    if (mine && mine.round === S.round && Array.isArray(mine.marked)) {
+      S.marked = new Set(Array.from(S.freeIdx).concat(mine.marked.filter(function (i) { return i >= 0 && i < S.grid * S.grid && !S.freeIdx.has(i); })));
+      S.firstBingoAt = mine.firstBingoAt || null;
+      updateCard();
+    }
+  }
+
+  /* ---------- ranking and voting ---------- */
+  function ranked() {
+    var counts = {};
+    S.votes.forEach(function (v) { counts[v.p] = (counts[v.p] || 0) + 1; });
+    var items = STARTERS.map(function (t, i) { return { id: "s" + i, text: t, starter: true, by: null }; })
+      .concat(S.prompts.map(function (p) { return { id: p.id, text: String(p.text || ""), starter: false, by: p.by }; }));
+    items.forEach(function (x) { x.v = counts[x.id] || 0; });
+    items.sort(function (a, b) {
+      return (b.v - a.v) || ((a.starter ? 1 : 0) - (b.starter ? 1 : 0)) || a.text.localeCompare(b.text);
+    });
+    return items;
+  }
+  function myVotes() {
+    var set = new Set();
+    S.votes.forEach(function (v) { if (v.u === S.me.id) set.add(v.p); });
+    return set;
+  }
+  function isHost() {
+    return !!S.cohort && !!S.me.id && (S.cohort.host === S.me.id || S.isAdmin);
+  }
+
+  function renderVote() {
+    if (!S.cohort) return;
+    var items = ranked();
+    var mine = myVotes();
+    var list = $("promptList");
+    list.textContent = "";
+    var limit = S.deck ? S.deck.length : (parseInt($("deckSize").value, 10) || DECK_SIZE);
+    items.forEach(function (it, idx) {
+      if (idx === limit) list.appendChild(el("li", "cut", "Below the line: not in the deck"));
+      var li = el("li", "prompt");
+      var vb = el("button", "vote" + (mine.has(it.id) ? " on" : ""), "▲ " + it.v);
+      vb.type = "button";
+      vb.dataset.pid = it.id;
+      vb.setAttribute("aria-pressed", mine.has(it.id) ? "true" : "false");
+      vb.setAttribute("aria-label", (mine.has(it.id) ? "Remove your vote for " : "Vote for ") + it.text);
+      li.appendChild(vb);
+      li.appendChild(el("span", "ptext", it.text));
+      li.appendChild(el("span", "tag", it.starter ? "Starter" : "Class"));
+      if (!it.starter && S.me.id && (it.by === S.me.id || S.isAdmin)) {
+        var rm = el("button", "rm", "×");
+        rm.type = "button";
+        rm.dataset.rm = it.id;
+        rm.setAttribute("aria-label", "Remove " + it.text);
+        li.appendChild(rm);
+      }
+      list.appendChild(li);
+    });
+    var used = S.prompts.filter(function (p) { return p.by === S.me.id; }).length;
+    $("pitchCount").textContent = used + " of " + MAX_PITCH + " pitches used. " + S.prompts.length + " pitched by the class so far.";
+    var host = isHost();
+    $("hostBox").hidden = !host;
+    if (host) {
+      if (!S.hostInit) {
+        S.hostInit = true;
+        $("gridSel").value = String(S.grid);
+        $("freeSel").value = String(S.freeN);
+        $("deckSize").value = String(S.deck ? S.deck.length : DECK_SIZE);
+      }
+      $("hostNote").textContent = S.round > 0
+        ? "Round " + S.round + " is dealt. Dealing again uses these settings, gives everyone a new card and clears their marks."
+        : "When voting is done, lock the top prompts into the deck. Everyone then gets their own shuffled card.";
+      $("lockBtn").textContent = S.round > 0 ? "Deal a new round" : "Lock deck and deal cards";
+    }
+    $("deckState").textContent = S.round > 0
+      ? "Deck locked. Round " + S.round + " · " + S.grid + "×" + S.grid + " card · " + S.freeN + " free · top " + (S.deck ? S.deck.length : 0) + " prompts."
+      : "Deck not locked yet.";
+    var canPlay = S.canWrite;
+    $("pitchBtn").disabled = !canPlay; $("pitchInput").disabled = !canPlay;
+  }
+
+  $("promptList").addEventListener("click", function (e) {
+    var vb = e.target.closest("[data-pid]");
+    var rm = e.target.closest("[data-rm]");
+    if (vb) toggleVote(vb.dataset.pid);
+    else if (rm) removePrompt(rm.dataset.rm);
+  });
+
+  async function toggleVote(pid) {
+    if (!guardWrite() || !S.slug) return;
+    var ref = S.db.doc("cohorts/" + S.slug + "/votes/" + pid + "~" + S.me.id);
+    try {
+      if (myVotes().has(pid)) await ref.delete();
+      else await ref.set({ p: pid, u: S.me.id, at: Date.now() });
+    } catch (e) { writeFailed(e); }
+  }
+  async function removePrompt(id) {
+    if (!guardWrite() || !S.slug) return;
+    try { await S.db.doc("cohorts/" + S.slug + "/prompts/" + id).delete(); } catch (e) { writeFailed(e); }
+  }
+  async function pitch() {
+    if (!guardWrite() || !S.slug) return;
+    var input = $("pitchInput");
+    var text = input.value.trim().replace(/\s+/g, " ");
+    if (text.length < 4) { setStatus("Write a few more words so people know what to look for."); return; }
+    if (BLOCK.test(text)) { setStatus("Keep it off exams, grades and money. Pitch a lecture habit instead."); return; }
+    var lower = text.toLowerCase();
+    var dupe = ranked().some(function (x) { return x.text.toLowerCase() === lower; });
+    if (dupe) { setStatus("That one is already on the list. Vote for it instead."); return; }
+    var used = S.prompts.filter(function (p) { return p.by === S.me.id; }).length;
+    if (used >= MAX_PITCH) { setStatus("You've used all " + MAX_PITCH + " pitches. Remove one to pitch another."); return; }
+    $("pitchBtn").disabled = true;
+    try {
+      var ref = await S.db.collection("cohorts/" + S.slug + "/prompts").add({ text: text, by: S.me.id, at: Date.now() });
+      await S.db.doc("cohorts/" + S.slug + "/votes/" + ref.id + "~" + S.me.id).set({ p: ref.id, u: S.me.id, at: Date.now() });
+      input.value = "";
+    } catch (e) { writeFailed(e); }
+    $("pitchBtn").disabled = !S.canWrite;
+  }
+  $("pitchBtn").addEventListener("click", pitch);
+  $("pitchInput").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); pitch(); } });
+
+  function readHostConfig() {
+    var n = Number($("gridSel").value);
+    var freeN = Number($("freeSel").value);
+    var size = parseInt($("deckSize").value, 10);
+    if ([3, 4, 5].indexOf(n) === -1) n = 5;
+    if (!(freeN >= 0 && freeN <= 3)) freeN = 0;
+    var need = n * n - freeN;
+    if (!(size >= need)) {
+      setStatus("A " + n + "×" + n + " card with " + freeN + " free needs a deck of at least " + need + " prompts.");
+      return null;
+    }
+    if (size > 60) size = 60;
+    var available = ranked().length;
+    if (size > available) size = available;
+    return { grid: n, free: freeN, size: size };
+  }
+  $("deckSize").addEventListener("input", renderVote);
+
+  $("lockBtn").addEventListener("click", async function () {
+    if (!guardWrite() || !S.cohort || !isHost()) return;
+    var cfg = readHostConfig();
+    if (!cfg) return;
+    var btn = $("lockBtn");
+    if (S.round > 0 && !btn.dataset.confirm) {
+      btn.dataset.confirm = "1";
+      btn.textContent = "Click again to confirm";
+      clearTimeout(confirmTimer);
+      confirmTimer = setTimeout(function () { delete btn.dataset.confirm; renderVote(); }, 4000);
+      return;
+    }
+    delete btn.dataset.confirm;
+    var deck = ranked().slice(0, cfg.size).map(function (x) { return x.text; });
+    try {
+      await S.db.doc("cohorts/" + S.slug).update({ deck: deck, round: (S.cohort.round || 0) + 1, grid: cfg.grid, free: cfg.free, lockedAt: Date.now() });
+      setStatus("Deck locked. Cards are dealt.");
+    } catch (e) { writeFailed(e); }
+  });
+
+  /* ---------- the card ---------- */
+  function buildCard() {
+    var board = $("board");
+    board.textContent = "";
+    S.squares = [];
+    S.freeIdx = new Set();
+    S.marked = new Set();
+    if (!S.deck || S.deck.length === 0) return;
+    var n = S.grid, cells = n * n;
+    var freeN = Math.max(0, Math.min(S.freeN, cells - 1));
+    var need = cells - freeN;
+    var seed = (S.me.id || ("anon" + Math.random())) + "|" + (S.slug || "solo") + "|" + S.round;
+    var rng = mulberry32(xmur3(seed));
+    var pool = S.deck.slice();
+    var extras = shuffled(STARTERS, rng);
+    for (var i = 0; pool.length < need && i < extras.length; i++) if (pool.indexOf(extras[i]) === -1) pool.push(extras[i]);
+    var picks = shuffled(pool, rng).slice(0, need);
+    var mid = n % 2 === 1 ? Math.floor(cells / 2) : -1;
+    var order = [];
+    for (var k = 0; k < cells; k++) if (k !== mid) order.push(k);
+    order = shuffled(order, rng);
+    var spots = [];
+    if (freeN > 0 && mid >= 0) spots.push(mid);
+    while (spots.length < freeN) spots.push(order.shift());
+    spots.forEach(function (s) { S.freeIdx.add(s); });
+    S.marked = new Set(S.freeIdx);
+    board.dataset.n = String(n);
+    board.style.setProperty("--n", String(n));
+    var p = 0;
+    for (var idx = 0; idx < cells; idx++) {
+      var isFree = S.freeIdx.has(idx);
+      var text = isFree ? FREE : picks[p++];
+      S.squares.push(text);
+      var b = el("button", "cell" + (isFree ? " free" : ""), text);
+      b.type = "button";
+      b.dataset.i = String(idx);
+      if (isFree) b.setAttribute("aria-label", "Free square: " + text);
+      else b.setAttribute("aria-pressed", "false");
+      board.appendChild(b);
+    }
+    updateCard();
+  }
+
+  function lineCount(marked) {
+    var n = 0, win = new Set();
+    linesFor(S.grid).forEach(function (line) {
+      if (line.every(function (x) { return marked.has(x); })) { n++; line.forEach(function (x) { win.add(x); }); }
+    });
+    return { n: n, win: win };
+  }
+
+  function updateCard() {
+    var cells = $("board").children;
+    if (!cells.length) return;
+    var res = lineCount(S.marked);
+    if (res.n > 0 && !S.firstBingoAt) S.firstBingoAt = Date.now();
+    if (res.n === 0) S.firstBingoAt = null;
+    for (var i = 0; i < cells.length; i++) {
+      var on = S.marked.has(i);
+      cells[i].classList.toggle("on", on && !res.win.has(i));
+      cells[i].classList.toggle("win", res.win.has(i));
+      if (!S.freeIdx.has(i)) cells[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    $("stats").textContent = "Marked " + (S.marked.size - S.freeIdx.size) + " · Lines " + res.n;
+    var banner = $("banner");
+    banner.hidden = res.n === 0;
+    banner.textContent = res.n === 0 ? "" : (res.n === 1 ? "Bingo! One line." : "Bingo! " + res.n + " lines.");
+    $("cardTitle").textContent = S.solo ? "Solo card" : "Your card" + (S.round ? " · round " + S.round : "");
+  }
+
+  function updateCardVisibility() {
+    var has = !!S.deck;
+    $("waiting").hidden = has;
+    $("cardArea").hidden = !has;
+  }
+
+  $("board").addEventListener("click", function (e) {
+    var b = e.target.closest(".cell");
+    if (!b) return;
+    var idx = Number(b.dataset.i);
+    if (S.freeIdx.has(idx)) return;
+    if (S.marked.has(idx)) S.marked.delete(idx); else S.marked.add(idx);
+    updateCard();
+    queueSave();
+  });
+  $("clearBtn").addEventListener("click", function () {
+    S.marked = new Set(S.freeIdx);
+    updateCard();
+    queueSave();
+  });
+
+  function queueSave() {
+    if (S.solo || !S.canWrite || !S.slug || !S.db || !S.me.id) return;
+    dirty = true;
+    clearTimeout(writeTimer);
+    writeTimer = setTimeout(flush, 500);
+  }
+  async function flush() {
+    if (writing || !dirty) return;
+    writing = true; dirty = false;
+    var res = lineCount(S.marked);
+    var marked = Array.from(S.marked).filter(function (i) { return !S.freeIdx.has(i); }).sort(function (a, b) { return a - b; });
+    var ref = S.db.doc("cohorts/" + S.slug + "/cards/" + S.me.id);
+    var body = { round: S.round, marked: marked, lines: res.n, n: marked.length, firstBingoAt: S.firstBingoAt || null, at: Date.now() };
+    try { await ref.set(body); } catch (e) { writeFailed(e); }
+    writing = false;
+    if (dirty) { clearTimeout(writeTimer); writeTimer = setTimeout(flush, 200); }
+  }
+
+  function shareText() {
+    var rows = [];
+    var res = lineCount(S.marked);
+    var gn = S.grid;
+    for (var r = 0; r < gn; r++) {
+      var line = "";
+      for (var c = 0; c < gn; c++) {
+        var k = r * gn + c;
+        line += res.win.has(k) ? "🟨" : (S.marked.has(k) ? "🟦" : "⬜");
+      }
+      rows.push(line);
+    }
+    var head = "Euler's Bingo" + (S.cohort && S.cohort.name ? " · " + S.cohort.name : "") + (S.round > 1 ? " · round " + S.round : "");
+    var result = res.n > 0 ? "BINGO × " + res.n : "No bingo yet";
+    return head + "\n" + result + " · " + (S.marked.size - S.freeIdx.size) + " squares\n" + rows.join("\n");
+  }
+  $("shareBtn").addEventListener("click", function () {
+    var text = shareText();
+    var box = $("shareBox"), note = $("shareNote");
+    function fallback() {
+      box.value = text; box.hidden = false; box.focus(); box.select();
+      note.hidden = false; note.textContent = "Copy this text and paste it in your class chat.";
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function () {
+        box.hidden = true; note.hidden = false; note.textContent = "Copied. Paste it in your class chat.";
+      }, fallback);
+    } catch (e) { fallback(); }
+  });
+
+  /* ---------- leaderboard ---------- */
+  async function renderBoard() {
+    if (!S.cohort) return;
+    var token = ++S.boardToken;
+    var ul = $("lb");
+    var note = $("lbNote");
+    if (!S.round) {
+      ul.textContent = "";
+      note.textContent = "The leaderboard starts once the host locks the deck and cards are dealt.";
+      return;
+    }
+    var cards = S.cards.filter(function (c) { return c.round === S.round; });
+    cards.sort(function (a, b) {
+      var ab = a.firstBingoAt || Infinity, bb = b.firstBingoAt || Infinity;
+      if (ab !== bb) return ab < bb ? -1 : 1;
+      return (b.n || 0) - (a.n || 0);
+    });
+    note.textContent = cards.length === 0
+      ? "Nobody has marked a square yet this round."
+      : "Round " + S.round + ". Everyone plays under a random alias. Bingo times first, then most squares marked.";
+    var used = {}, names = {};
+    cards.map(function (c) { return c.id; }).sort().forEach(function (id) {
+      var h = xmur3(id + "|" + S.slug);
+      var base = ADJ[h % ADJ.length] + " " + NOUN[(h >>> 8) % NOUN.length];
+      used[base] = (used[base] || 0) + 1;
+      names[id] = used[base] > 1 ? base + " " + used[base] : base;
+    });
+    if (token !== S.boardToken) return;
+    ul.textContent = "";
+    cards.forEach(function (c, i) {
+      var name = c.id === S.me.id ? "You · " + names[c.id] : names[c.id];
+      var li = el("li", c.lines > 0 ? "hit" : "");
+      li.appendChild(el("span", "pos", String(i + 1)));
+      li.appendChild(el("span", "who", name));
+      var when = c.firstBingoAt ? new Date(c.firstBingoAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "";
+      li.appendChild(el("span", "res", c.lines > 0 ? "Bingo × " + c.lines + " · " + when : (c.n || 0) + " marked"));
+      ul.appendChild(li);
+    });
+  }
+
+  /* ---------- tabs, home actions ---------- */
+  function setTab(name) {
+    S.tab = name;
+    var tabs = document.querySelectorAll(".tab");
+    for (var i = 0; i < tabs.length; i++) tabs[i].setAttribute("aria-selected", tabs[i].dataset.tab === name ? "true" : "false");
+    $("panelCard").hidden = name !== "card";
+    $("panelVote").hidden = name !== "vote";
+    $("panelBoard").hidden = name !== "board";
+  }
+  $("tabs").addEventListener("click", function (e) {
+    var t = e.target.closest(".tab");
+    if (t) setTab(t.dataset.tab);
+  });
+
+  function slugify(name) {
+    var s = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 24).replace(/-+$/g, "");
+    return s || "class";
+  }
+  async function createCohort(name, fixedSlug) {
+    name = name.trim().replace(/\s+/g, " ").slice(0, 40);
+    if (!name) { setStatus("Give your cohort a name first."); return; }
+    if (!guardWrite()) return;
+    var slug = fixedSlug || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
+    try {
+      await S.db.doc("cohorts/" + slug).set({ name: name, host: S.me.id, round: 0, deck: null, grid: 5, free: 1, createdAt: Date.now() });
+      remember(slug, name);
+      if (location.hash.replace(/^#/, "") === slug) route(); else location.hash = slug;
+    } catch (e) { writeFailed(e); }
+  }
+  $("createBtn").addEventListener("click", function () { createCohort($("newName").value, null); });
+  $("newName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); createCohort($("newName").value, null); } });
+  $("nfCreate").addEventListener("click", function () { createCohort($("nfName").value, S.slug); });
+  $("nfBack").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
+
+  function joinByCode() {
+    var code = $("joinCode").value.trim().toLowerCase().replace(/^#/, "");
+    if (!/^[a-z0-9-]{3,40}$/.test(code)) { setStatus("Codes use letters, numbers and dashes. Check what your host sent you."); return; }
+    location.hash = code;
+  }
+  $("joinBtn").addEventListener("click", joinByCode);
+  $("joinCode").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); joinByCode(); } });
+
+  $("leaveBtn").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
+  $("copyCode").addEventListener("click", function () {
+    var code = S.slug || "";
+    try {
+      navigator.clipboard.writeText(code).then(function () { setStatus("Code copied: " + code); }, function () { setStatus("Select the code and copy it."); });
+    } catch (e) { setStatus("Select the code and copy it."); }
+  });
+
+  $("soloBtn").addEventListener("click", function () {
+    leaveCohort();
+    S.solo = true; S.slug = null; S.cohort = null;
+    S.round = 1; S.deck = STARTERS.slice(); S.hydrated = true; S.grid = 5; S.freeN = 1;
+    hideAll();
+    setStatus("");
+    $("cohort").hidden = false;
+    $("tabs").hidden = true;
+    $("codeBox").hidden = true;
+    $("soloBar").hidden = false;
+    $("cohortEyebrow").textContent = "Starter deck";
+    $("cohortName").textContent = "Solo card";
+    ["panelVote", "panelBoard"].forEach(function (id) { $(id).hidden = true; });
+    $("panelCard").hidden = false;
+    buildCard();
+    updateCardVisibility();
+  });
+  $("soloBack").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
+
+  window.addEventListener("hashchange", route);
+
+  /* ---------- optional Supabase backend (used by the standalone site) ---------- */
+  function makeSupabaseDb(sb, uid) {
+    var listeners = [];
+    function parentOf(path) { return path.split("/").slice(0, -1).join("/"); }
+    function idOf(path) { return path.split("/").pop(); }
+    function fail(e) { return { code: "unavailable", message: String((e && e.message) || e) }; }
+    function notify(path, row) { listeners.slice().forEach(function (fn) { fn(path, row); }); }
+    function newId() {
+      try { return crypto.randomUUID().replace(/-/g, "").slice(0, 20); }
+      catch (e) { return Math.random().toString(36).slice(2, 12) + Date.now().toString(36); }
+    }
+    function live(row) { return row && row.data && !row.data._deleted ? row : null; }
+
+    function watch(kind, key, next, error) {
+      var rows = new Map();
+      var dead = false;
+      function inScope(p) { return kind === "doc" ? p === key : parentOf(p) === key; }
+      function emit() {
+        if (dead) return;
+        if (kind === "doc") {
+          var row = rows.get(key);
+          next({ id: idOf(key), exists: !!row, data: function () { return row ? row.data : undefined; } });
+        } else {
+          var docs = Array.from(rows.values())
+            .sort(function (a, b) { return a.path < b.path ? -1 : 1; })
+            .map(function (r) { return { id: idOf(r.path), exists: true, data: function () { return r.data; } }; });
+          next({ docs: docs, size: docs.length, empty: docs.length === 0 });
+        }
+      }
+      function apply(path, row) {
+        if (!inScope(path)) return;
+        var ok = live(row);
+        if (ok) rows.set(path, ok); else rows.delete(path);
+        emit();
+      }
+      function load() {
+        var q = sb.from("docs").select("path,data");
+        q = kind === "doc" ? q.eq("path", key) : q.eq("parent", key);
+        q.then(function (r) {
+          if (dead) return;
+          if (r.error) { if (error) error(fail(r.error)); return; }
+          rows = new Map();
+          (r.data || []).forEach(function (x) { if (live(x)) rows.set(x.path, x); });
+          emit();
+        }, function (e) { if (!dead && error) error(fail(e)); });
+      }
+      var listener = function (path, row) { apply(path, row); };
+      listeners.push(listener);
+      var chName = "docs-" + kind + "-" + key.replace(/[^a-z0-9]/gi, "_") + "-" + Math.random().toString(36).slice(2, 7);
+      var ch = sb.channel(chName)
+        .on("postgres_changes", { event: "*", schema: "public", table: "docs", filter: (kind === "doc" ? "path=eq." : "parent=eq.") + key }, function (p) {
+          if (p && p.new && p.new.path) apply(p.new.path, p.new);
+        })
+        .subscribe(function (status) { if (status === "SUBSCRIBED") load(); });
+      load();
+      return function () {
+        dead = true;
+        var i = listeners.indexOf(listener);
+        if (i !== -1) listeners.splice(i, 1);
+        try { sb.removeChannel(ch); } catch (e) {}
+      };
+    }
+
+    function docRef(path) {
+      return {
+        id: idOf(path),
+        path: path,
+        set: async function (data) {
+          var r = await sb.from("docs").upsert({ path: path, parent: parentOf(path), data: data, owner: uid, updated_at: new Date().toISOString() }, { onConflict: "path" }).select();
+          if (r.error) throw fail(r.error);
+          if (!r.data || !r.data.length) throw fail("not allowed");
+          notify(path, r.data[0]);
+        },
+        update: async function (data) {
+          var cur = await sb.from("docs").select("data").eq("path", path).maybeSingle();
+          if (cur.error) throw fail(cur.error);
+          if (!cur.data) throw fail("missing");
+          var merged = Object.assign({}, cur.data.data, data);
+          var r = await sb.from("docs").update({ data: merged, updated_at: new Date().toISOString() }).eq("path", path).select();
+          if (r.error) throw fail(r.error);
+          if (!r.data || !r.data.length) throw fail("not allowed");
+          notify(path, r.data[0]);
+        },
+        delete: async function () {
+          var r = await sb.from("docs").update({ data: { _deleted: true }, updated_at: new Date().toISOString() }).eq("path", path).select();
+          if (r.error) throw fail(r.error);
+          if (r.data && r.data.length) notify(path, r.data[0]);
+        },
+        onSnapshot: function (next, error) { return watch("doc", path, next, error); }
+      };
+    }
+    function colRef(path) {
+      return {
+        path: path,
+        doc: function (id) { return docRef(path + "/" + id); },
+        add: async function (data) { var ref = docRef(path + "/" + newId()); await ref.set(data); return ref; },
+        onSnapshot: function (next, error) { return watch("col", path, next, error); }
+      };
+    }
+    return { doc: docRef, collection: colRef };
+  }
+
+  /* ---------- boot ---------- */
+  async function init() {
+    route();
+    var cfg = window.EULER_CONFIG;
+    var c = window.claude;
+    if (cfg && cfg.url && cfg.key && String(cfg.url).indexOf("PASTE") === -1 && window.supabase && !(c && c.use)) {
+      try {
+        var sb = window.supabase.createClient(cfg.url, cfg.key);
+        var got = await sb.auth.getSession();
+        var session = got.data && got.data.session;
+        if (!session) {
+          var signed = await sb.auth.signInAnonymously();
+          if (signed.error) throw signed.error;
+          session = signed.data.session;
+        }
+        var uid = session.user.id;
+        S.db = makeSupabaseDb(sb, uid);
+        S.user = {
+          me: async function () { return { id: uid, name: "" }; },
+          canEdit: async function () { return false; },
+          can: async function () { return true; }
+        };
+        S.me = { id: uid, name: "" };
+        S.canWrite = true;
+      } catch (e) { S.db = null; }
+    } else if (c && c.use) {
+      try {
+        var res = await Promise.all([c.use("db"), c.use("user")]);
+        S.db = res[0]; S.user = res[1];
+        if (S.user) {
+          S.me = await S.user.me();
+          S.isAdmin = await S.user.canEdit();
+          var cw = await S.user.can("data.write");
+          S.canWrite = cw !== false && !!S.me.id;
+        }
+      } catch (e) {}
+    }
+    S.ready = true;
+    route();
+  }
+  init();
+})();
+</script>
+<script>
+(function () {
+  var cfg = window.EULER_CONFIG;
+  var configured = cfg && cfg.url && cfg.key && String(cfg.url).indexOf("PASTE") === -1;
+  if (window.claude || configured) return;
+  var lede = document.querySelector(".lede");
+  if (lede) lede.textContent = "Tap squares as things happen in lecture. Five in a row wins. Free to play, no money involved.";
+  var extra = document.createElement("style");
+  extra.textContent = "#soloBar{display:none!important}";
+  document.head.appendChild(extra);
+  var solo = document.getElementById("soloBtn");
+  solo.click();
+  var more = document.createElement("button");
+  more.type = "button";
+  more.className = "btn";
+  more.textContent = "New card";
+  more.addEventListener("click", function () { solo.click(); });
+  document.getElementById("clearBtn").after(more);
+})();
+</script>
+</body>
+</html>
