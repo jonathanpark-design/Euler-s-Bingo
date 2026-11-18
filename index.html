@@ -133,6 +133,14 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .lb .pos { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
 .lb li.hit .pos { color: var(--win-ink); }
 .lb .who { overflow-wrap: anywhere; font-weight: 500; }
+.lb li.link { cursor: pointer; }
+.lb li.link:hover { border-color: var(--accent); }
+.lb li.link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lb .tap { font-size: 12px; color: var(--muted); }
+.view .cell { cursor: default; }
+.view .cell:hover { border-color: var(--line); }
+.view .cell:active { transform: none; }
+.view .cell.on, .view .cell.win { cursor: default; }
 .lb .res { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
 
 .recent li { display: flex; gap: 8px; align-items: center; }
@@ -156,6 +164,16 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   </header>
 
   <p class="status" id="status" role="status" hidden></p>
+
+  <div class="sheet" id="userBar">
+    <div class="row">
+      <label for="userName"><span>Your username</span>
+        <input type="text" id="userName" maxlength="20" placeholder="Pick a name" autocomplete="off">
+      </label>
+      <button class="btn" id="userSave" type="button">Save</button>
+    </div>
+    <p class="note" id="userNote"></p>
+  </div>
 
   <section id="home" class="stack" hidden>
     <div class="sheet">
@@ -284,6 +302,15 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       <h2>Leaderboard</h2>
       <p class="note" id="lbNote"></p>
       <ul class="lb" id="lb"></ul>
+      <div id="viewer" class="stack view" hidden>
+        <div class="sheet-head">
+          <div class="eyebrow" id="viewTitle">Card</div>
+          <div class="stats" id="viewStats"></div>
+        </div>
+        <div class="banner" id="viewBanner" role="status" hidden></div>
+        <div class="board" id="viewBoard" role="group" aria-label="Their bingo squares"></div>
+        <div class="actions"><button class="btn" id="viewBack" type="button">Back to leaderboard</button></div>
+      </div>
     </div>
   </section>
 
@@ -375,7 +402,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     prompts: [], votes: [], cards: [], cardsLoaded: false,
     deck: null, round: 0, grid: 5, freeN: 1, squares: [], marked: new Set(), freeIdx: new Set(), hostInit: false,
     hydrated: false, firstBingoAt: null, tab: "card", tabSet: false,
-    unsubs: [], boardToken: 0
+    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null
   };
   var statusTimer = null, writeTimer = null, writing = false, dirty = false, confirmTimer = null;
 
@@ -443,7 +470,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.unsubs = [];
     S.cohort = undefined; S.prompts = []; S.votes = []; S.cards = []; S.cardsLoaded = false;
     S.deck = null; S.round = 0; S.grid = 5; S.freeN = 1; S.squares = []; S.marked = new Set(); S.freeIdx = new Set();
-    S.hydrated = false; S.firstBingoAt = null; S.tabSet = false; S.hostInit = false;
+    S.hydrated = false; S.firstBingoAt = null; S.tabSet = false; S.hostInit = false; S.viewing = null; S.names = {};
   }
   function route() {
     leaveCohort();
@@ -540,6 +567,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       S.marked = new Set(Array.from(S.freeIdx).concat(mine.marked.filter(function (i) { return i >= 0 && i < S.grid * S.grid && !S.freeIdx.has(i); })));
       S.firstBingoAt = mine.firstBingoAt || null;
       updateCard();
+    } else {
+      queueSave();
     }
   }
 
@@ -609,7 +638,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     }
     $("deckState").textContent = S.round > 0
       ? "Deck locked. Round " + S.round + " · " + S.grid + "×" + S.grid + " card · " + S.freeN + " free · top " + (S.deck ? S.deck.length : 0) + " prompts."
-      : "Deck not locked yet.";
+      : "Deck not locked yet." + (host ? "" : " The host (whoever started this cohort) locks it once voting is done.");
     var canPlay = S.canWrite;
     $("pitchBtn").disabled = !canPlay; $("pitchInput").disabled = !canPlay;
   }
@@ -694,17 +723,11 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   });
 
   /* ---------- the card ---------- */
-  function buildCard() {
-    var board = $("board");
-    board.textContent = "";
-    S.squares = [];
-    S.freeIdx = new Set();
-    S.marked = new Set();
-    if (!S.deck || S.deck.length === 0) return;
+  function computeCard(uid) {
     var n = S.grid, cells = n * n;
     var freeN = Math.max(0, Math.min(S.freeN, cells - 1));
     var need = cells - freeN;
-    var seed = (S.me.id || ("anon" + Math.random())) + "|" + (S.slug || "solo") + "|" + S.round;
+    var seed = (uid || ("anon" + Math.random())) + "|" + (S.slug || "solo") + "|" + S.round;
     var rng = mulberry32(xmur3(seed));
     var pool = S.deck.slice();
     var extras = shuffled(STARTERS, rng);
@@ -717,22 +740,35 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var spots = [];
     if (freeN > 0 && mid >= 0) spots.push(mid);
     while (spots.length < freeN) spots.push(order.shift());
-    spots.forEach(function (s) { S.freeIdx.add(s); });
+    var freeIdx = new Set(spots);
+    var squares = [], p = 0;
+    for (var idx = 0; idx < cells; idx++) squares.push(freeIdx.has(idx) ? FREE : picks[p++]);
+    return { squares: squares, freeIdx: freeIdx };
+  }
+
+  function buildCard() {
+    var board = $("board");
+    board.textContent = "";
+    S.squares = [];
+    S.freeIdx = new Set();
+    S.marked = new Set();
+    if (!S.deck || S.deck.length === 0) return;
+    var n = S.grid;
+    var card = computeCard(S.me.id);
+    S.squares = card.squares;
+    S.freeIdx = card.freeIdx;
     S.marked = new Set(S.freeIdx);
     board.dataset.n = String(n);
     board.style.setProperty("--n", String(n));
-    var p = 0;
-    for (var idx = 0; idx < cells; idx++) {
+    S.squares.forEach(function (text, idx) {
       var isFree = S.freeIdx.has(idx);
-      var text = isFree ? FREE : picks[p++];
-      S.squares.push(text);
       var b = el("button", "cell" + (isFree ? " free" : ""), text);
       b.type = "button";
       b.dataset.i = String(idx);
       if (isFree) b.setAttribute("aria-label", "Free square: " + text);
       else b.setAttribute("aria-pressed", "false");
       board.appendChild(b);
-    }
+    });
     updateCard();
   }
 
@@ -796,7 +832,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var res = lineCount(S.marked);
     var marked = Array.from(S.marked).filter(function (i) { return !S.freeIdx.has(i); }).sort(function (a, b) { return a - b; });
     var ref = S.db.doc("cohorts/" + S.slug + "/cards/" + S.me.id);
-    var body = { round: S.round, marked: marked, lines: res.n, n: marked.length, firstBingoAt: S.firstBingoAt || null, at: Date.now() };
+    var body = { round: S.round, marked: marked, lines: res.n, n: marked.length, firstBingoAt: S.firstBingoAt || null, name: S.name || "", at: Date.now() };
     try { await ref.set(body); } catch (e) { writeFailed(e); }
     writing = false;
     if (dirty) { clearTimeout(writeTimer); writeTimer = setTimeout(flush, 200); }
@@ -850,8 +886,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       return (b.n || 0) - (a.n || 0);
     });
     note.textContent = cards.length === 0
-      ? "Nobody has marked a square yet this round."
-      : "Round " + S.round + ". Everyone plays under a random alias. Bingo times first, then most squares marked.";
+      ? "Nobody has joined this round yet."
+      : "Round " + S.round + ". Bingo times first, then most squares marked. Tap a row to see that player's card. Players without a username get a random alias.";
     var used = {}, names = {};
     cards.map(function (c) { return c.id; }).sort().forEach(function (id) {
       var h = xmur3(id + "|" + S.slug);
@@ -859,18 +895,94 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       used[base] = (used[base] || 0) + 1;
       names[id] = used[base] > 1 ? base + " " + used[base] : base;
     });
+    cards.forEach(function (c) { if (c.name) names[c.id] = String(c.name).slice(0, 20); });
+    S.names = names;
     if (token !== S.boardToken) return;
     ul.textContent = "";
     cards.forEach(function (c, i) {
       var name = c.id === S.me.id ? "You · " + names[c.id] : names[c.id];
-      var li = el("li", c.lines > 0 ? "hit" : "");
+      var li = el("li", "link" + (c.lines > 0 ? " hit" : ""));
+      li.dataset.id = c.id;
+      li.tabIndex = 0;
+      li.setAttribute("role", "button");
+      li.setAttribute("aria-label", "View " + names[c.id] + "'s card");
       li.appendChild(el("span", "pos", String(i + 1)));
       li.appendChild(el("span", "who", name));
       var when = c.firstBingoAt ? new Date(c.firstBingoAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "";
       li.appendChild(el("span", "res", c.lines > 0 ? "Bingo × " + c.lines + " · " + when : (c.n || 0) + " marked"));
       ul.appendChild(li);
     });
+    renderViewer();
   }
+
+  function openFromRow(e) {
+    var li = e.target.closest("li[data-id]");
+    if (!li) return;
+    S.viewing = li.dataset.id;
+    renderViewer();
+  }
+  $("lb").addEventListener("click", openFromRow);
+  $("lb").addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openFromRow(e); }
+  });
+  $("viewBack").addEventListener("click", function () { S.viewing = null; renderViewer(); });
+
+  function renderViewer() {
+    var box = $("viewer");
+    var c = S.viewing ? S.cards.filter(function (x) { return x.id === S.viewing && x.round === S.round; })[0] : null;
+    if (!c || !S.deck || !S.round) {
+      S.viewing = null;
+      box.hidden = true; $("lb").hidden = false; $("lbNote").hidden = false;
+      return;
+    }
+    box.hidden = false; $("lb").hidden = true; $("lbNote").hidden = true;
+    var card = computeCard(c.id);
+    var marked = new Set(card.freeIdx);
+    (Array.isArray(c.marked) ? c.marked : []).forEach(function (i) { if (i >= 0 && i < S.grid * S.grid) marked.add(i); });
+    var res = lineCount(marked);
+    var who = S.names[c.id] || "Player";
+    $("viewTitle").textContent = (c.id === S.me.id ? "Your card" : who + "'s card") + " · round " + S.round;
+    $("viewStats").textContent = "Marked " + (marked.size - card.freeIdx.size) + " · Lines " + res.n;
+    var banner = $("viewBanner");
+    banner.hidden = res.n === 0;
+    banner.textContent = res.n === 0 ? "" : (res.n === 1 ? "Bingo! One line." : "Bingo! " + res.n + " lines.");
+    var board = $("viewBoard");
+    board.textContent = "";
+    board.dataset.n = String(S.grid);
+    board.style.setProperty("--n", String(S.grid));
+    card.squares.forEach(function (text, idx) {
+      var cls = "cell" + (card.freeIdx.has(idx) ? " free" : "") + (res.win.has(idx) ? " win" : (marked.has(idx) ? " on" : ""));
+      board.appendChild(el("div", cls, text));
+    });
+  }
+
+  /* ---------- username ---------- */
+  var NAME_KEY = "euler-bingo.name";
+  try { S.name = localStorage.getItem(NAME_KEY) || ""; } catch (e) { S.name = ""; }
+  function renderUserBar() {
+    var inp = $("userName");
+    if (document.activeElement !== inp) inp.value = S.name;
+    $("userNote").textContent = S.name
+      ? "Playing as " + S.name + ". Anyone in your cohort can open your card from the leaderboard."
+      : "Pick a username so classmates can find your card. Without one you get a random alias.";
+  }
+  function saveName() {
+    var v = $("userName").value.trim().replace(/\s+/g, " ");
+    if (v.length < 2) { setStatus("Usernames need at least 2 characters."); return; }
+    if (/[<>]/.test(v) || BLOCK.test(v)) { setStatus("Pick a different username."); return; }
+    S.name = v.slice(0, 20);
+    try { localStorage.setItem(NAME_KEY, S.name); } catch (e) {}
+    setStatus("");
+    renderUserBar();
+    if (S.db && S.canWrite && S.me.id) {
+      S.db.doc("users/" + S.me.id).set({ name: S.name, at: Date.now() }).catch(function () {});
+      if (S.slug && !S.solo && S.deck) { dirty = true; clearTimeout(writeTimer); flush(); }
+    }
+    renderBoard();
+  }
+  $("userSave").addEventListener("click", saveName);
+  $("userName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); saveName(); } });
+  renderUserBar();
 
   /* ---------- tabs, home actions ---------- */
   function setTab(name) {
