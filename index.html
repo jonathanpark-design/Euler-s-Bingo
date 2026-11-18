@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Euler's Bingo</title>
-<meta name="description" content="A free class bingo game. Pitch lecture habits, vote, and play your own shuffled card.">
+<title>Epsilon</title>
+<meta name="description" content="Epsilon: free class games for paying attention in lecture. Euler's Bingo and Pi's Point Rush.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root { color-scheme: light; }
@@ -133,6 +133,21 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .lb .pos { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
 .lb li.hit .pos { color: var(--win-ink); }
 .lb .who { overflow-wrap: anywhere; font-weight: 500; }
+.games { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 480px) { .games { grid-template-columns: minmax(0, 1fr); } }
+.game { appearance: none; font: inherit; text-align: left; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; min-width: 0; }
+.game:hover { border-color: var(--accent); }
+.game[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.game .gname { font-family: var(--font-display, inherit); font-weight: 800; font-size: 18px; }
+.game .gdesc { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
+.wrows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.wrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+.wrow .wname { font-weight: 600; font-size: 17px; overflow-wrap: anywhere; }
+.wrow .wsub { grid-column: 1 / -1; color: var(--muted); font-size: 13px; font-family: var(--font-mono); }
+.wrow input { width: 96px; }
+.tally { display: flex; align-items: center; gap: 8px; }
+.tally .count { font-family: var(--font-mono); font-size: 22px; min-width: 2.2ch; text-align: center; font-variant-numeric: tabular-nums; }
+.tally .btn { min-width: 52px; font-size: 20px; padding: 10px 14px; }
 .lb li.link { cursor: pointer; }
 .lb li.link:hover { border-color: var(--accent); }
 .lb li.link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -158,9 +173,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.100.0"></script>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Lecture card · free to play</div>
-    <h1>Euler's Bingo</h1>
-    <p class="lede">Your class pitches lecture habits, votes on the best ones, then everyone gets their own shuffled card. No money involved.</p>
+    <div class="eyebrow">Class games · free to play</div>
+    <h1>Epsilon</h1>
+    <p class="lede">Games for paying attention in lecture. Pick a game, start a cohort for your class, and play along. No money involved.</p>
   </header>
 
   <p class="status" id="status" role="status" hidden></p>
@@ -176,15 +191,22 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   </div>
 
   <section id="home" class="stack" hidden>
-    <div class="sheet">
-      <h2>Start a cohort</h2>
+    <div class="sheet" id="gamePicker">
+      <h2>Pick a game</h2>
+      <div class="games">
+        <button class="game" type="button" data-game="bingo" aria-pressed="false"><span class="gname">Euler's Bingo</span><span class="gdesc">Pitch lecture habits, vote on the best, then get your own shuffled bingo card.</span></button>
+        <button class="game" type="button" data-game="rush" aria-pressed="false"><span class="gname">Pi's Point Rush</span><span class="gdesc">Vote on 3 words, predict how often your prof says them, then tally it live.</span></button>
+      </div>
+    </div>
+    <div class="sheet" id="startSheet" hidden>
+      <h2 id="startTitle">Start a cohort</h2>
       <div class="row">
         <label for="newName"><span>Cohort name</span>
           <input type="text" id="newName" maxlength="40" placeholder="e.g. ECE 105 · 2029 ECE" autocomplete="off">
         </label>
         <button class="btn primary" id="createBtn" type="button">Create</button>
       </div>
-      <p class="note">Make one cohort per class so each prof gets their own deck. You become the host, set the grid and deck size, and lock the deck when voting is done.</p>
+      <p class="note">One cohort per class and game. You become the host and run it. Share the code and everyone joins.</p>
     </div>
     <div class="sheet">
       <h2>Join with a code</h2>
@@ -231,6 +253,46 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       </div>
     </div>
     <div class="actions" id="soloBar" hidden><button class="btn" id="soloBack" type="button">Back</button></div>
+
+    <div id="rush" class="stack" hidden>
+      <div class="sheet">
+        <div class="sheet-head">
+          <div class="eyebrow" id="rushPhase">Step 1</div>
+          <div class="stats" id="rushStats"></div>
+        </div>
+        <p class="note" id="rushHelp"></p>
+      </div>
+      <div class="sheet" id="rushPitch" hidden>
+        <h2>Pitch &amp; vote words</h2>
+        <div class="row">
+          <label for="wordInput"><span>Your word</span>
+            <input type="text" id="wordInput" maxlength="20" placeholder="One word your prof says" autocomplete="off">
+          </label>
+          <button class="btn primary" id="wordBtn" type="button">Pitch</button>
+        </div>
+        <p class="note" id="wordCount"></p>
+        <ul class="plist" id="wordList"></ul>
+      </div>
+      <div class="sheet" id="rushPlay" hidden>
+        <h2 id="rushPlayTitle"></h2>
+        <ul class="wrows" id="wordRows"></ul>
+      </div>
+      <div class="sheet" id="rushResults" hidden>
+        <h2>Scoreboard</h2>
+        <p class="note" id="rushNote"></p>
+        <ul class="lb" id="rushLb"></ul>
+        <div id="rushViewer" class="stack" hidden>
+          <div class="eyebrow" id="rushViewTitle">Player</div>
+          <ul class="wrows" id="rushViewList"></ul>
+          <div class="actions"><button class="btn" id="rushViewBack" type="button">Back to scoreboard</button></div>
+        </div>
+      </div>
+      <div class="hostbox" id="rushHost" hidden>
+        <div class="eyebrow">Host controls</div>
+        <p class="note" id="rushHostNote"></p>
+        <div class="actions"><button class="btn primary" id="rushNext" type="button">Next</button></div>
+      </div>
+    </div>
 
     <nav class="tabs" id="tabs" aria-label="Cohort sections">
       <button class="tab" type="button" data-tab="card" aria-selected="true">My card</button>
@@ -317,8 +379,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   <section class="rules" aria-label="House rules">
     <div class="eyebrow">House rules</div>
     <ul>
-      <li>Free to play. No entry fees and no wagers.</li>
-      <li>No exams, grades or marks as prompts.</li>
+      <li>Free to play. No entry fees, no wagers. Predictions only score points.</li>
+      <li>No exams, grades or marks as prompts or words.</li>
       <li>Keep it about lecture habits. Nothing personal about your prof.</li>
       <li>Professors can ask to opt out, and their cohort gets taken down.</li>
     </ul>
@@ -402,7 +464,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     prompts: [], votes: [], cards: [], cardsLoaded: false,
     deck: null, round: 0, grid: 5, freeN: 1, squares: [], marked: new Set(), freeIdx: new Set(), hostInit: false,
     hydrated: false, firstBingoAt: null, tab: "card", tabSet: false,
-    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null
+    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, rushSub: false, rushRound: 0, rushHydrated: false, guesses: [null, null, null], tally: [0, 0, 0], rushView: null, rowsKey: "", pickGame: null
   };
   var statusTimer = null, writeTimer = null, writing = false, dirty = false, confirmTimer = null;
 
@@ -466,11 +528,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
   function leaveCohort() {
     if (dirty && S.slug && S.db && S.canWrite && !S.solo) { clearTimeout(writeTimer); flush(); }
+    if (rushDirty && S.slug && S.db && S.canWrite) { clearTimeout(rushTimer); rushFlush(); }
     S.unsubs.forEach(function (u) { try { u(); } catch (e) {} });
     S.unsubs = [];
     S.cohort = undefined; S.prompts = []; S.votes = []; S.cards = []; S.cardsLoaded = false;
     S.deck = null; S.round = 0; S.grid = 5; S.freeN = 1; S.squares = []; S.marked = new Set(); S.freeIdx = new Set();
     S.hydrated = false; S.firstBingoAt = null; S.tabSet = false; S.hostInit = false; S.viewing = null; S.names = {};
+    S.words = []; S.picks = []; S.picksLoaded = false; S.rushSub = false; S.rushRound = 0; S.rushHydrated = false; S.guesses = [null, null, null]; S.tally = [0, 0, 0]; S.rushView = null; S.rowsKey = "";
   }
   function route() {
     leaveCohort();
@@ -508,7 +572,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     }, dbError));
     S.unsubs.push(db.collection(base + "/votes").onSnapshot(function (snap) {
       S.votes = snap.docs.map(function (d) { return d.data(); });
-      renderVote();
+      if (isRush()) renderRush(); else renderVote();
     }, dbError));
     S.unsubs.push(db.collection(base + "/cards").onSnapshot(function (snap) {
       S.cards = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
@@ -539,6 +603,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("cohortName").textContent = S.cohort.name || S.slug;
     $("cohortCode").textContent = S.slug;
     remember(S.slug, S.cohort.name);
+    if (S.cohort.game === "rush") { onRush(); return; }
+    $("rush").hidden = true;
     var round = S.cohort.round || 0;
     var deck = Array.isArray(S.cohort.deck) ? S.cohort.deck : null;
     var grid = [3, 4, 5].indexOf(S.cohort.grid) !== -1 ? S.cohort.grid : 5;
@@ -594,7 +660,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
 
   function renderVote() {
-    if (!S.cohort) return;
+    if (!S.cohort || isRush()) return;
     var items = ranked();
     var mine = myVotes();
     var list = $("promptList");
@@ -870,7 +936,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   /* ---------- leaderboard ---------- */
   async function renderBoard() {
-    if (!S.cohort) return;
+    if (!S.cohort || isRush()) return;
     var token = ++S.boardToken;
     var ul = $("lb");
     var note = $("lbNote");
@@ -976,13 +1042,377 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     renderUserBar();
     if (S.db && S.canWrite && S.me.id) {
       S.db.doc("users/" + S.me.id).set({ name: S.name, at: Date.now() }).catch(function () {});
-      if (S.slug && !S.solo && S.deck) { dirty = true; clearTimeout(writeTimer); flush(); }
+      if (S.slug && !S.solo && S.deck && !isRush()) { dirty = true; clearTimeout(writeTimer); flush(); }
+      if (isRush() && S.cohort.words) { rushDirty = true; clearTimeout(rushTimer); rushFlush(); }
     }
     renderBoard();
+    if (isRush()) renderRush();
   }
   $("userSave").addEventListener("click", saveName);
   $("userName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); saveName(); } });
   renderUserBar();
+
+  /* ---------- Pi's Point Rush ---------- */
+  var WORDS = ["basically", "obviously", "actually", "literally", "essentially", "clearly", "right", "okay", "simply", "just", "so", "um"];
+  var WORD_RE = /^[\p{L}][\p{L}'’-]{1,19}$/u;
+  var MAX_WORDS = 3;
+  var rushTimer = null, rushDirty = false, rushWriting = false;
+  function isRush() { return !!S.cohort && S.cohort.game === "rush"; }
+  function phaseOf() { return (S.cohort && S.cohort.phase) || "pitch"; }
+
+  function onRush() {
+    $("cohortEyebrow").textContent = "Pi's Point Rush";
+    $("tabs").hidden = true;
+    ["panelCard", "panelVote", "panelBoard"].forEach(function (id) { $(id).hidden = true; });
+    $("rush").hidden = false;
+    var round = S.cohort.round || 1;
+    S.round = round;
+    if (round !== S.rushRound) {
+      S.rushRound = round;
+      S.guesses = [null, null, null];
+      S.tally = [0, 0, 0];
+      S.rushHydrated = false;
+      S.rowsKey = "";
+      S.rushView = null;
+    }
+    subscribeRush();
+    rushHydrate();
+    renderRush();
+  }
+  function subscribeRush() {
+    if (S.rushSub || !S.db || !S.slug) return;
+    S.rushSub = true;
+    var base = "cohorts/" + S.slug;
+    S.unsubs.push(S.db.collection(base + "/words").onSnapshot(function (snap) {
+      S.words = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      renderRush();
+    }, dbError));
+    S.unsubs.push(S.db.collection(base + "/picks").onSnapshot(function (snap) {
+      S.picks = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      S.picksLoaded = true;
+      rushHydrate();
+      renderRush();
+    }, dbError));
+  }
+  function cleanNums(arr, fill) {
+    var out = [];
+    for (var i = 0; i < 3; i++) {
+      var v = Array.isArray(arr) ? arr[i] : null;
+      out.push(typeof v === "number" && isFinite(v) ? v : fill);
+    }
+    return out;
+  }
+  function rushHydrate() {
+    if (S.rushHydrated || !S.picksLoaded || !isRush()) return;
+    S.rushHydrated = true;
+    var mine = S.picks.filter(function (p) { return p.id === S.me.id; })[0];
+    if (mine && mine.round === S.round) {
+      S.guesses = cleanNums(mine.guesses, null);
+      S.tally = cleanNums(mine.tally, 0);
+    }
+  }
+  function rushQueueSave() {
+    if (!S.canWrite || !S.slug || !S.db || !S.me.id || !isRush()) return;
+    rushDirty = true;
+    clearTimeout(rushTimer);
+    rushTimer = setTimeout(rushFlush, 500);
+  }
+  async function rushFlush() {
+    if (rushWriting || !rushDirty) return;
+    rushWriting = true; rushDirty = false;
+    try {
+      await S.db.doc("cohorts/" + S.slug + "/picks/" + S.me.id).set({ round: S.round, guesses: S.guesses, tally: S.tally, name: S.name || "", at: Date.now() });
+    } catch (e) { writeFailed(e); }
+    rushWriting = false;
+    if (rushDirty) { clearTimeout(rushTimer); rushTimer = setTimeout(rushFlush, 200); }
+  }
+
+  function rankedWords() {
+    var counts = {};
+    S.votes.forEach(function (v) { counts[v.p] = (counts[v.p] || 0) + 1; });
+    var items = WORDS.map(function (t, i) { return { id: "w" + i + "-" + S.round, text: t, starter: true, by: null }; })
+      .concat(S.words.filter(function (w) { return w.r === S.round; }).map(function (w) { return { id: w.id, text: String(w.text || ""), starter: false, by: w.by }; }));
+    items.forEach(function (x) { x.v = counts[x.id] || 0; });
+    items.sort(function (a, b) {
+      return (b.v - a.v) || ((a.starter ? 1 : 0) - (b.starter ? 1 : 0)) || a.text.localeCompare(b.text);
+    });
+    return items;
+  }
+
+  function consensus(vals) {
+    if (!vals.length) return null;
+    var c = {}, best = 0;
+    vals.forEach(function (v) { c[v] = (c[v] || 0) + 1; if (c[v] > best) best = c[v]; });
+    var tops = Object.keys(c).filter(function (k) { return c[k] === best; });
+    if (tops.length === 1) return Number(tops[0]);
+    var s = vals.slice().sort(function (a, b) { return a - b; });
+    var m = s.length;
+    return m % 2 ? s[(m - 1) / 2] : Math.floor((s[m / 2 - 1] + s[m / 2]) / 2);
+  }
+  function talliers() {
+    return S.picks.filter(function (p) {
+      return p.round === S.round && Array.isArray(p.tally) && p.tally.reduce(function (a, b) { return a + (Number(b) || 0); }, 0) > 0;
+    });
+  }
+  function officialCounts() {
+    var t = talliers();
+    return (S.cohort.words || []).map(function (w, i) {
+      return consensus(t.map(function (p) { return Number(p.tally[i]) || 0; }));
+    });
+  }
+  function pointsFor(g, off) {
+    if (typeof g !== "number" || off == null) return 0;
+    var d = Math.abs(g - off);
+    return d === 0 ? 3 : d === 1 ? 2 : d === 2 ? 1 : 0;
+  }
+  function totalPoints(pick, off) {
+    var tot = 0;
+    for (var i = 0; i < off.length; i++) tot += pointsFor(pick.guesses && pick.guesses[i], off[i]);
+    return tot;
+  }
+
+  var HELP = {
+    pitch: "Pitch single words your prof says a lot, and vote on them. The host locks the 3 top words when voting is done.",
+    predict: "Guess how many times your prof will say each word this lecture. Guesses lock when the host starts the lecture.",
+    live: "The lecture is on. Tap + each time you hear a word. Your guesses are locked in.",
+    done: "Lecture over. The official count for each word is the most common tally across the class. Closest guesses score: exact 3, off by 1 is 2, off by 2 is 1."
+  };
+  var PHASE_NAME = { pitch: "Step 1 of 4 · Pick the words", predict: "Step 2 of 4 · Predict", live: "Step 3 of 4 · Lecture is live", done: "Step 4 of 4 · Results" };
+
+  function renderRush() {
+    if (!isRush()) return;
+    var phase = phaseOf();
+    var host = isHost();
+    $("rushPhase").textContent = PHASE_NAME[phase] || "";
+    $("rushStats").textContent = "Lecture " + S.round;
+    $("rushHelp").textContent = HELP[phase] || "";
+    $("rushPitch").hidden = phase !== "pitch";
+    $("rushPlay").hidden = phase === "pitch";
+    $("rushResults").hidden = phase !== "done";
+    if (phase === "pitch") renderWordList();
+    else renderRows(phase);
+    if (phase === "done") renderRushBoard();
+    var hostBox = $("rushHost");
+    hostBox.hidden = !host;
+    if (host) {
+      var btn = $("rushNext");
+      var label = { pitch: "Lock top 3 words", predict: "Start the lecture", live: "End the lecture", done: "Start next lecture" }[phase];
+      if (!btn.dataset.confirm) btn.textContent = label;
+      $("rushHostNote").textContent = {
+        pitch: "When voting is done, lock the 3 top words. Everyone then makes their predictions.",
+        predict: "Start the lecture when class begins. This locks everyone's guesses.",
+        live: "End the lecture when class is over. Players' tallies become the official counts.",
+        done: "Starts a fresh lecture with new words. This clears everyone's current tallies."
+      }[phase];
+    }
+    $("wordBtn").disabled = !S.canWrite; $("wordInput").disabled = !S.canWrite;
+  }
+
+  function renderWordList() {
+    var items = rankedWords();
+    var mine = myVotes();
+    var list = $("wordList");
+    list.textContent = "";
+    items.forEach(function (it, idx) {
+      if (idx === MAX_WORDS) list.appendChild(el("li", "cut", "Below the line: not in this lecture"));
+      var li = el("li", "prompt");
+      var vb = el("button", "vote" + (mine.has(it.id) ? " on" : ""), "▲ " + it.v);
+      vb.type = "button";
+      vb.dataset.pid = it.id;
+      vb.setAttribute("aria-pressed", mine.has(it.id) ? "true" : "false");
+      vb.setAttribute("aria-label", (mine.has(it.id) ? "Remove your vote for " : "Vote for ") + it.text);
+      li.appendChild(vb);
+      li.appendChild(el("span", "ptext", it.text));
+      li.appendChild(el("span", "tag", it.starter ? "Starter" : "Class"));
+      if (!it.starter && S.me.id && it.by === S.me.id) {
+        var rm = el("button", "rm", "×");
+        rm.type = "button";
+        rm.dataset.rm = it.id;
+        rm.setAttribute("aria-label", "Remove " + it.text);
+        li.appendChild(rm);
+      }
+      list.appendChild(li);
+    });
+    var used = S.words.filter(function (w) { return w.r === S.round && w.by === S.me.id; }).length;
+    $("wordCount").textContent = used + " of " + MAX_WORDS + " words pitched. Single words only.";
+  }
+  $("wordList").addEventListener("click", function (e) {
+    var vb = e.target.closest("[data-pid]");
+    var rm = e.target.closest("[data-rm]");
+    if (vb) toggleVote(vb.dataset.pid);
+    else if (rm) removeWord(rm.dataset.rm);
+  });
+  async function removeWord(id) {
+    if (!guardWrite() || !S.slug) return;
+    try { await S.db.doc("cohorts/" + S.slug + "/words/" + id).delete(); } catch (e) { writeFailed(e); }
+  }
+  async function pitchWord() {
+    if (!guardWrite() || !S.slug || !isRush() || phaseOf() !== "pitch") return;
+    var input = $("wordInput");
+    var text = input.value.trim();
+    if (!WORD_RE.test(text)) { setStatus("One word only, letters only (2 to 20 characters)."); return; }
+    if (BLOCK.test(text)) { setStatus("Keep it off exams, grades and money. Pick a word your prof just says."); return; }
+    var lower = text.toLowerCase();
+    if (rankedWords().some(function (x) { return x.text.toLowerCase() === lower; })) { setStatus("That word is already on the list. Vote for it instead."); return; }
+    var used = S.words.filter(function (w) { return w.r === S.round && w.by === S.me.id; }).length;
+    if (used >= MAX_WORDS) { setStatus("You've pitched " + MAX_WORDS + " words. Remove one to pitch another."); return; }
+    $("wordBtn").disabled = true;
+    try {
+      var ref = await S.db.collection("cohorts/" + S.slug + "/words").add({ text: text, by: S.me.id, r: S.round, at: Date.now() });
+      await S.db.doc("cohorts/" + S.slug + "/votes/" + ref.id + "~" + S.me.id).set({ p: ref.id, u: S.me.id, at: Date.now() });
+      input.value = "";
+    } catch (e) { writeFailed(e); }
+    $("wordBtn").disabled = !S.canWrite;
+  }
+  $("wordBtn").addEventListener("click", pitchWord);
+  $("wordInput").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); pitchWord(); } });
+
+  function renderRows(phase) {
+    var words = S.cohort.words || [];
+    var off = phase === "done" ? officialCounts() : null;
+    $("rushPlayTitle").textContent = phase === "predict" ? "Your predictions" : phase === "live" ? "Tap when you hear it" : "Official counts";
+    var key = phase + "|" + S.round + "|" + words.join(",");
+    if (phase !== "done" && key === S.rowsKey) { updateTallyDom(); return; }
+    S.rowsKey = key;
+    var ul = $("wordRows");
+    ul.textContent = "";
+    words.forEach(function (w, i) {
+      var li = el("li", "wrow");
+      li.appendChild(el("span", "wname", w));
+      if (phase === "predict") {
+        var inp = el("input");
+        inp.type = "text"; inp.inputMode = "numeric"; inp.maxLength = 2; inp.placeholder = "Your guess";
+        inp.value = S.guesses[i] == null ? "" : String(S.guesses[i]);
+        inp.dataset.gi = String(i);
+        inp.disabled = !S.canWrite;
+        inp.setAttribute("aria-label", "Your guess for " + w);
+        li.appendChild(inp);
+      } else if (phase === "live") {
+        var t = el("span", "tally");
+        var minus = el("button", "btn", "−"); minus.type = "button"; minus.dataset.ti = String(i); minus.dataset.d = "-1"; minus.setAttribute("aria-label", "One less " + w);
+        var cnt = el("span", "count", String(S.tally[i])); cnt.dataset.ci = String(i);
+        var plus = el("button", "btn primary", "+"); plus.type = "button"; plus.dataset.ti = String(i); plus.dataset.d = "1"; plus.setAttribute("aria-label", "Heard " + w);
+        t.appendChild(minus); t.appendChild(cnt); t.appendChild(plus);
+        li.appendChild(t);
+        li.appendChild(el("span", "wsub", "Your guess: " + (S.guesses[i] == null ? "none" : S.guesses[i])));
+      } else {
+        li.appendChild(el("span", "count", off[i] == null ? "–" : String(off[i])));
+        var g = S.guesses[i];
+        li.appendChild(el("span", "wsub", "Your guess: " + (g == null ? "none" : g) + " · your tally: " + S.tally[i] + (off[i] != null && g != null ? " · +" + pointsFor(g, off[i]) + " pts" : "")));
+      }
+      ul.appendChild(li);
+    });
+  }
+  function updateTallyDom() {
+    var cs = $("wordRows").querySelectorAll("[data-ci]");
+    for (var i = 0; i < cs.length; i++) cs[i].textContent = String(S.tally[Number(cs[i].dataset.ci)]);
+  }
+  $("wordRows").addEventListener("input", function (e) {
+    var inp = e.target.closest("[data-gi]");
+    if (!inp || phaseOf() !== "predict") return;
+    var digits = inp.value.replace(/\D/g, "").slice(0, 2);
+    if (digits !== inp.value) inp.value = digits;
+    S.guesses[Number(inp.dataset.gi)] = digits === "" ? null : parseInt(digits, 10);
+    rushQueueSave();
+  });
+  $("wordRows").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-ti]");
+    if (!b || phaseOf() !== "live") return;
+    var i = Number(b.dataset.ti), d = Number(b.dataset.d);
+    S.tally[i] = Math.max(0, Math.min(999, S.tally[i] + d));
+    updateTallyDom();
+    rushQueueSave();
+  });
+
+  function aliasNames(ids) {
+    var used = {}, names = {};
+    ids.slice().sort().forEach(function (id) {
+      var h = xmur3(id + "|" + S.slug);
+      var base = ADJ[h % ADJ.length] + " " + NOUN[(h >>> 8) % NOUN.length];
+      used[base] = (used[base] || 0) + 1;
+      names[id] = used[base] > 1 ? base + " " + used[base] : base;
+    });
+    return names;
+  }
+  function renderRushBoard() {
+    var off = officialCounts();
+    var players = S.picks.filter(function (p) {
+      return p.round === S.round && Array.isArray(p.guesses) && p.guesses.some(function (g) { return typeof g === "number"; });
+    });
+    var names = aliasNames(players.map(function (p) { return p.id; }));
+    players.forEach(function (p) { if (p.name) names[p.id] = String(p.name).slice(0, 20); p.pts = totalPoints(p, off); });
+    players.sort(function (a, b) { return (b.pts - a.pts) || String(names[a.id]).localeCompare(String(names[b.id])); });
+    S.names = names;
+    var n = talliers().length;
+    $("rushNote").textContent = n === 0
+      ? "Nobody tallied anything this lecture, so there are no official counts."
+      : n + " player" + (n === 1 ? "" : "s") + " tallied. Tap a row to see that player's guesses.";
+    var ul = $("rushLb");
+    ul.textContent = "";
+    players.forEach(function (p, i) {
+      var li = el("li", "link" + (i === 0 && p.pts > 0 ? " hit" : ""));
+      li.dataset.id = p.id; li.tabIndex = 0; li.setAttribute("role", "button");
+      li.setAttribute("aria-label", "View " + names[p.id] + "'s guesses");
+      li.appendChild(el("span", "pos", String(i + 1)));
+      li.appendChild(el("span", "who", (p.id === S.me.id ? "You · " : "") + names[p.id]));
+      li.appendChild(el("span", "res", p.pts + " pts"));
+      ul.appendChild(li);
+    });
+    renderRushViewer(off);
+  }
+  function openRushRow(e) {
+    var li = e.target.closest("li[data-id]");
+    if (!li) return;
+    S.rushView = li.dataset.id;
+    renderRushViewer(officialCounts());
+  }
+  $("rushLb").addEventListener("click", openRushRow);
+  $("rushLb").addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openRushRow(e); } });
+  $("rushViewBack").addEventListener("click", function () { S.rushView = null; renderRushViewer(officialCounts()); });
+  function renderRushViewer(off) {
+    var p = S.rushView ? S.picks.filter(function (x) { return x.id === S.rushView && x.round === S.round; })[0] : null;
+    var box = $("rushViewer");
+    if (!p || phaseOf() !== "done") { S.rushView = null; box.hidden = true; $("rushLb").hidden = false; $("rushNote").hidden = false; return; }
+    box.hidden = false; $("rushLb").hidden = true; $("rushNote").hidden = true;
+    $("rushViewTitle").textContent = (S.names[p.id] || "Player") + " · " + p.pts + " pts";
+    var ul = $("rushViewList");
+    ul.textContent = "";
+    (S.cohort.words || []).forEach(function (w, i) {
+      var li = el("li", "wrow");
+      li.appendChild(el("span", "wname", w));
+      var g = p.guesses && typeof p.guesses[i] === "number" ? p.guesses[i] : null;
+      li.appendChild(el("span", "count", off[i] == null ? "–" : String(off[i])));
+      li.appendChild(el("span", "wsub", "Guess: " + (g == null ? "none" : g) + " · tallied: " + ((p.tally && p.tally[i]) || 0) + (g != null && off[i] != null ? " · +" + pointsFor(g, off[i]) + " pts" : "")));
+      ul.appendChild(li);
+    });
+  }
+
+  $("rushNext").addEventListener("click", async function () {
+    if (!guardWrite() || !isRush() || !isHost()) return;
+    var phase = phaseOf();
+    var btn = $("rushNext");
+    if ((phase === "live" || phase === "done") && !btn.dataset.confirm) {
+      btn.dataset.confirm = "1";
+      btn.textContent = "Click again to confirm";
+      clearTimeout(confirmTimer);
+      confirmTimer = setTimeout(function () { delete btn.dataset.confirm; renderRush(); }, 4000);
+      return;
+    }
+    delete btn.dataset.confirm;
+    var ref = S.db.doc("cohorts/" + S.slug);
+    try {
+      if (phase === "pitch") {
+        var top = rankedWords().slice(0, MAX_WORDS).map(function (x) { return x.text; });
+        await ref.update({ words: top, phase: "predict" });
+      } else if (phase === "predict") {
+        await ref.update({ phase: "live", startedAt: Date.now() });
+      } else if (phase === "live") {
+        await ref.update({ phase: "done", endedAt: Date.now() });
+      } else {
+        await ref.update({ round: (S.cohort.round || 1) + 1, phase: "pitch", words: null });
+      }
+    } catch (e) { writeFailed(e); }
+  });
 
   /* ---------- tabs, home actions ---------- */
   function setTab(name) {
@@ -1006,15 +1436,32 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     name = name.trim().replace(/\s+/g, " ").slice(0, 40);
     if (!name) { setStatus("Give your cohort a name first."); return; }
     if (!guardWrite()) return;
+    var game = S.pickGame || "bingo";
     var slug = fixedSlug || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
+    var body = game === "rush"
+      ? { name: name, host: S.me.id, game: "rush", round: 1, phase: "pitch", words: null, createdAt: Date.now() }
+      : { name: name, host: S.me.id, game: "bingo", round: 0, deck: null, grid: 5, free: 1, createdAt: Date.now() };
     try {
-      await S.db.doc("cohorts/" + slug).set({ name: name, host: S.me.id, round: 0, deck: null, grid: 5, free: 1, createdAt: Date.now() });
+      await S.db.doc("cohorts/" + slug).set(body);
       remember(slug, name);
       if (location.hash.replace(/^#/, "") === slug) route(); else location.hash = slug;
     } catch (e) { writeFailed(e); }
   }
-  $("createBtn").addEventListener("click", function () { createCohort($("newName").value, null); });
-  $("newName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); createCohort($("newName").value, null); } });
+  $("createBtn").addEventListener("click", function () {
+    if (!S.pickGame) { setStatus("Pick a game first."); return; }
+    createCohort($("newName").value, null);
+  });
+  $("gamePicker").addEventListener("click", function (e) {
+    var g = e.target.closest("[data-game]");
+    if (!g) return;
+    S.pickGame = g.dataset.game;
+    var btns = document.querySelectorAll(".game");
+    for (var i = 0; i < btns.length; i++) btns[i].setAttribute("aria-pressed", btns[i].dataset.game === S.pickGame ? "true" : "false");
+    $("startTitle").textContent = S.pickGame === "rush" ? "Start a Pi's Point Rush cohort" : "Start an Euler's Bingo cohort";
+    $("startSheet").hidden = false;
+    $("newName").focus();
+  });
+  $("newName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("createBtn").click(); } });
   $("nfCreate").addEventListener("click", function () { createCohort($("nfName").value, S.slug); });
   $("nfBack").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
 
@@ -1039,6 +1486,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.solo = true; S.slug = null; S.cohort = null;
     S.round = 1; S.deck = STARTERS.slice(); S.hydrated = true; S.grid = 5; S.freeN = 1;
     hideAll();
+    $("rush").hidden = true;
     setStatus("");
     $("cohort").hidden = false;
     $("tabs").hidden = true;
