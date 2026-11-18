@@ -133,6 +133,14 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .lb .pos { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
 .lb li.hit .pos { color: var(--win-ink); }
 .lb .who { overflow-wrap: anywhere; font-weight: 500; }
+.prompt.editing { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.prompt.editing input { flex: 1 1 160px; min-width: 0; }
+.chat { list-style: none; margin: 0; padding: 0; max-height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.chat li { display: flex; gap: 8px; align-items: baseline; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); overflow-wrap: anywhere; }
+.chat li.mine { border-color: var(--accent); }
+.chat .cn { font-weight: 600; flex: none; }
+.chat .ct { flex: 1; min-width: 0; }
+.chat .cx { appearance: none; border: 0; background: none; color: var(--muted); cursor: pointer; font: inherit; padding: 0 4px; }
 .games { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 @media (max-width: 480px) { .games { grid-template-columns: minmax(0, 1fr); } }
 .game { appearance: none; font: inherit; text-align: left; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; min-width: 0; }
@@ -374,6 +382,20 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <div class="actions"><button class="btn" id="viewBack" type="button">Back to leaderboard</button></div>
       </div>
     </div>
+
+    <div class="sheet" id="chatSheet" hidden>
+      <button class="btn" id="chatToggle" type="button" aria-expanded="false">Chat</button>
+      <div id="chatBox" class="stack" hidden>
+        <ul class="chat" id="chatList" aria-live="polite"></ul>
+        <div class="row">
+          <label for="chatInput"><span>Message</span>
+            <input type="text" id="chatInput" maxlength="200" placeholder="Say something about class" autocomplete="off">
+          </label>
+          <button class="btn primary" id="chatSend" type="button">Send</button>
+        </div>
+        <p class="note">Keep it about class. The host can remove messages.</p>
+      </div>
+    </div>
   </section>
 
   <section class="rules" aria-label="House rules">
@@ -382,6 +404,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       <li>Free to play. No entry fees, no wagers. Predictions only score points.</li>
       <li>No exams, grades or marks as prompts or words.</li>
       <li>Keep it about lecture habits. Nothing personal about your prof.</li>
+      <li>Hosts can edit or remove prompts, words and chat messages.</li>
       <li>Professors can ask to opt out, and their cohort gets taken down.</li>
     </ul>
   </section>
@@ -464,7 +487,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     prompts: [], votes: [], cards: [], cardsLoaded: false,
     deck: null, round: 0, grid: 5, freeN: 1, squares: [], marked: new Set(), freeIdx: new Set(), hostInit: false,
     hydrated: false, firstBingoAt: null, tab: "card", tabSet: false,
-    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, rushSub: false, rushRound: 0, rushHydrated: false, guesses: [null, null, null], tally: [0, 0, 0], rushView: null, rowsKey: "", pickGame: null
+    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, rushSub: false, rushRound: 0, rushHydrated: false, guesses: [null, null, null], tally: [0, 0, 0], rushView: null, rowsKey: "", pickGame: null, modsRaw: {}, chat: [], chatOpen: false, chatSeen: 0, editing: null, editVal: ""
   };
   var statusTimer = null, writeTimer = null, writing = false, dirty = false, confirmTimer = null;
 
@@ -535,6 +558,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.deck = null; S.round = 0; S.grid = 5; S.freeN = 1; S.squares = []; S.marked = new Set(); S.freeIdx = new Set();
     S.hydrated = false; S.firstBingoAt = null; S.tabSet = false; S.hostInit = false; S.viewing = null; S.names = {};
     S.words = []; S.picks = []; S.picksLoaded = false; S.rushSub = false; S.rushRound = 0; S.rushHydrated = false; S.guesses = [null, null, null]; S.tally = [0, 0, 0]; S.rushView = null; S.rowsKey = "";
+    S.modsRaw = {}; S.chat = []; S.chatOpen = false; S.editing = null; S.editVal = "";
+    $("chatSheet").hidden = true; $("chatBox").hidden = true;
   }
   function route() {
     leaveCohort();
@@ -574,8 +599,20 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       S.votes = snap.docs.map(function (d) { return d.data(); });
       if (isRush()) renderRush(); else renderVote();
     }, dbError));
+    S.chatSeen = Date.now();
+    S.unsubs.push(db.collection(base + "/mod").onSnapshot(function (snap) {
+      S.modsRaw = {};
+      snap.docs.forEach(function (d) { S.modsRaw[d.id] = Object.assign({ owner: d.owner }, d.data()); });
+      rerender();
+      renderChat();
+    }, dbError));
+    S.unsubs.push(db.collection(base + "/chat").onSnapshot(function (snap) {
+      S.chat = snap.docs.map(function (d) { return Object.assign({ id: d.id, owner: d.owner }, d.data()); });
+      renderChat();
+    }, dbError));
     S.unsubs.push(db.collection(base + "/cards").onSnapshot(function (snap) {
-      S.cards = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      S.cards = snap.docs.map(function (d) { return Object.assign({ id: d.id, owner: d.owner }, d.data()); })
+        .filter(function (c) { return c.owner === undefined || c.owner === c.id; });
       S.cardsLoaded = true;
       hydrate();
       renderBoard();
@@ -603,6 +640,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("cohortName").textContent = S.cohort.name || S.slug;
     $("cohortCode").textContent = S.slug;
     remember(S.slug, S.cohort.name);
+    $("chatSheet").hidden = false;
+    renderChat();
     if (S.cohort.game === "rush") { onRush(); return; }
     $("rush").hidden = true;
     var round = S.cohort.round || 0;
@@ -644,6 +683,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.votes.forEach(function (v) { counts[v.p] = (counts[v.p] || 0) + 1; });
     var items = STARTERS.map(function (t, i) { return { id: "s" + i, text: t, starter: true, by: null }; })
       .concat(S.prompts.map(function (p) { return { id: p.id, text: String(p.text || ""), starter: false, by: p.by }; }));
+    items = applyMods(items);
     items.forEach(function (x) { x.v = counts[x.id] || 0; });
     items.sort(function (a, b) {
       return (b.v - a.v) || ((a.starter ? 1 : 0) - (b.starter ? 1 : 0)) || a.text.localeCompare(b.text);
@@ -668,6 +708,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var limit = S.deck ? S.deck.length : (parseInt($("deckSize").value, 10) || DECK_SIZE);
     items.forEach(function (it, idx) {
       if (idx === limit) list.appendChild(el("li", "cut", "Below the line: not in the deck"));
+      if (S.editing === it.id && isHost()) { list.appendChild(editRow(it)); return; }
       var li = el("li", "prompt");
       var vb = el("button", "vote" + (mine.has(it.id) ? " on" : ""), "▲ " + it.v);
       vb.type = "button";
@@ -677,7 +718,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       li.appendChild(vb);
       li.appendChild(el("span", "ptext", it.text));
       li.appendChild(el("span", "tag", it.starter ? "Starter" : "Class"));
-      if (!it.starter && S.me.id && (it.by === S.me.id || S.isAdmin)) {
+      if (isHost()) { var eb = el("button", "rm", "✎"); eb.type = "button"; eb.dataset.edit = it.id; eb.setAttribute("aria-label", "Edit " + it.text); li.appendChild(eb); }
+      if (S.me.id && ((!it.starter && it.by === S.me.id) || isHost())) {
         var rm = el("button", "rm", "×");
         rm.type = "button";
         rm.dataset.rm = it.id;
@@ -707,6 +749,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       : "Deck not locked yet." + (host ? "" : " The host (whoever started this cohort) locks it once voting is done.");
     var canPlay = S.canWrite;
     $("pitchBtn").disabled = !canPlay; $("pitchInput").disabled = !canPlay;
+    keepEditFocus();
   }
 
   $("promptList").addEventListener("click", function (e) {
@@ -726,7 +769,11 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
   async function removePrompt(id) {
     if (!guardWrite() || !S.slug) return;
-    try { await S.db.doc("cohorts/" + S.slug + "/prompts/" + id).delete(); } catch (e) { writeFailed(e); }
+    var own = S.prompts.some(function (p) { return p.id === id && p.by === S.me.id; });
+    try {
+      if (own) await S.db.doc("cohorts/" + S.slug + "/prompts/" + id).delete();
+      else if (isHost()) await setMod(id, { hide: true });
+    } catch (e) { writeFailed(e); }
   }
   async function pitch() {
     if (!guardWrite() || !S.slug) return;
@@ -1052,6 +1099,157 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   $("userName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); saveName(); } });
   renderUserBar();
 
+  /* ---------- host moderation: edit and remove ---------- */
+  function modPath(id) { return "cohorts/" + S.slug + "/mod/" + id; }
+  function modOf(id) {
+    var m = S.modsRaw[id];
+    if (!m) return null;
+    if (m.owner !== undefined && (!S.cohort || m.owner !== S.cohort.host)) return null;
+    return m;
+  }
+  function applyMods(items) {
+    return items.filter(function (x) { var m = modOf(x.id); return !(m && m.hide); })
+      .map(function (x) { var m = modOf(x.id); if (m && typeof m.text === "string" && m.text) x.text = m.text; return x; });
+  }
+  async function setMod(id, fields) {
+    var cur = modOf(id) || {};
+    await S.db.doc(modPath(id)).set(Object.assign({ hide: false, text: cur.text || null }, fields, { by: S.me.id }));
+  }
+  function rerender() {
+    if (!S.cohort) return;
+    if (isRush()) renderRush(); else renderVote();
+  }
+  function editRow(it) {
+    var li = el("li", "prompt editing");
+    var inp = el("input");
+    inp.type = "text";
+    inp.maxLength = isRush() ? 20 : 34;
+    inp.value = S.editVal;
+    inp.dataset.einput = "1";
+    inp.setAttribute("aria-label", "Edit text");
+    var save = el("button", "btn primary", "Save"); save.type = "button"; save.dataset.esave = "1";
+    var cancel = el("button", "btn", "Cancel"); cancel.type = "button"; cancel.dataset.ecancel = "1";
+    li.appendChild(inp); li.appendChild(save); li.appendChild(cancel);
+    return li;
+  }
+  function keepEditFocus() {
+    if (!S.editing) return;
+    var inp = document.querySelector("[data-einput]");
+    if (inp && document.activeElement !== inp) {
+      inp.focus();
+      try { inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {}
+    }
+  }
+  async function saveEdit() {
+    if (!S.editing || !isHost() || !guardWrite()) return;
+    var id = S.editing;
+    var v = S.editVal.trim().replace(/\s+/g, " ");
+    if (isRush()) {
+      if (!WORD_RE.test(v)) { setStatus("One word only, letters only (2 to 20 characters)."); return; }
+    } else if (v.length < 4) { setStatus("Write a few more words so people know what to look for."); return; }
+    if (BLOCK.test(v)) { setStatus("Keep it off exams, grades and money."); return; }
+    var lower = v.toLowerCase();
+    var items = isRush() ? rankedWords() : ranked();
+    if (items.some(function (x) { return x.id !== id && x.text.toLowerCase() === lower; })) { setStatus("That one is already on the list."); return; }
+    try {
+      await setMod(id, { hide: false, text: v });
+      S.editing = null;
+      rerender();
+    } catch (e) { writeFailed(e); }
+  }
+  ["promptList", "wordList"].forEach(function (lid) {
+    var ul = $(lid);
+    ul.addEventListener("click", function (e) {
+      var eb = e.target.closest("[data-edit]");
+      if (eb && isHost()) {
+        var id = eb.dataset.edit;
+        var it = (isRush() ? rankedWords() : ranked()).filter(function (x) { return x.id === id; })[0];
+        S.editing = id; S.editVal = it ? it.text : "";
+        rerender();
+        return;
+      }
+      if (e.target.closest("[data-esave]")) saveEdit();
+      else if (e.target.closest("[data-ecancel]")) { S.editing = null; rerender(); }
+    });
+    ul.addEventListener("input", function (e) {
+      if (e.target.closest("[data-einput]")) S.editVal = e.target.value;
+    });
+    ul.addEventListener("keydown", function (e) {
+      if (!e.target.closest("[data-einput]")) return;
+      if (e.key === "Enter") { e.preventDefault(); saveEdit(); }
+      else if (e.key === "Escape") { S.editing = null; rerender(); }
+    });
+  });
+
+  /* ---------- live chat ---------- */
+  var lastSend = 0;
+  function visibleChat() {
+    return S.chat.filter(function (m) {
+      if (typeof m.t !== "string" || !m.by) return false;
+      if (m.owner !== undefined && m.owner !== m.by) return false;
+      var mod = modOf("m-" + m.id);
+      return !(mod && mod.hide);
+    }).sort(function (a, b) { return (a.at || 0) - (b.at || 0); }).slice(-100);
+  }
+  function renderChat() {
+    if (!S.cohort) return;
+    var msgs = visibleChat();
+    var btn = $("chatToggle");
+    var unread = msgs.filter(function (m) { return (m.at || 0) > S.chatSeen && m.by !== S.me.id; }).length;
+    if (S.chatOpen && msgs.length) S.chatSeen = Math.max(S.chatSeen, msgs[msgs.length - 1].at || 0);
+    btn.textContent = S.chatOpen ? "Hide chat" : "Chat" + (unread ? " · " + unread + " new" : "");
+    btn.setAttribute("aria-expanded", S.chatOpen ? "true" : "false");
+    $("chatBox").hidden = !S.chatOpen;
+    if (!S.chatOpen) return;
+    var ul = $("chatList");
+    var atBottom = ul.scrollHeight - ul.scrollTop - ul.clientHeight < 40;
+    var names = aliasNames(msgs.map(function (m) { return m.by; }));
+    ul.textContent = "";
+    if (!msgs.length) ul.appendChild(el("li", "", "No messages yet. Say hi."));
+    msgs.forEach(function (m) {
+      var li = el("li", m.by === S.me.id ? "mine" : "");
+      li.appendChild(el("span", "cn", (m.name ? String(m.name).slice(0, 20) : names[m.by]) + ":"));
+      li.appendChild(el("span", "ct", String(m.t).slice(0, 200)));
+      if (m.by === S.me.id || isHost()) {
+        var x = el("button", "cx", "×");
+        x.type = "button"; x.dataset.cdel = m.id; x.setAttribute("aria-label", "Remove message");
+        li.appendChild(x);
+      }
+      ul.appendChild(li);
+    });
+    if (atBottom) ul.scrollTop = ul.scrollHeight;
+    $("chatInput").disabled = !S.canWrite; $("chatSend").disabled = !S.canWrite;
+  }
+  $("chatToggle").addEventListener("click", function () {
+    S.chatOpen = !S.chatOpen;
+    renderChat();
+    if (S.chatOpen) { var ul = $("chatList"); ul.scrollTop = ul.scrollHeight; }
+  });
+  async function sendChat() {
+    if (!guardWrite() || !S.slug) return;
+    var input = $("chatInput");
+    var v = input.value.trim().replace(/\s+/g, " ");
+    if (!v) return;
+    if (Date.now() - lastSend < 1500) { setStatus("Slow down a little."); return; }
+    lastSend = Date.now();
+    try {
+      await S.db.collection("cohorts/" + S.slug + "/chat").add({ t: v.slice(0, 200), by: S.me.id, name: S.name || "", at: Date.now() });
+      input.value = "";
+    } catch (e) { writeFailed(e); }
+  }
+  $("chatSend").addEventListener("click", sendChat);
+  $("chatInput").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); sendChat(); } });
+  $("chatList").addEventListener("click", async function (e) {
+    var x = e.target.closest("[data-cdel]");
+    if (!x || !guardWrite() || !S.slug) return;
+    var id = x.dataset.cdel;
+    var m = S.chat.filter(function (c) { return c.id === id; })[0];
+    try {
+      if (m && m.by === S.me.id) await S.db.doc("cohorts/" + S.slug + "/chat/" + id).delete();
+      else if (isHost()) await setMod("m-" + id, { hide: true });
+    } catch (err) { writeFailed(err); }
+  });
+
   /* ---------- Pi's Point Rush ---------- */
   var WORDS = ["basically", "obviously", "actually", "literally", "essentially", "clearly", "right", "okay", "simply", "just", "so", "um"];
   var WORD_RE = /^[\p{L}][\p{L}'’-]{1,19}$/u;
@@ -1088,7 +1286,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       renderRush();
     }, dbError));
     S.unsubs.push(S.db.collection(base + "/picks").onSnapshot(function (snap) {
-      S.picks = snap.docs.map(function (d) { return Object.assign({ id: d.id }, d.data()); });
+      S.picks = snap.docs.map(function (d) { return Object.assign({ id: d.id, owner: d.owner }, d.data()); })
+        .filter(function (c) { return c.owner === undefined || c.owner === c.id; });
       S.picksLoaded = true;
       rushHydrate();
       renderRush();
@@ -1132,6 +1331,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.votes.forEach(function (v) { counts[v.p] = (counts[v.p] || 0) + 1; });
     var items = WORDS.map(function (t, i) { return { id: "w" + i + "-" + S.round, text: t, starter: true, by: null }; })
       .concat(S.words.filter(function (w) { return w.r === S.round; }).map(function (w) { return { id: w.id, text: String(w.text || ""), starter: false, by: w.by }; }));
+    items = applyMods(items);
     items.forEach(function (x) { x.v = counts[x.id] || 0; });
     items.sort(function (a, b) {
       return (b.v - a.v) || ((a.starter ? 1 : 0) - (b.starter ? 1 : 0)) || a.text.localeCompare(b.text);
@@ -1215,6 +1415,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     list.textContent = "";
     items.forEach(function (it, idx) {
       if (idx === MAX_WORDS) list.appendChild(el("li", "cut", "Below the line: not in this lecture"));
+      if (S.editing === it.id && isHost()) { list.appendChild(editRow(it)); return; }
       var li = el("li", "prompt");
       var vb = el("button", "vote" + (mine.has(it.id) ? " on" : ""), "▲ " + it.v);
       vb.type = "button";
@@ -1224,7 +1425,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       li.appendChild(vb);
       li.appendChild(el("span", "ptext", it.text));
       li.appendChild(el("span", "tag", it.starter ? "Starter" : "Class"));
-      if (!it.starter && S.me.id && it.by === S.me.id) {
+      if (isHost()) { var eb = el("button", "rm", "✎"); eb.type = "button"; eb.dataset.edit = it.id; eb.setAttribute("aria-label", "Edit " + it.text); li.appendChild(eb); }
+      if (S.me.id && ((!it.starter && it.by === S.me.id) || isHost())) {
         var rm = el("button", "rm", "×");
         rm.type = "button";
         rm.dataset.rm = it.id;
@@ -1235,6 +1437,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     });
     var used = S.words.filter(function (w) { return w.r === S.round && w.by === S.me.id; }).length;
     $("wordCount").textContent = used + " of " + MAX_WORDS + " words pitched. Single words only.";
+    keepEditFocus();
   }
   $("wordList").addEventListener("click", function (e) {
     var vb = e.target.closest("[data-pid]");
@@ -1244,7 +1447,11 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   });
   async function removeWord(id) {
     if (!guardWrite() || !S.slug) return;
-    try { await S.db.doc("cohorts/" + S.slug + "/words/" + id).delete(); } catch (e) { writeFailed(e); }
+    var own = S.words.some(function (w) { return w.id === id && w.by === S.me.id; });
+    try {
+      if (own) await S.db.doc("cohorts/" + S.slug + "/words/" + id).delete();
+      else if (isHost()) await setMod(id, { hide: true });
+    } catch (e) { writeFailed(e); }
   }
   async function pitchWord() {
     if (!guardWrite() || !S.slug || !isRush() || phaseOf() !== "pitch") return;
@@ -1487,6 +1694,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.round = 1; S.deck = STARTERS.slice(); S.hydrated = true; S.grid = 5; S.freeN = 1;
     hideAll();
     $("rush").hidden = true;
+    $("chatSheet").hidden = true;
     setStatus("");
     $("cohort").hidden = false;
     $("tabs").hidden = true;
@@ -1524,11 +1732,11 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         if (dead) return;
         if (kind === "doc") {
           var row = rows.get(key);
-          next({ id: idOf(key), exists: !!row, data: function () { return row ? row.data : undefined; } });
+          next({ id: idOf(key), exists: !!row, owner: row ? row.owner : undefined, data: function () { return row ? row.data : undefined; } });
         } else {
           var docs = Array.from(rows.values())
             .sort(function (a, b) { return a.path < b.path ? -1 : 1; })
-            .map(function (r) { return { id: idOf(r.path), exists: true, data: function () { return r.data; } }; });
+            .map(function (r) { return { id: idOf(r.path), exists: true, owner: r.owner, data: function () { return r.data; } }; });
           next({ docs: docs, size: docs.length, empty: docs.length === 0 });
         }
       }
@@ -1539,7 +1747,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         emit();
       }
       function load() {
-        var q = sb.from("docs").select("path,data");
+        var q = sb.from("docs").select("path,data,owner");
         q = kind === "doc" ? q.eq("path", key) : q.eq("parent", key);
         q.then(function (r) {
           if (dead) return;
