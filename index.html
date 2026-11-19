@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Epsilon</title>
-<meta name="description" content="Epsilon: free class games for paying attention in lecture. Euler's Bingo and Pi's Point Rush.">
+<title>Prof Says</title>
+<meta name="description" content="Prof Says: free class games for lecture. Euler's Bingo and Pi's Point Rush.">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root { color-scheme: light; }
@@ -23,6 +23,10 @@ img { max-width: 100%; }
   --accent-ink: #FFFFFF;
   --win: #FFD23F;
   --win-ink: #3A2A00;
+  --ok-bg: #E3F4E8;
+  --ok-ink: #14532D;
+  --ok-line: #8CCB9F;
+  --danger: #B3261E;
   --font-display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -38,6 +42,10 @@ img { max-width: 100%; }
     --accent-ink: #0C1226;
     --win: #FFD23F;
     --win-ink: #2A2000;
+    --ok-bg: #12301F;
+    --ok-ink: #A7E6BD;
+    --ok-line: #2F6B47;
+    --danger: #FF8A80;
     color-scheme: dark;
   }
 }
@@ -51,6 +59,10 @@ img { max-width: 100%; }
   --accent-ink: #0C1226;
   --win: #FFD23F;
   --win-ink: #2A2000;
+  --ok-bg: #12301F;
+  --ok-ink: #A7E6BD;
+  --ok-line: #2F6B47;
+  --danger: #FF8A80;
   color-scheme: dark;
 }
 
@@ -97,7 +109,7 @@ button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-.cohort-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.cohort-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
 .cohort-head > div { min-width: 0; }
 .codebox { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .code { font-family: var(--font-mono); font-size: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; user-select: all; overflow-wrap: anywhere; }
@@ -157,11 +169,12 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .chatsend input { flex: 1; min-width: 0; }
 .chatnote { margin: 0; font-size: 12px; }
 .wrap { padding-bottom: 96px; }
-.games { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-@media (max-width: 480px) { .games { grid-template-columns: minmax(0, 1fr); } }
+.games { display: flex; flex-direction: column; gap: 10px; }
 .game { appearance: none; font: inherit; text-align: left; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; min-width: 0; }
 .game:hover { border-color: var(--accent); }
 .game[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.game.big { min-height: 104px; justify-content: center; }
+.game.small { min-height: 60px; padding: 10px 14px; justify-content: center; gap: 2px; }
 .game .gname { font-family: var(--font-display, inherit); font-weight: 800; font-size: 18px; }
 .game .gdesc { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
 .wrows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
@@ -185,8 +198,30 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .recent li { display: flex; gap: 8px; align-items: center; }
 .recent button { flex: 1; text-align: left; }
 
-.rules { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
-.rules ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 13.5px; }
+.foot { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: 12.5px; }
+.foot p { margin: 0; }
+.foot strong { color: var(--ink); font-family: var(--font-display); }
+h1 a { color: inherit; text-decoration: none; cursor: pointer; }
+h1 a:hover { color: var(--accent); }
+h1 a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+button.btn.danger { color: var(--danger); }
+button.btn.danger:hover:not(:disabled) { border-color: var(--danger); }
+.userbadge { align-self: flex-start; max-width: 100%; padding: 7px 12px; border-radius: 10px; background: var(--ok-bg); color: var(--ok-ink); border: 1px solid var(--ok-line); font-size: 13px; }
+.userbadge .ubrow { display: flex; align-items: center; gap: 8px; }
+.userbadge .ubcheck { display: grid; place-items: center; flex: none; width: 18px; height: 18px; border-radius: 50%; background: var(--ok-ink); color: var(--ok-bg); font-size: 11px; font-weight: 700; }
+.userbadge .linkbtn { appearance: none; border: 0; background: none; color: inherit; text-decoration: underline; font: inherit; font-size: 12px; cursor: pointer; opacity: 0.85; padding: 0 0 0 6px; }
+.userbadge .ubedit { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.userbadge .ubedit input { flex: 1 1 140px; min-width: 0; }
+.userbadge.saved { animation: badgepop 0.5s ease-out; }
+@keyframes badgepop { 0% { transform: scale(0.9); opacity: 0.4; } 60% { transform: scale(1.04); } 100% { transform: none; opacity: 1; } }
+.chat li.enter { animation: msgin 0.28s ease-out; }
+@keyframes msgin { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
+.chat li.leaving { animation: msgout 0.22s ease-in forwards; }
+@keyframes msgout { to { opacity: 0; transform: translateX(24px); } }
+.chattoast { align-self: center; padding: 3px 12px; border-radius: 999px; background: var(--ok-bg); color: var(--ok-ink); border: 1px solid var(--ok-line); font-size: 12px; font-weight: 600; animation: toastin 1.7s ease forwards; }
+@keyframes toastin { 0% { opacity: 0; transform: translateY(6px); } 12% { opacity: 1; transform: none; } 80% { opacity: 1; } 100% { opacity: 0; } }
+button.btn.sent { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); }
+@media (prefers-reduced-motion: reduce) { .chat li.enter, .chat li.leaving, .chattoast, .userbadge.saved { animation: none; } }
 
 </style>
 </head>
@@ -197,40 +232,27 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.100.0"></script>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Class games · free to play</div>
-    <h1>Epsilon</h1>
-    <p class="lede">Games for paying attention in lecture. Pick a game, start a cohort for your class, and play along. No money involved.</p>
+    <h1><a href="#" id="logo" aria-label="Prof Says, all cohorts">Prof Says</a></h1>
   </header>
 
   <p class="status" id="status" role="status" hidden></p>
 
-  <div class="sheet" id="userBar">
+  <div class="sheet" id="userBar" hidden>
     <div class="row">
-      <label for="userName"><span>Your username</span>
-        <input type="text" id="userName" maxlength="20" placeholder="Pick a name" autocomplete="off">
+      <label for="userName"><span>Choose a username</span>
+        <input type="text" id="userName" maxlength="20" placeholder="Your name" autocomplete="off">
       </label>
-      <button class="btn" id="userSave" type="button">Save</button>
+      <button class="btn primary" id="userSave" type="button">Save</button>
     </div>
-    <p class="note" id="userNote"></p>
   </div>
 
   <section id="home" class="stack" hidden>
     <div class="sheet" id="gamePicker">
       <h2>Pick a game</h2>
       <div class="games">
-        <button class="game" type="button" data-game="bingo" aria-pressed="false"><span class="gname">Euler's Bingo</span><span class="gdesc">Pitch lecture habits, vote on the best, then get your own shuffled bingo card.</span></button>
-        <button class="game" type="button" data-game="rush" aria-pressed="false"><span class="gname">Pi's Point Rush</span><span class="gdesc">Vote on 3 words, predict how often your prof says them, then tally it live.</span></button>
+        <button class="game big" type="button" data-game="bingo"><span class="gname">Euler's Bingo</span><span class="gdesc">Pitch lecture habits, vote on the best, then get your own shuffled bingo card.</span></button>
+        <button class="game small" type="button" data-game="rush"><span class="gname">Pi's Point Rush</span><span class="gdesc">Predict how often your prof says 3 words.</span></button>
       </div>
-    </div>
-    <div class="sheet" id="startSheet" hidden>
-      <h2 id="startTitle">Start a cohort</h2>
-      <div class="row">
-        <label for="newName"><span>Cohort name</span>
-          <input type="text" id="newName" maxlength="40" placeholder="e.g. ECE 105 · 2029 ECE" autocomplete="off">
-        </label>
-        <button class="btn primary" id="createBtn" type="button">Create</button>
-      </div>
-      <p class="note">One cohort per class and game. You become the host and run it. Share the code and everyone joins.</p>
     </div>
     <div class="sheet">
       <h2>Join with a code</h2>
@@ -245,17 +267,43 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       <h2>Your cohorts</h2>
       <ul class="recent" id="recent"></ul>
     </div>
+    <div class="userbadge" id="userBadge" hidden>
+      <div class="ubrow" id="ubView">
+        <span class="ubcheck" aria-hidden="true">✓</span>
+        <span>Signed in as <strong id="ubName"></strong></span>
+        <button class="linkbtn" id="ubChange" type="button">Change</button>
+      </div>
+      <div class="ubedit" id="ubEdit" hidden>
+        <input type="text" id="ubInput" maxlength="20" autocomplete="off" aria-label="Username">
+        <button class="btn primary" id="ubSave" type="button">Save</button>
+        <button class="btn" id="ubCancel" type="button">Cancel</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="startPage" class="stack" hidden>
+    <div class="cohort-head">
+      <div>
+        <div class="eyebrow" id="startGame">Euler's Bingo</div>
+        <h2 id="startTitle">Name your cohort</h2>
+      </div>
+      <button class="btn" id="startBack" type="button">← Back</button>
+    </div>
     <div class="sheet">
-      <h2>Just want to try it?</h2>
-      <p class="note">A solo card uses the starter deck and keeps nothing.</p>
-      <div class="actions"><button class="btn" id="soloBtn" type="button">Play a solo card</button></div>
+      <div class="row">
+        <label for="newName"><span>Cohort name</span>
+          <input type="text" id="newName" maxlength="40" placeholder="e.g. ECE 105 · 2029 ECE" autocomplete="off">
+        </label>
+        <button class="btn primary" id="createBtn" type="button">Create</button>
+      </div>
+      <p class="note">One cohort per class. You become the host and run the game. Share the code or link and everyone joins.</p>
     </div>
   </section>
 
   <section id="notFound" class="sheet" hidden>
-    <h2>No cohort with this code yet</h2>
+    <h2 id="nfTitle">No cohort with this code yet</h2>
     <p class="note" id="nfCode"></p>
-    <div class="row">
+    <div class="row" id="nfForm">
       <label for="nfName"><span>Start it as</span>
         <input type="text" id="nfName" maxlength="40" placeholder="Cohort name" autocomplete="off">
       </label>
@@ -270,13 +318,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <div class="eyebrow" id="cohortEyebrow">Cohort</div>
         <h2 id="cohortName"></h2>
       </div>
-      <div class="codebox" id="codeBox">
-        <span class="code" id="cohortCode"></span>
-        <button class="btn" id="copyCode" type="button">Copy code</button>
-        <button class="btn" id="leaveBtn" type="button">All cohorts</button>
-      </div>
+      <button class="btn" id="leaveBtn" type="button">← Back</button>
     </div>
-    <div class="actions" id="soloBar" hidden><button class="btn" id="soloBack" type="button">Back</button></div>
+    <div class="codebox" id="codeBox">
+      <span class="code" id="cohortCode"></span>
+      <button class="btn" id="copyCode" type="button">Copy code</button>
+      <button class="btn" id="copyLink" type="button">Copy link</button>
+      <button class="btn danger" id="deleteBtn" type="button" hidden>Delete cohort</button>
+    </div>
 
     <div id="rush" class="stack" hidden>
       <div class="sheet">
@@ -337,11 +386,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <div class="banner" id="banner" role="status" hidden></div>
         <div class="board" id="board" role="group" aria-label="Bingo squares"></div>
         <div class="actions">
-          <button class="btn primary" id="shareBtn" type="button">Share my card</button>
           <button class="btn" id="clearBtn" type="button">Clear marks</button>
         </div>
-        <textarea id="shareBox" rows="7" readonly hidden aria-label="Text to copy"></textarea>
-        <p class="note" id="shareNote" role="status" hidden></p>
       </div>
     </div>
 
@@ -405,12 +451,12 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
           <div><div class="eyebrow">Class chat</div><div class="chatname" id="chatName"></div></div>
           <button class="cx" id="chatClose" type="button" aria-label="Close chat">✕</button>
         </div>
-        <ul class="chat" id="chatList" aria-live="polite"></ul>
+        <ul class="chat" id="chatList" aria-live="polite"><li id="chatEmpty" hidden>No messages yet. Say hi.</li></ul>
+        <div class="chattoast" id="chatToast" role="status" hidden></div>
         <div class="chatsend">
           <input type="text" id="chatInput" maxlength="200" placeholder="Message your class" autocomplete="off" aria-label="Message">
           <button class="btn primary" id="chatSend" type="button">Send</button>
         </div>
-        <p class="note chatnote">Keep it about class. The host can remove messages.</p>
       </div>
       <button class="chatfab" id="chatToggle" type="button" aria-expanded="false" aria-label="Open chat">
         <svg id="chatIc" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
@@ -420,16 +466,11 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     </div>
   </section>
 
-  <section class="rules" aria-label="House rules">
-    <div class="eyebrow">House rules</div>
-    <ul>
-      <li>Free to play. No entry fees, no wagers. Predictions only score points.</li>
-      <li>No exams, grades or marks as prompts or words.</li>
-      <li>Keep it about lecture habits. Nothing personal about your prof.</li>
-      <li>Hosts can edit or remove prompts, words and chat messages.</li>
-      <li>Professors can ask to opt out, and their cohort gets taken down.</li>
-    </ul>
-  </section>
+  <footer class="foot">
+    <div><strong>Prof Says</strong> · Free class games</div>
+    <p>© 2026 Prof Says. Not affiliated with or endorsed by any university or instructor.</p>
+    <p>Free to play. No purchase, wagers or prizes. Instructors may ask for their class to be removed at any time.</p>
+  </footer>
 </div>
 
 <script>
@@ -509,7 +550,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     prompts: [], votes: [], cards: [], cardsLoaded: false,
     deck: null, round: 0, grid: 5, freeN: 1, squares: [], marked: new Set(), freeIdx: new Set(), hostInit: false,
     hydrated: false, firstBingoAt: null, tab: "card", tabSet: false,
-    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, rushSub: false, rushRound: 0, rushHydrated: false, guesses: [null, null, null], tally: [0, 0, 0], rushView: null, rowsKey: "", pickGame: null, modsRaw: {}, lastUnread: 0, chat: [], chatOpen: false, chatSeen: 0, editing: null, editVal: ""
+    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, rushSub: false, rushRound: 0, rushHydrated: false, guesses: [null, null, null], tally: [0, 0, 0], rushView: null, rowsKey: "", pickGame: null, modsRaw: {}, lastUnread: 0, editingName: false, chatIds: new Set(), chatNodes: new Map(), chatPrimed: false, chat: [], chatOpen: false, chatSeen: 0, editing: null, editVal: ""
   };
   var statusTimer = null, writeTimer = null, writing = false, dirty = false, confirmTimer = null;
 
@@ -543,9 +584,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       return Array.isArray(arr) ? arr.filter(function (x) { return x && typeof x.slug === "string"; }).slice(0, 8) : [];
     } catch (e) { return []; }
   }
-  function remember(slug, name) {
+  function forget(slug) {
     var list = recents().filter(function (x) { return x.slug !== slug; });
-    list.unshift({ slug: slug, name: name || slug });
+    try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {}
+  }
+  function remember(slug, name, host) {
+    var prev = recents().filter(function (x) { return x.slug === slug; })[0];
+    var list = recents().filter(function (x) { return x.slug !== slug; });
+    list.unshift({ slug: slug, name: name || slug, host: host === true || (host === undefined && !!(prev && prev.host)) });
     try { localStorage.setItem(KEY, JSON.stringify(list.slice(0, 8))); } catch (e) {}
   }
   function renderRecent() {
@@ -559,6 +605,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       b.type = "button";
       b.addEventListener("click", function () { location.hash = x.slug; });
       li.appendChild(b);
+      if (x.host) {
+        var d = el("button", "btn danger", "Delete");
+        d.type = "button";
+        d.setAttribute("aria-label", "Delete " + x.name);
+        d.addEventListener("click", function () { deleteCohort(x.slug, d, null); });
+        li.appendChild(d);
+      }
       ul.appendChild(li);
     });
   }
@@ -568,8 +621,30 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var h = (location.hash || "").replace(/^#/, "").toLowerCase();
     return /^[a-z0-9-]{3,40}$/.test(h) ? h : null;
   }
+  var delTimer = null;
+  async function deleteCohort(slug, btn, after) {
+    if (!guardWrite()) return;
+    if (!btn.dataset.confirm) {
+      btn.dataset.confirm = "1";
+      btn.dataset.label = btn.textContent;
+      btn.textContent = "Click again to delete";
+      clearTimeout(delTimer);
+      delTimer = setTimeout(function () { delete btn.dataset.confirm; btn.textContent = btn.dataset.label; }, 4000);
+      return;
+    }
+    delete btn.dataset.confirm;
+    clearTimeout(delTimer);
+    try {
+      await S.db.doc("cohorts/" + slug).update({ deleted: true, deletedAt: Date.now() });
+    } catch (e) {
+      if (!(e && e.message === "missing")) { writeFailed(e); return; }
+    }
+    forget(slug);
+    setStatus("Cohort deleted.");
+    if (after) after(); else renderRecent();
+  }
   function hideAll() {
-    ["home", "notFound", "cohort"].forEach(function (id) { $(id).hidden = true; });
+    ["home", "startPage", "notFound", "cohort"].forEach(function (id) { $(id).hidden = true; });
   }
   function leaveCohort() {
     if (dirty && S.slug && S.db && S.canWrite && !S.solo) { clearTimeout(writeTimer); flush(); }
@@ -580,7 +655,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.deck = null; S.round = 0; S.grid = 5; S.freeN = 1; S.squares = []; S.marked = new Set(); S.freeIdx = new Set();
     S.hydrated = false; S.firstBingoAt = null; S.tabSet = false; S.hostInit = false; S.viewing = null; S.names = {};
     S.words = []; S.picks = []; S.picksLoaded = false; S.rushSub = false; S.rushRound = 0; S.rushHydrated = false; S.guesses = [null, null, null]; S.tally = [0, 0, 0]; S.rushView = null; S.rowsKey = "";
-    S.modsRaw = {}; S.lastUnread = 0; S.chat = []; S.chatOpen = false; S.editing = null; S.editVal = "";
+    S.modsRaw = {}; S.chatIds = new Set(); S.chatNodes.forEach(function (n) { n.remove(); }); S.chatNodes = new Map(); S.chatPrimed = false; S.lastUnread = 0; S.chat = []; S.chatOpen = false; S.editing = null; S.editVal = "";
     $("chatSheet").hidden = true; $("chatBox").hidden = true;
   }
   function route() {
@@ -602,7 +677,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var ok = S.ready && !!S.db;
     $("createBtn").disabled = !ok; $("joinBtn").disabled = !ok;
     if (!S.ready) setStatus("Connecting to the class database…", true);
-    else if (!S.db) setStatus("Cohorts need the Claude viewer with a signed-in account. You can still play a solo card.", true);
+    else if (!S.db) setStatus("Cohorts need the Claude viewer with a signed-in account.", true);
     else if (!S.canWrite) setStatus("You can browse cohorts, but starting or playing one needs Contributor access.", true);
   }
 
@@ -642,12 +717,23 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
 
   function onCohort(snap) {
-    if (!snap.exists) {
+    var gone = snap.exists && !!(snap.data() && snap.data().deleted);
+    if (!snap.exists || gone) {
       S.cohort = null;
       hideAll();
+      $("chatSheet").hidden = true;
       $("notFound").hidden = false;
-      $("nfCode").textContent = "Code: " + S.slug + ". If you got this code from a classmate, check the spelling. Otherwise you can start it.";
-      $("nfName").value = $("nfName").value || S.slug.replace(/-/g, " ");
+      if (gone) {
+        forget(S.slug);
+        $("nfTitle").textContent = "This cohort was deleted";
+        $("nfCode").textContent = "Its host deleted it, so it is no longer available.";
+        $("nfForm").hidden = true;
+      } else {
+        $("nfTitle").textContent = "No cohort with this code yet";
+        $("nfForm").hidden = false;
+        $("nfCode").textContent = "Code: " + S.slug + ". If you got this code from a classmate, check the spelling. Otherwise you can start it.";
+        $("nfName").value = $("nfName").value || S.slug.replace(/-/g, " ");
+      }
       return;
     }
     setStatus("");
@@ -655,13 +741,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("notFound").hidden = true;
     $("home").hidden = true;
     $("cohort").hidden = false;
-    $("soloBar").hidden = true;
     $("tabs").hidden = false;
     $("codeBox").hidden = false;
     $("cohortEyebrow").textContent = "Cohort";
     $("cohortName").textContent = S.cohort.name || S.slug;
     $("cohortCode").textContent = S.slug;
-    remember(S.slug, S.cohort.name);
+    remember(S.slug, S.cohort.name, S.cohort.host === S.me.id);
+    $("deleteBtn").hidden = !isHost();
     $("chatSheet").hidden = false;
     renderChat();
     if (S.cohort.game === "rush") { onRush(); return; }
@@ -873,8 +959,12 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     for (var k = 0; k < cells; k++) if (k !== mid) order.push(k);
     order = shuffled(order, rng);
     var spots = [];
-    if (freeN > 0 && mid >= 0) spots.push(mid);
-    while (spots.length < freeN) spots.push(order.shift());
+    if (n === 4) {
+      spots = shuffled([5, 6, 9, 10], rng).slice(0, freeN);
+    } else {
+      if (freeN > 0 && mid >= 0) spots.push(mid);
+      while (spots.length < freeN) spots.push(order.shift());
+    }
     var freeIdx = new Set(spots);
     var squares = [], p = 0;
     for (var idx = 0; idx < cells; idx++) squares.push(freeIdx.has(idx) ? FREE : picks[p++]);
@@ -973,36 +1063,6 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (dirty) { clearTimeout(writeTimer); writeTimer = setTimeout(flush, 200); }
   }
 
-  function shareText() {
-    var rows = [];
-    var res = lineCount(S.marked);
-    var gn = S.grid;
-    for (var r = 0; r < gn; r++) {
-      var line = "";
-      for (var c = 0; c < gn; c++) {
-        var k = r * gn + c;
-        line += res.win.has(k) ? "🟨" : (S.marked.has(k) ? "🟦" : "⬜");
-      }
-      rows.push(line);
-    }
-    var head = "Euler's Bingo" + (S.cohort && S.cohort.name ? " · " + S.cohort.name : "") + (S.round > 1 ? " · round " + S.round : "");
-    var result = res.n > 0 ? "BINGO × " + res.n : "No bingo yet";
-    return head + "\n" + result + " · " + (S.marked.size - S.freeIdx.size) + " squares\n" + rows.join("\n");
-  }
-  $("shareBtn").addEventListener("click", function () {
-    var text = shareText();
-    var box = $("shareBox"), note = $("shareNote");
-    function fallback() {
-      box.value = text; box.hidden = false; box.focus(); box.select();
-      note.hidden = false; note.textContent = "Copy this text and paste it in your class chat.";
-    }
-    try {
-      navigator.clipboard.writeText(text).then(function () {
-        box.hidden = true; note.hidden = false; note.textContent = "Copied. Paste it in your class chat.";
-      }, fallback);
-    } catch (e) { fallback(); }
-  });
-
   /* ---------- leaderboard ---------- */
   async function renderBoard() {
     if (!S.cohort || isRush()) return;
@@ -1095,20 +1155,26 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   var NAME_KEY = "euler-bingo.name";
   try { S.name = localStorage.getItem(NAME_KEY) || ""; } catch (e) { S.name = ""; }
   function renderUserBar() {
+    var has = !!S.name;
+    $("userBar").hidden = has;
+    $("userBadge").hidden = !has;
+    $("ubName").textContent = S.name;
+    $("ubView").hidden = S.editingName;
+    $("ubEdit").hidden = !S.editingName;
     var inp = $("userName");
     if (document.activeElement !== inp) inp.value = S.name;
-    $("userNote").textContent = S.name
-      ? "Playing as " + S.name + ". Anyone in your cohort can open your card from the leaderboard."
-      : "Pick a username so classmates can find your card. Without one you get a random alias.";
   }
-  function saveName() {
-    var v = $("userName").value.trim().replace(/\s+/g, " ");
+  function saveName(src) {
+    var v = (src === "badge" ? $("ubInput") : $("userName")).value.trim().replace(/\s+/g, " ");
     if (v.length < 2) { setStatus("Usernames need at least 2 characters."); return; }
     if (/[<>]/.test(v) || BLOCK.test(v)) { setStatus("Pick a different username."); return; }
     S.name = v.slice(0, 20);
+    S.editingName = false;
     try { localStorage.setItem(NAME_KEY, S.name); } catch (e) {}
-    setStatus("");
+    setStatus("Username saved as " + S.name + ".");
     renderUserBar();
+    var badge = $("userBadge");
+    badge.classList.remove("saved"); void badge.offsetWidth; badge.classList.add("saved");
     if (S.db && S.canWrite && S.me.id) {
       S.db.doc("users/" + S.me.id).set({ name: S.name, at: Date.now() }).catch(function () {});
       if (S.slug && !S.solo && S.deck && !isRush()) { dirty = true; clearTimeout(writeTimer); flush(); }
@@ -1117,8 +1183,20 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     renderBoard();
     if (isRush()) renderRush();
   }
-  $("userSave").addEventListener("click", saveName);
-  $("userName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); saveName(); } });
+  $("userSave").addEventListener("click", function () { saveName("top"); });
+  $("userName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); saveName("top"); } });
+  $("ubChange").addEventListener("click", function () {
+    S.editingName = true;
+    renderUserBar();
+    $("ubInput").value = S.name;
+    $("ubInput").focus();
+  });
+  $("ubSave").addEventListener("click", function () { saveName("badge"); });
+  $("ubCancel").addEventListener("click", function () { S.editingName = false; renderUserBar(); });
+  $("ubInput").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); saveName("badge"); }
+    else if (e.key === "Escape") { S.editingName = false; renderUserBar(); }
+  });
   renderUserBar();
 
   /* ---------- host moderation: edit and remove ---------- */
@@ -1236,19 +1314,41 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var ul = $("chatList");
     var atBottom = ul.scrollHeight - ul.scrollTop - ul.clientHeight < 40;
     var names = aliasNames(msgs.map(function (m) { return m.by; }));
-    ul.textContent = "";
-    if (!msgs.length) ul.appendChild(el("li", "", "No messages yet. Say hi."));
-    msgs.forEach(function (m) {
-      var li = el("li", m.by === S.me.id ? "mine" : "");
-      li.appendChild(el("span", "cn", (m.name ? String(m.name).slice(0, 20) : names[m.by]) + ":"));
-      li.appendChild(el("span", "ct", String(m.t).slice(0, 200)));
-      if (m.by === S.me.id || isHost()) {
-        var x = el("button", "cx", "×");
-        x.type = "button"; x.dataset.cdel = m.id; x.setAttribute("aria-label", "Remove message");
-        li.appendChild(x);
+    if (S.chatPrimed && msgs.some(function (m) { return m.by === S.me.id && !S.chatIds.has(m.id); })) atBottom = true;
+    var nodes = S.chatNodes;
+    var keep = new Set(msgs.map(function (m) { return m.id; }));
+    nodes.forEach(function (node, id) { if (!keep.has(id)) { node.remove(); nodes.delete(id); } });
+    var empty = $("chatEmpty");
+    empty.hidden = msgs.length > 0;
+    msgs.forEach(function (m, i) {
+      var node = nodes.get(m.id);
+      var label = (m.name ? String(m.name).slice(0, 20) : names[m.by]) + ":";
+      if (!node) {
+        var isNew = S.chatPrimed && !S.chatIds.has(m.id);
+        node = el("li", (m.by === S.me.id ? "mine" : "") + (isNew ? " enter" : ""));
+        node.appendChild(el("span", "cn", label));
+        node.appendChild(el("span", "ct", String(m.t).slice(0, 200)));
+        if (m.by === S.me.id || isHost()) {
+          var x = el("button", "cx", "×");
+          x.type = "button"; x.dataset.cdel = m.id; x.setAttribute("aria-label", "Remove message");
+          node.appendChild(x);
+        }
+        nodes.set(m.id, node);
+      } else {
+        node.firstChild.textContent = label;
+        var hasX = !!node.querySelector("[data-cdel]");
+        var wantX = m.by === S.me.id || isHost();
+        if (wantX && !hasX) {
+          var x2 = el("button", "cx", "×");
+          x2.type = "button"; x2.dataset.cdel = m.id; x2.setAttribute("aria-label", "Remove message");
+          node.appendChild(x2);
+        } else if (!wantX && hasX) node.querySelector("[data-cdel]").remove();
       }
-      ul.appendChild(li);
+      var at = ul.children[i + 1];
+      if (at !== node) ul.insertBefore(node, at || null);
     });
+    S.chatIds = new Set(msgs.map(function (m) { return m.id; }));
+    S.chatPrimed = true;
     if (atBottom) ul.scrollTop = ul.scrollHeight;
     $("chatInput").disabled = !S.canWrite; $("chatSend").disabled = !S.canWrite;
   }
@@ -1269,7 +1369,19 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     try {
       await S.db.collection("cohorts/" + S.slug + "/chat").add({ t: v.slice(0, 200), by: S.me.id, name: S.name || "", at: Date.now() });
       input.value = "";
+      var sb = $("chatSend");
+      sb.textContent = "Sent ✓"; sb.classList.add("sent");
+      chatToast("Message sent");
+      setTimeout(function () { sb.textContent = "Send"; sb.classList.remove("sent"); }, 1000);
     } catch (e) { writeFailed(e); }
+  }
+  var toastTimer = null;
+  function chatToast(text) {
+    var t = $("chatToast");
+    t.textContent = text;
+    t.hidden = true; void t.offsetWidth; t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.hidden = true; }, 1700);
   }
   $("chatSend").addEventListener("click", sendChat);
   $("chatInput").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); sendChat(); } });
@@ -1278,10 +1390,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!x || !guardWrite() || !S.slug) return;
     var id = x.dataset.cdel;
     var m = S.chat.filter(function (c) { return c.id === id; })[0];
+    var li = x.closest("li");
+    if (li) li.classList.add("leaving");
+    await new Promise(function (r) { setTimeout(r, 230); });
     try {
       if (m && m.by === S.me.id) await S.db.doc("cohorts/" + S.slug + "/chat/" + id).delete();
       else if (isHost()) await setMod("m-" + id, { hide: true });
-    } catch (err) { writeFailed(err); }
+      chatToast("Message deleted");
+    } catch (err) { if (li) li.classList.remove("leaving"); writeFailed(err); }
   });
 
   /* ---------- Pi's Point Rush ---------- */
@@ -1684,7 +1800,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       : { name: name, host: S.me.id, game: "bingo", round: 0, deck: null, grid: 5, free: 1, createdAt: Date.now() };
     try {
       await S.db.doc("cohorts/" + slug).set(body);
-      remember(slug, name);
+      remember(slug, name, true);
       if (location.hash.replace(/^#/, "") === slug) route(); else location.hash = slug;
     } catch (e) { writeFailed(e); }
   }
@@ -1692,15 +1808,24 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!S.pickGame) { setStatus("Pick a game first."); return; }
     createCohort($("newName").value, null);
   });
+  function showStart(game) {
+    S.pickGame = game;
+    hideAll();
+    setStatus("");
+    $("startPage").hidden = false;
+    $("startGame").textContent = game === "rush" ? "Pi's Point Rush" : "Euler's Bingo";
+    $("newName").value = "";
+    updateHome();
+    $("newName").focus();
+  }
   $("gamePicker").addEventListener("click", function (e) {
     var g = e.target.closest("[data-game]");
-    if (!g) return;
-    S.pickGame = g.dataset.game;
-    var btns = document.querySelectorAll(".game");
-    for (var i = 0; i < btns.length; i++) btns[i].setAttribute("aria-pressed", btns[i].dataset.game === S.pickGame ? "true" : "false");
-    $("startTitle").textContent = S.pickGame === "rush" ? "Start a Pi's Point Rush cohort" : "Start an Euler's Bingo cohort";
-    $("startSheet").hidden = false;
-    $("newName").focus();
+    if (g) showStart(g.dataset.game);
+  });
+  $("startBack").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
+  $("logo").addEventListener("click", function (e) {
+    e.preventDefault();
+    if (location.hash) location.hash = ""; else route();
   });
   $("newName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("createBtn").click(); } });
   $("nfCreate").addEventListener("click", function () { createCohort($("nfName").value, S.slug); });
@@ -1715,33 +1840,22 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   $("joinCode").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); joinByCode(); } });
 
   $("leaveBtn").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
-  $("copyCode").addEventListener("click", function () {
-    var code = S.slug || "";
-    try {
-      navigator.clipboard.writeText(code).then(function () { setStatus("Code copied: " + code); }, function () { setStatus("Select the code and copy it."); });
-    } catch (e) { setStatus("Select the code and copy it."); }
+  function copyText(text, btn, label) {
+    function ok() {
+      btn.textContent = "Copied ✓";
+      btn.classList.add("sent");
+      setTimeout(function () { btn.textContent = label; btn.classList.remove("sent"); }, 1400);
+    }
+    function fail() { setStatus("Select it and copy: " + text); }
+    try { navigator.clipboard.writeText(text).then(ok, fail); } catch (e) { fail(); }
+  }
+  $("copyCode").addEventListener("click", function () { copyText(S.slug || "", $("copyCode"), "Copy code"); });
+  $("copyLink").addEventListener("click", function () {
+    copyText(location.href.split("#")[0] + "#" + (S.slug || ""), $("copyLink"), "Copy link");
   });
-
-  $("soloBtn").addEventListener("click", function () {
-    leaveCohort();
-    S.solo = true; S.slug = null; S.cohort = null;
-    S.round = 1; S.deck = STARTERS.slice(); S.hydrated = true; S.grid = 5; S.freeN = 1;
-    hideAll();
-    $("rush").hidden = true;
-    $("chatSheet").hidden = true;
-    setStatus("");
-    $("cohort").hidden = false;
-    $("tabs").hidden = true;
-    $("codeBox").hidden = true;
-    $("soloBar").hidden = false;
-    $("cohortEyebrow").textContent = "Starter deck";
-    $("cohortName").textContent = "Solo card";
-    ["panelVote", "panelBoard"].forEach(function (id) { $(id).hidden = true; });
-    $("panelCard").hidden = false;
-    buildCard();
-    updateCardVisibility();
+  $("deleteBtn").addEventListener("click", function () {
+    deleteCohort(S.slug, $("deleteBtn"), function () { location.hash = ""; });
   });
-  $("soloBack").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
 
   window.addEventListener("hashchange", route);
 
@@ -1890,25 +2004,6 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   init();
 })();
 </script>
-<script>
-(function () {
-  var cfg = window.EULER_CONFIG;
-  var configured = cfg && cfg.url && cfg.key && String(cfg.url).indexOf("PASTE") === -1;
-  if (window.claude || configured) return;
-  var lede = document.querySelector(".lede");
-  if (lede) lede.textContent = "Tap squares as things happen in lecture. Five in a row wins. Free to play, no money involved.";
-  var extra = document.createElement("style");
-  extra.textContent = "#soloBar{display:none!important}";
-  document.head.appendChild(extra);
-  var solo = document.getElementById("soloBtn");
-  solo.click();
-  var more = document.createElement("button");
-  more.type = "button";
-  more.className = "btn";
-  more.textContent = "New card";
-  more.addEventListener("click", function () { solo.click(); });
-  document.getElementById("clearBtn").after(more);
-})();
-</script>
+
 </body>
 </html>
