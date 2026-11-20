@@ -5,63 +5,79 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prof Says</title>
 <meta name="description" content="Prof Says: free class games for lecture. Euler's Bingo and Pi's Point Rush.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&family=Zilla+Slab:wght@500;700&family=Permanent+Marker&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 :root { color-scheme: light; }
 body { margin: 0; }
 [hidden] { display: none !important; }
 img { max-width: 100%; }
 
-/* Layout concept: a lecture-hall handout. One narrow sheet, blue-book navy ink, pencil-blue marks and a highlighter-yellow win line. */
+/* Look: a photocopied course handout. Paper, black ink, a red pen for marking, highlighter yellow for the win. Dark mode is a chalkboard. */
 :root {
-  --bg: #EEF1F8;
-  --surface: #FFFFFF;
-  --ink: #12204A;
-  --muted: #55628A;
-  --line: #C6CFE6;
-  --accent: #2447D6;
-  --accent-ink: #FFFFFF;
-  --win: #FFD23F;
-  --win-ink: #3A2A00;
-  --ok-bg: #E3F4E8;
-  --ok-ink: #14532D;
-  --ok-line: #8CCB9F;
+  --bg: #F3EFE4;
+  --surface: #FAF7EE;
+  --ink: #1B1A17;
+  --muted: #6A6556;
+  --line: #CFC7B0;
+  --accent: #1B1A17;
+  --accent-ink: #F3EFE4;
+  --pen: #C4321D;
+  --pen-ink: #FFFFFF;
+  --win: #FFD84A;
+  --win-ink: #2B2200;
+  --ok-bg: #E9E3D2;
+  --ok-ink: #4A463A;
+  --ok-line: #CFC7B0;
+  --good-bg: #DDEBD7;
+  --good-ink: #1F4D22;
+  --good-line: #9CC596;
   --danger: #B3261E;
-  --font-display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Zilla Slab", Georgia, "Times New Roman", serif;
+  --font-logo: "Permanent Marker", "Zilla Slab", Georgia, cursive;
+  --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0C1226;
-    --surface: #141C38;
-    --ink: #E8ECFA;
-    --muted: #9AA5C9;
-    --line: #2A3560;
-    --accent: #7C96FF;
-    --accent-ink: #0C1226;
-    --win: #FFD23F;
-    --win-ink: #2A2000;
-    --ok-bg: #12301F;
-    --ok-ink: #A7E6BD;
-    --ok-line: #2F6B47;
+    --bg: #14201A;
+    --surface: #1B2A22;
+    --ink: #ECE9DA;
+    --muted: #A3AE9F;
+    --line: #34493D;
+    --accent: #ECE9DA;
+    --accent-ink: #14201A;
+    --pen: #FF8A6B;
+    --pen-ink: #1B0D08;
+    --win: #F2D864;
+    --win-ink: #241C00;
+    --ok-bg: #223229;
+    --ok-ink: #CFD6CB;
+    --ok-line: #34493D;
+    --good-bg: #1E3A27;
+    --good-ink: #A9DDB4;
+    --good-line: #3C7A4F;
     --danger: #FF8A80;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0C1226;
-  --surface: #141C38;
-  --ink: #E8ECFA;
-  --muted: #9AA5C9;
-  --line: #2A3560;
-  --accent: #7C96FF;
-  --accent-ink: #0C1226;
-  --win: #FFD23F;
-  --win-ink: #2A2000;
-  --ok-bg: #12301F;
-  --ok-ink: #A7E6BD;
-  --ok-line: #2F6B47;
+  --bg: #14201A;
+  --surface: #1B2A22;
+  --ink: #ECE9DA;
+  --muted: #A3AE9F;
+  --line: #34493D;
+  --accent: #ECE9DA;
+  --accent-ink: #14201A;
+  --pen: #FF8A6B;
+  --pen-ink: #1B0D08;
+  --win: #F2D864;
+  --win-ink: #241C00;
+  --ok-bg: #223229;
+  --ok-ink: #CFD6CB;
+  --ok-line: #34493D;
+  --good-bg: #1E3A27;
+  --good-ink: #A9DDB4;
+  --good-line: #3C7A4F;
   --danger: #FF8A80;
   color-scheme: dark;
 }
@@ -81,66 +97,68 @@ body {
 .stack { display: flex; flex-direction: column; gap: 14px; }
 
 .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 11vw, 56px); line-height: 0.95; letter-spacing: -0.02em; margin: 6px 0 10px; text-wrap: balance; }
-h2 { font-family: var(--font-display); font-weight: 800; font-size: 22px; line-height: 1.1; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+h1 { font-family: var(--font-logo); font-weight: 400; font-size: clamp(38px, 11vw, 54px); line-height: 1; letter-spacing: 0; margin: 4px 0 6px; display: inline-block; transform: rotate(-1.5deg); transform-origin: left center; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 23px; line-height: 1.1; margin: 0; text-wrap: balance; }
 .lede { color: var(--muted); max-width: 48ch; margin: 0; }
 .note { font-size: 12.5px; color: var(--muted); margin: 0; }
-.status { margin: 0; padding: 8px 12px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); font-size: 13.5px; }
+.status { margin: 0; padding: 8px 12px; border-left: 4px solid var(--pen); background: var(--surface); font-size: 13.5px; }
 
 label { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 label span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-input[type="text"] { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; min-width: 0; width: 100%; }
+input[type="text"] { font: inherit; color: var(--ink); background: transparent; border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; padding: 8px 2px; min-width: 0; width: 100%; }
 input[type="text"]::placeholder { color: var(--muted); opacity: 0.7; }
-select { font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; min-width: 0; width: 100%; }
+select { font: inherit; color: var(--ink); background: transparent; border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; padding: 8px 2px; min-width: 0; width: 100%; }
 .hostgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 @media (max-width: 460px) { .hostgrid { grid-template-columns: 1fr; } }
 .row { display: flex; gap: 8px; align-items: flex-end; }
 .row > label { flex: 1; }
 
-.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.sheet > h2 { border-bottom: 2px solid var(--ink); padding-bottom: 6px; }
 .sheet-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .stats { font-family: var(--font-mono); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.banner { font-family: var(--font-display); font-weight: 800; font-size: 20px; background: var(--win); color: var(--win-ink); border-radius: 6px; padding: 8px 12px; }
+.banner { font-family: var(--font-display); font-weight: 700; font-size: 21px; background: var(--win); color: var(--win-ink); border-radius: 2px; padding: 8px 12px; }
 
-button.btn { font: inherit; font-weight: 600; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; cursor: pointer; }
-button.btn:hover:not(:disabled) { border-color: var(--accent); }
+button.btn { font: inherit; font-weight: 600; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--ink); border-radius: 3px; padding: 8px 14px; cursor: pointer; }
+button.btn:hover:not(:disabled) { background: var(--ok-bg); }
 button.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button.btn.primary:hover:not(:disabled) { background: var(--accent); opacity: 0.88; }
 button.btn:disabled { opacity: 0.5; cursor: not-allowed; }
 button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
-.cohort-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+.cohort-head { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .cohort-head > div { min-width: 0; }
 .codebox { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.code { font-family: var(--font-mono); font-size: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; user-select: all; overflow-wrap: anywhere; }
+.code { font-family: var(--font-mono); font-size: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 6px 10px; user-select: all; overflow-wrap: anywhere; }
 
 .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.tab { font: inherit; font-weight: 600; font-size: 14px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 9px 6px; cursor: pointer; }
-.tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.tab { font: inherit; font-weight: 600; font-size: 14px; color: var(--muted); background: none; border: 0; border-bottom: 3px solid var(--line); border-radius: 0; padding: 9px 6px; cursor: pointer; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--pen); }
 
 .board { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 5px; }
 .board[data-n="3"] .cell { font-size: clamp(12px, 3.8vw, 17px); }
 .board[data-n="4"] .cell { font-size: clamp(10.5px, 3.2vw, 14.5px); }
-.cell { appearance: none; font: inherit; font-size: clamp(9.5px, 2.7vw, 13px); line-height: 1.2; font-weight: 500; text-align: center; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 5px; aspect-ratio: 1; padding: 3px; display: flex; align-items: center; justify-content: center; overflow-wrap: anywhere; hyphens: auto; cursor: pointer; min-width: 0; transition: background-color 0.12s, color 0.12s, transform 0.12s; }
+.cell { appearance: none; font: inherit; font-size: clamp(9.5px, 2.7vw, 13px); line-height: 1.2; font-weight: 500; text-align: center; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 2px; aspect-ratio: 1; padding: 3px; display: flex; align-items: center; justify-content: center; overflow-wrap: anywhere; hyphens: auto; cursor: pointer; min-width: 0; transition: background-color 0.12s, color 0.12s, transform 0.12s; }
 .cell:hover { border-color: var(--accent); }
 .cell:active { transform: scale(0.96); }
 .cell.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
 .cell.win { background: var(--win); border-color: var(--win); color: var(--win-ink); font-weight: 600; }
 .cell.free { font-family: var(--font-mono); font-size: clamp(9px, 2.4vw, 12px); letter-spacing: 0.04em; text-transform: uppercase; cursor: default; }
 @media (prefers-reduced-motion: reduce) { .cell { transition: none; } }
-#shareBox { width: 100%; font-family: var(--font-mono); font-size: 12px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; resize: none; }
+#shareBox { width: 100%; font-family: var(--font-mono); font-size: 12px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 3px; padding: 8px; resize: none; }
 
 .plist, .lb, .recent { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.prompt { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
-.vote { font: inherit; font-family: var(--font-mono); font-size: 12px; min-width: 54px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 5px; padding: 5px 8px; cursor: pointer; font-variant-numeric: tabular-nums; }
+.prompt { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 3px; padding: 6px 8px; }
+.vote { font: inherit; font-family: var(--font-mono); font-size: 12px; min-width: 54px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 2px; padding: 5px 8px; cursor: pointer; font-variant-numeric: tabular-nums; }
 .vote.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .ptext { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .rm { font: inherit; color: var(--muted); background: none; border: 0; cursor: pointer; padding: 0 6px; font-size: 18px; line-height: 1; }
 .cut { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-align: center; border-top: 1px dashed var(--line); padding-top: 8px; }
-.hostbox { border: 1px dashed var(--line); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.hostbox { border: 1px dashed var(--line); border-radius: 3px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 
-.lb li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+.lb li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--bg); }
 .lb li.hit { background: var(--win); border-color: var(--win); color: var(--win-ink); }
 .lb .pos { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
 .lb li.hit .pos { color: var(--win-ink); }
@@ -148,21 +166,21 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .prompt.editing { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .prompt.editing input { flex: 1 1 160px; min-width: 0; }
 .chat { list-style: none; margin: 0; padding: 0; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; overscroll-behavior: contain; }
-.chat li { display: flex; gap: 8px; align-items: baseline; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); overflow-wrap: anywhere; }
+.chat li { display: flex; gap: 8px; align-items: baseline; padding: 6px 8px; border: 1px solid var(--line); border-radius: 3px; background: var(--bg); overflow-wrap: anywhere; }
 .chat li.mine { border-color: var(--accent); }
 .chat .cn { font-weight: 600; flex: none; }
 .chat .ct { flex: 1; min-width: 0; }
 .chathead .cx, .chat .cx { appearance: none; border: 0; background: none; color: var(--muted); cursor: pointer; font: inherit; padding: 0 4px; }
 .chatwrap { position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px)); z-index: 50; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-.chatfab { appearance: none; position: relative; width: 56px; height: 56px; border-radius: 50%; border: 0; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; cursor: pointer; box-shadow: 0 4px 14px rgba(18, 32, 74, 0.35); font: inherit; }
+.chatfab { appearance: none; position: relative; width: 56px; height: 56px; border-radius: 50%; border: 0; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; cursor: pointer; box-shadow: 3px 3px 0 var(--pen); font: inherit; }
 .chatfab:hover { filter: brightness(1.08); }
 .chatfab:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 .chatx { font-size: 20px; line-height: 1; }
-.chatbadge { position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px; background: #D93025; color: #fff; font-size: 12px; font-weight: 700; display: grid; place-items: center; border: 2px solid var(--bg); box-sizing: border-box; font-variant-numeric: tabular-nums; }
+.chatbadge { position: absolute; top: -4px; right: -4px; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px; background: var(--pen); color: var(--pen-ink); font-size: 12px; font-weight: 700; display: grid; place-items: center; border: 2px solid var(--bg); box-sizing: border-box; font-variant-numeric: tabular-nums; }
 .chatfab.ping { animation: chatping 0.7s ease-out 2; }
 @keyframes chatping { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 100% { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) { .chatfab.ping { animation: none; } }
-.chatpanel { width: min(340px, calc(100vw - 32px)); height: min(440px, 62vh); display: flex; flex-direction: column; gap: 8px; padding: 12px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 10px 30px rgba(18, 32, 74, 0.28); box-sizing: border-box; }
+.chatpanel { width: min(340px, calc(100vw - 32px)); height: min(440px, 62vh); display: flex; flex-direction: column; gap: 8px; padding: 12px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 4px; box-shadow: 4px 4px 0 var(--ink); box-sizing: border-box; }
 .chathead { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
 .chatname { font-weight: 600; overflow-wrap: anywhere; }
 .chatsend { display: flex; gap: 6px; }
@@ -170,15 +188,15 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .chatnote { margin: 0; font-size: 12px; }
 .wrap { padding-bottom: 96px; }
 .games { display: flex; flex-direction: column; gap: 10px; }
-.game { appearance: none; font: inherit; text-align: left; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; min-width: 0; }
-.game:hover { border-color: var(--accent); }
-.game[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.game { appearance: none; font: inherit; text-align: left; color: var(--ink); background: var(--surface); border: 1px solid var(--ink); border-radius: 3px; padding: 14px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; min-width: 0; }
+.game:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+
 .game.big { min-height: 104px; justify-content: center; }
 .game.small { min-height: 60px; padding: 10px 14px; justify-content: center; gap: 2px; }
-.game .gname { font-family: var(--font-display, inherit); font-weight: 800; font-size: 18px; }
+.game .gname { font-family: var(--font-display); font-weight: 700; font-size: 20px; }
 .game .gdesc { color: var(--muted); font-size: 13.5px; line-height: 1.35; }
 .wrows { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.wrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+.wrow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--bg); }
 .wrow .wname { font-weight: 600; font-size: 17px; overflow-wrap: anywhere; }
 .wrow .wsub { grid-column: 1 / -1; color: var(--muted); font-size: 13px; font-family: var(--font-mono); }
 .wrow input { width: 96px; }
@@ -200,15 +218,18 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 
 .foot { border-top: 1px solid var(--line); padding-top: 14px; display: flex; flex-direction: column; gap: 4px; color: var(--muted); font-size: 12.5px; }
 .foot p { margin: 0; }
-.foot strong { color: var(--ink); font-family: var(--font-display); }
+.foot strong { color: var(--ink); font-family: var(--font-display); font-size: 14px; }
 h1 a { color: inherit; text-decoration: none; cursor: pointer; }
-h1 a:hover { color: var(--accent); }
-h1 a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+h1 a:hover { color: var(--pen); }
+h1 a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
 button.btn.danger { color: var(--danger); }
 button.btn.danger:hover:not(:disabled) { border-color: var(--danger); }
-.userbadge { align-self: flex-start; max-width: 100%; padding: 7px 12px; border-radius: 10px; background: var(--ok-bg); color: var(--ok-ink); border: 1px solid var(--ok-line); font-size: 13px; }
+.userbadge { align-self: flex-start; max-width: 100%; padding: 6px 10px; border-radius: 3px; background: var(--ok-bg); color: var(--ok-ink); border: 1px solid var(--ok-line); font-size: 13px; transition: background 0.8s, color 0.8s, border-color 0.8s; }
+.userbadge.fresh { background: var(--good-bg); color: var(--good-ink); border-color: var(--good-line); }
 .userbadge .ubrow { display: flex; align-items: center; gap: 8px; }
-.userbadge .ubcheck { display: grid; place-items: center; flex: none; width: 18px; height: 18px; border-radius: 50%; background: var(--ok-ink); color: var(--ok-bg); font-size: 11px; font-weight: 700; }
+.userbadge .ubcheck { display: grid; place-items: center; flex: none; width: 16px; height: 16px; border-radius: 2px; background: currentColor; font-size: 11px; font-weight: 700; }
+.userbadge .ubcheck > span { color: var(--ok-bg); }
+.userbadge.fresh .ubcheck > span { color: var(--good-bg); }
 .userbadge .linkbtn { appearance: none; border: 0; background: none; color: inherit; text-decoration: underline; font: inherit; font-size: 12px; cursor: pointer; opacity: 0.85; padding: 0 0 0 6px; }
 .userbadge .ubedit { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .userbadge .ubedit input { flex: 1 1 140px; min-width: 0; }
@@ -218,9 +239,9 @@ button.btn.danger:hover:not(:disabled) { border-color: var(--danger); }
 @keyframes msgin { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
 .chat li.leaving { animation: msgout 0.22s ease-in forwards; }
 @keyframes msgout { to { opacity: 0; transform: translateX(24px); } }
-.chattoast { align-self: center; padding: 3px 12px; border-radius: 999px; background: var(--ok-bg); color: var(--ok-ink); border: 1px solid var(--ok-line); font-size: 12px; font-weight: 600; animation: toastin 1.7s ease forwards; }
+.chattoast { align-self: center; padding: 3px 10px; border-radius: 3px; background: var(--ink); color: var(--bg); font-size: 12px; font-weight: 600; animation: toastin 1.7s ease forwards; }
 @keyframes toastin { 0% { opacity: 0; transform: translateY(6px); } 12% { opacity: 1; transform: none; } 80% { opacity: 1; } 100% { opacity: 0; } }
-button.btn.sent { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); }
+button.btn.sent { background: var(--good-bg); border-color: var(--good-line); color: var(--good-ink); }
 @media (prefers-reduced-motion: reduce) { .chat li.enter, .chat li.leaving, .chattoast, .userbadge.saved { animation: none; } }
 
 </style>
@@ -269,7 +290,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     </div>
     <div class="userbadge" id="userBadge" hidden>
       <div class="ubrow" id="ubView">
-        <span class="ubcheck" aria-hidden="true">✓</span>
+        <span class="ubcheck" aria-hidden="true"><span>✓</span></span>
         <span>Signed in as <strong id="ubName"></strong></span>
         <button class="linkbtn" id="ubChange" type="button">Change</button>
       </div>
@@ -283,11 +304,11 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   <section id="startPage" class="stack" hidden>
     <div class="cohort-head">
+      <button class="btn" id="startBack" type="button">← Back</button>
       <div>
         <div class="eyebrow" id="startGame">Euler's Bingo</div>
         <h2 id="startTitle">Name your cohort</h2>
       </div>
-      <button class="btn" id="startBack" type="button">← Back</button>
     </div>
     <div class="sheet">
       <div class="row">
@@ -314,17 +335,23 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   <section id="cohort" class="stack" hidden>
     <div class="cohort-head">
+      <button class="btn" id="leaveBtn" type="button">← Back</button>
       <div>
         <div class="eyebrow" id="cohortEyebrow">Cohort</div>
         <h2 id="cohortName"></h2>
       </div>
-      <button class="btn" id="leaveBtn" type="button">← Back</button>
     </div>
     <div class="codebox" id="codeBox">
       <span class="code" id="cohortCode"></span>
       <button class="btn" id="copyCode" type="button">Copy code</button>
       <button class="btn" id="copyLink" type="button">Copy link</button>
+      <button class="btn" id="membersBtn" type="button" hidden>People</button>
       <button class="btn danger" id="deleteBtn" type="button" hidden>Delete cohort</button>
+    </div>
+    <div class="sheet" id="membersPanel" hidden>
+      <h2>People</h2>
+      <p class="note" id="membersNote"></p>
+      <ul class="plist" id="membersList"></ul>
     </div>
 
     <div id="rush" class="stack" hidden>
@@ -550,7 +577,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     prompts: [], votes: [], cards: [], cardsLoaded: false,
     deck: null, round: 0, grid: 5, freeN: 1, squares: [], marked: new Set(), freeIdx: new Set(), hostInit: false,
     hydrated: false, firstBingoAt: null, tab: "card", tabSet: false,
-    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, rushSub: false, rushRound: 0, rushHydrated: false, guesses: [null, null, null], tally: [0, 0, 0], rushView: null, rowsKey: "", pickGame: null, modsRaw: {}, lastUnread: 0, editingName: false, chatIds: new Set(), chatNodes: new Map(), chatPrimed: false, chat: [], chatOpen: false, chatSeen: 0, editing: null, editVal: ""
+    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, rushSub: false, rushRound: 0, rushHydrated: false, guesses: [null, null, null], tally: [0, 0, 0], rushView: null, rowsKey: "", pickGame: null, modsRaw: {}, adminsRaw: {}, showMembers: false, lastUnread: 0, editingName: false, chatIds: new Set(), chatNodes: new Map(), chatPrimed: false, chat: [], chatOpen: false, chatSeen: 0, editing: null, editVal: ""
   };
   var statusTimer = null, writeTimer = null, writing = false, dirty = false, confirmTimer = null;
 
@@ -655,7 +682,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.deck = null; S.round = 0; S.grid = 5; S.freeN = 1; S.squares = []; S.marked = new Set(); S.freeIdx = new Set();
     S.hydrated = false; S.firstBingoAt = null; S.tabSet = false; S.hostInit = false; S.viewing = null; S.names = {};
     S.words = []; S.picks = []; S.picksLoaded = false; S.rushSub = false; S.rushRound = 0; S.rushHydrated = false; S.guesses = [null, null, null]; S.tally = [0, 0, 0]; S.rushView = null; S.rowsKey = "";
-    S.modsRaw = {}; S.chatIds = new Set(); S.chatNodes.forEach(function (n) { n.remove(); }); S.chatNodes = new Map(); S.chatPrimed = false; S.lastUnread = 0; S.chat = []; S.chatOpen = false; S.editing = null; S.editVal = "";
+    S.modsRaw = {}; S.adminsRaw = {}; S.showMembers = false; $("membersPanel").hidden = true; S.chatIds = new Set(); S.chatNodes.forEach(function (n) { n.remove(); }); S.chatNodes = new Map(); S.chatPrimed = false; S.lastUnread = 0; S.chat = []; S.chatOpen = false; S.editing = null; S.editVal = "";
     $("chatSheet").hidden = true; $("chatBox").hidden = true;
   }
   function route() {
@@ -697,6 +724,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       if (isRush()) renderRush(); else renderVote();
     }, dbError));
     S.chatSeen = Date.now();
+    S.unsubs.push(db.collection(base + "/admins").onSnapshot(function (snap) {
+      S.adminsRaw = {};
+      snap.docs.forEach(function (d) { S.adminsRaw[d.id] = { owner: d.owner }; });
+      $("membersBtn").hidden = !isMod();
+      rerender();
+      renderChat();
+      queueMembers();
+    }, dbError));
     S.unsubs.push(db.collection(base + "/mod").onSnapshot(function (snap) {
       S.modsRaw = {};
       snap.docs.forEach(function (d) { S.modsRaw[d.id] = Object.assign({ owner: d.owner }, d.data()); });
@@ -748,6 +783,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("cohortCode").textContent = S.slug;
     remember(S.slug, S.cohort.name, S.cohort.host === S.me.id);
     $("deleteBtn").hidden = !isHost();
+    $("membersBtn").hidden = !isMod();
     $("chatSheet").hidden = false;
     renderChat();
     if (S.cohort.game === "rush") { onRush(); return; }
@@ -806,8 +842,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   function isHost() {
     return !!S.cohort && !!S.me.id && (S.cohort.host === S.me.id || S.isAdmin);
   }
+  function isAdminUid(uid) {
+    var a = S.adminsRaw[uid];
+    return !!a && !!S.cohort && (a.owner === undefined || a.owner === S.cohort.host);
+  }
+  function isMod() { return isHost() || (!!S.me.id && isAdminUid(S.me.id)); }
 
   function renderVote() {
+    queueMembers();
     if (!S.cohort || isRush()) return;
     var items = ranked();
     var mine = myVotes();
@@ -816,7 +858,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var limit = S.deck ? S.deck.length : (parseInt($("deckSize").value, 10) || DECK_SIZE);
     items.forEach(function (it, idx) {
       if (idx === limit) list.appendChild(el("li", "cut", "Below the line: not in the deck"));
-      if (S.editing === it.id && isHost()) { list.appendChild(editRow(it)); return; }
+      if (S.editing === it.id && isMod()) { list.appendChild(editRow(it)); return; }
       var li = el("li", "prompt");
       var vb = el("button", "vote" + (mine.has(it.id) ? " on" : ""), "▲ " + it.v);
       vb.type = "button";
@@ -826,8 +868,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       li.appendChild(vb);
       li.appendChild(el("span", "ptext", it.text));
       li.appendChild(el("span", "tag", it.starter ? "Starter" : "Class"));
-      if (isHost()) { var eb = el("button", "rm", "✎"); eb.type = "button"; eb.dataset.edit = it.id; eb.setAttribute("aria-label", "Edit " + it.text); li.appendChild(eb); }
-      if (S.me.id && ((!it.starter && it.by === S.me.id) || isHost())) {
+      if (isMod()) { var eb = el("button", "rm", "✎"); eb.type = "button"; eb.dataset.edit = it.id; eb.setAttribute("aria-label", "Edit " + it.text); li.appendChild(eb); }
+      if (S.me.id && ((!it.starter && it.by === S.me.id) || isMod())) {
         var rm = el("button", "rm", "×");
         rm.type = "button";
         rm.dataset.rm = it.id;
@@ -880,7 +922,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var own = S.prompts.some(function (p) { return p.id === id && p.by === S.me.id; });
     try {
       if (own) await S.db.doc("cohorts/" + S.slug + "/prompts/" + id).delete();
-      else if (isHost()) await setMod(id, { hide: true });
+      else if (isMod()) await setMod(id, { hide: true });
     } catch (e) { writeFailed(e); }
   }
   async function pitch() {
@@ -1065,6 +1107,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   /* ---------- leaderboard ---------- */
   async function renderBoard() {
+    queueMembers();
     if (!S.cohort || isRush()) return;
     var token = ++S.boardToken;
     var ul = $("lb");
@@ -1164,6 +1207,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var inp = $("userName");
     if (document.activeElement !== inp) inp.value = S.name;
   }
+  var freshTimer = null;
   function saveName(src) {
     var v = (src === "badge" ? $("ubInput") : $("userName")).value.trim().replace(/\s+/g, " ");
     if (v.length < 2) { setStatus("Usernames need at least 2 characters."); return; }
@@ -1174,7 +1218,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     setStatus("Username saved as " + S.name + ".");
     renderUserBar();
     var badge = $("userBadge");
-    badge.classList.remove("saved"); void badge.offsetWidth; badge.classList.add("saved");
+    badge.classList.remove("saved"); void badge.offsetWidth; badge.classList.add("saved", "fresh");
+    clearTimeout(freshTimer);
+    freshTimer = setTimeout(function () { badge.classList.remove("fresh"); }, 3000);
     if (S.db && S.canWrite && S.me.id) {
       S.db.doc("users/" + S.me.id).set({ name: S.name, at: Date.now() }).catch(function () {});
       if (S.slug && !S.solo && S.deck && !isRush()) { dirty = true; clearTimeout(writeTimer); flush(); }
@@ -1199,12 +1245,74 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   });
   renderUserBar();
 
+  /* ---------- people and co-admins ---------- */
+  var membersQueued = false;
+  function queueMembers() {
+    if (membersQueued) return;
+    membersQueued = true;
+    setTimeout(function () { membersQueued = false; renderMembers(); }, 60);
+  }
+  function renderMembers() {
+    var panel = $("membersPanel");
+    if (!S.cohort || !isMod() || !S.showMembers) { panel.hidden = true; return; }
+    panel.hidden = false;
+    var seen = {}, nm = {};
+    function add(id, name) { if (!id) return; seen[id] = true; if (name) nm[id] = String(name).slice(0, 20); }
+    add(S.cohort.host);
+    Object.keys(S.adminsRaw).forEach(function (id) { if (isAdminUid(id)) add(id); });
+    S.cards.forEach(function (c) { add(c.id, c.name); });
+    S.picks.forEach(function (c) { add(c.id, c.name); });
+    S.chat.forEach(function (m) { add(m.by, m.name); });
+    S.prompts.forEach(function (x) { add(x.by); });
+    S.words.forEach(function (x) { add(x.by); });
+    S.votes.forEach(function (v) { add(v.u); });
+    if (S.me.id && S.name) nm[S.me.id] = S.name;
+    var ids = Object.keys(seen);
+    var alias = aliasNames(ids);
+    ids.sort(function (a, b) {
+      var ra = a === S.cohort.host ? 0 : isAdminUid(a) ? 1 : 2, rb = b === S.cohort.host ? 0 : isAdminUid(b) ? 1 : 2;
+      return (ra - rb) || String(nm[a] || alias[a]).localeCompare(String(nm[b] || alias[b]));
+    });
+    $("membersNote").textContent = ids.length + " here so far. " + (isHost() ? "Admins can edit and remove prompts, words and chat messages. Only you can run the game and delete the cohort." : "Admins can edit and remove prompts, words and chat messages.");
+    var ul = $("membersList");
+    ul.textContent = "";
+    ids.forEach(function (id) {
+      var li = el("li", "prompt");
+      var role = id === S.cohort.host ? "Host" : isAdminUid(id) ? "Admin" : "";
+      li.appendChild(el("span", "ptext", (nm[id] || alias[id]) + (id === S.me.id ? " (you)" : "")));
+      if (role) li.appendChild(el("span", "tag", role));
+      if (isHost() && id !== S.cohort.host) {
+        var b = el("button", "btn", isAdminUid(id) ? "Remove admin" : "Make admin");
+        b.type = "button";
+        b.dataset.admin = id;
+        li.appendChild(b);
+      }
+      ul.appendChild(li);
+    });
+  }
+  $("membersBtn").addEventListener("click", function () {
+    S.showMembers = !S.showMembers;
+    $("membersBtn").textContent = S.showMembers ? "Hide people" : "People";
+    renderMembers();
+  });
+  $("membersList").addEventListener("click", async function (e) {
+    var b = e.target.closest("[data-admin]");
+    if (!b || !isHost() || !guardWrite()) return;
+    var uid = b.dataset.admin;
+    var ref = S.db.doc("cohorts/" + S.slug + "/admins/" + uid);
+    b.disabled = true;
+    try {
+      if (isAdminUid(uid)) await ref.delete();
+      else await ref.set({ by: S.me.id, at: Date.now() });
+    } catch (err) { writeFailed(err); b.disabled = false; }
+  });
+
   /* ---------- host moderation: edit and remove ---------- */
   function modPath(id) { return "cohorts/" + S.slug + "/mod/" + id; }
   function modOf(id) {
     var m = S.modsRaw[id];
     if (!m) return null;
-    if (m.owner !== undefined && (!S.cohort || m.owner !== S.cohort.host)) return null;
+    if (m.owner !== undefined && (!S.cohort || (m.owner !== S.cohort.host && !isAdminUid(m.owner)))) return null;
     return m;
   }
   function applyMods(items) {
@@ -1241,7 +1349,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     }
   }
   async function saveEdit() {
-    if (!S.editing || !isHost() || !guardWrite()) return;
+    if (!S.editing || !isMod() || !guardWrite()) return;
     var id = S.editing;
     var v = S.editVal.trim().replace(/\s+/g, " ");
     if (isRush()) {
@@ -1261,7 +1369,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var ul = $(lid);
     ul.addEventListener("click", function (e) {
       var eb = e.target.closest("[data-edit]");
-      if (eb && isHost()) {
+      if (eb && isMod()) {
         var id = eb.dataset.edit;
         var it = (isRush() ? rankedWords() : ranked()).filter(function (x) { return x.id === id; })[0];
         S.editing = id; S.editVal = it ? it.text : "";
@@ -1292,6 +1400,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     }).sort(function (a, b) { return (a.at || 0) - (b.at || 0); }).slice(-100);
   }
   function renderChat() {
+    queueMembers();
     if (!S.cohort) return;
     var msgs = visibleChat();
     var btn = $("chatToggle");
@@ -1328,7 +1437,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         node = el("li", (m.by === S.me.id ? "mine" : "") + (isNew ? " enter" : ""));
         node.appendChild(el("span", "cn", label));
         node.appendChild(el("span", "ct", String(m.t).slice(0, 200)));
-        if (m.by === S.me.id || isHost()) {
+        if (m.by === S.me.id || isMod()) {
           var x = el("button", "cx", "×");
           x.type = "button"; x.dataset.cdel = m.id; x.setAttribute("aria-label", "Remove message");
           node.appendChild(x);
@@ -1337,7 +1446,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       } else {
         node.firstChild.textContent = label;
         var hasX = !!node.querySelector("[data-cdel]");
-        var wantX = m.by === S.me.id || isHost();
+        var wantX = m.by === S.me.id || isMod();
         if (wantX && !hasX) {
           var x2 = el("button", "cx", "×");
           x2.type = "button"; x2.dataset.cdel = m.id; x2.setAttribute("aria-label", "Remove message");
@@ -1395,7 +1504,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     await new Promise(function (r) { setTimeout(r, 230); });
     try {
       if (m && m.by === S.me.id) await S.db.doc("cohorts/" + S.slug + "/chat/" + id).delete();
-      else if (isHost()) await setMod("m-" + id, { hide: true });
+      else if (isMod()) await setMod("m-" + id, { hide: true });
       chatToast("Message deleted");
     } catch (err) { if (li) li.classList.remove("leaving"); writeFailed(err); }
   });
@@ -1530,6 +1639,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   var PHASE_NAME = { pitch: "Step 1 of 4 · Pick the words", predict: "Step 2 of 4 · Predict", live: "Step 3 of 4 · Lecture is live", done: "Step 4 of 4 · Results" };
 
   function renderRush() {
+    queueMembers();
     if (!isRush()) return;
     var phase = phaseOf();
     var host = isHost();
@@ -1565,7 +1675,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     list.textContent = "";
     items.forEach(function (it, idx) {
       if (idx === MAX_WORDS) list.appendChild(el("li", "cut", "Below the line: not in this lecture"));
-      if (S.editing === it.id && isHost()) { list.appendChild(editRow(it)); return; }
+      if (S.editing === it.id && isMod()) { list.appendChild(editRow(it)); return; }
       var li = el("li", "prompt");
       var vb = el("button", "vote" + (mine.has(it.id) ? " on" : ""), "▲ " + it.v);
       vb.type = "button";
@@ -1575,8 +1685,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       li.appendChild(vb);
       li.appendChild(el("span", "ptext", it.text));
       li.appendChild(el("span", "tag", it.starter ? "Starter" : "Class"));
-      if (isHost()) { var eb = el("button", "rm", "✎"); eb.type = "button"; eb.dataset.edit = it.id; eb.setAttribute("aria-label", "Edit " + it.text); li.appendChild(eb); }
-      if (S.me.id && ((!it.starter && it.by === S.me.id) || isHost())) {
+      if (isMod()) { var eb = el("button", "rm", "✎"); eb.type = "button"; eb.dataset.edit = it.id; eb.setAttribute("aria-label", "Edit " + it.text); li.appendChild(eb); }
+      if (S.me.id && ((!it.starter && it.by === S.me.id) || isMod())) {
         var rm = el("button", "rm", "×");
         rm.type = "button";
         rm.dataset.rm = it.id;
@@ -1600,7 +1710,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var own = S.words.some(function (w) { return w.id === id && w.by === S.me.id; });
     try {
       if (own) await S.db.doc("cohorts/" + S.slug + "/words/" + id).delete();
-      else if (isHost()) await setMod(id, { hide: true });
+      else if (isMod()) await setMod(id, { hide: true });
     } catch (e) { writeFailed(e); }
   }
   async function pitchWord() {
