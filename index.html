@@ -2,10 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://qicvehmdaxkxtssbqwld.supabase.co" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prof Says</title>
 <meta name="description" content="Prof Says: free class games for lecture. Euler's Bingo and Pi's Point Rush.">
+<link rel="canonical" href="https://jonathanpark-design.github.io/Euler-s-Bingo/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Prof Says","applicationCategory":"GameApplication","operatingSystem":"Any","description":"Free class games for lecture: Euler's Bingo and Pi's Point Rush.","url":"https://jonathanpark-design.github.io/Euler-s-Bingo/","offers":{"@type":"Offer","price":"0","priceCurrency":"CAD"}}</script>
 <link rel="icon" href="favicon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -179,6 +185,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 label.siteopt { display: flex; flex-direction: row; gap: 8px; align-items: center; cursor: pointer; }
 label.siteopt span { font-family: var(--font-body); font-size: 13.5px; letter-spacing: 0; text-transform: none; color: var(--ink); }
 .siteopt input { width: 16px; height: 16px; accent-color: var(--accent); }
+.vote { min-height: 38px; }
+.rm, .cx { min-width: 38px; min-height: 38px; }
 .mark { width: 0.82em; height: 0.82em; flex: none; border-radius: 22%; }
 h1 a { display: inline-flex; align-items: center; gap: 0.3em; }
 .nudge { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); right: 92px; bottom: max(16px, env(safe-area-inset-bottom, 0px)); max-width: 380px; z-index: 40; background: var(--ink); color: var(--bg); border-radius: 4px; padding: 10px 10px 10px 14px; display: flex; gap: 10px; align-items: center; font-size: 13px; line-height: 1.35; box-shadow: 3px 3px 0 var(--pen); animation: nudgein 0.25s ease-out; }
@@ -591,6 +599,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   <div class="nudge" id="nudge" role="status" hidden><span id="nudgeText"></span><button class="btn primary" id="nudgeGo" type="button">Open shop</button><button class="x" id="nudgeX" type="button" aria-label="Dismiss">×</button></div>
 
+  <noscript><p class="foot">Prof Says needs JavaScript turned on to run.</p></noscript>
+
   <footer class="foot">
     <div><strong>Prof Says</strong> · Free class games</div>
     <p>© 2026 Prof Says. Not affiliated with or endorsed by any university or instructor.</p>
@@ -696,7 +706,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     else setStatus("Couldn't reach the class database" + (e && e.code ? " (" + e.code + ")" : "") + ".", true);
   }
   function guardWrite() {
-    if (!S.db) { setStatus("Cohorts need the Claude viewer with a signed-in account."); return false; }
+    if (!S.db) { setStatus(S.authError ? "Lots of people are joining from your network right now. Hang tight, we keep retrying." : "Cohorts need the Claude viewer with a signed-in account."); return false; }
     if (!S.canWrite) { setStatus("You can look around, but playing needs Contributor access. Ask the host to invite you."); return false; }
     return true;
   }
@@ -793,7 +803,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!S.ready) { setStatus("Connecting to the class database…", true); return; }
     if (!S.db) {
       $("home").hidden = false; renderRecent(); updateHome();
-      setStatus("Cohorts need the Claude viewer with a signed-in account.", true);
+      setStatus(S.authError ? "Lots of people are joining from your network right now. Hang tight, we keep retrying." : "Cohorts need the Claude viewer with a signed-in account.", true);
       return;
     }
     enterCohort(S.slug);
@@ -802,7 +812,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var ok = S.ready && !!S.db;
     $("createBtn").disabled = !ok; $("joinBtn").disabled = !ok;
     if (!S.ready) setStatus("Connecting to the class database…", true);
-    else if (!S.db) setStatus("Cohorts need the Claude viewer with a signed-in account.", true);
+    else if (!S.db) setStatus(S.authError ? "Lots of people are joining from your network right now. Hang tight, we keep retrying." : "Cohorts need the Claude viewer with a signed-in account.", true);
     else if (!S.canWrite) setStatus("You can browse cohorts, but starting or playing one needs Contributor access.", true);
   }
 
@@ -2702,31 +2712,50 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
 
   /* ---------- boot ---------- */
+  /* connecting: anonymous sign-in can be rate limited on a busy shared network, so retry quietly */
+  async function connectSupabase(cfg) {
+    var sb = S.sb || window.supabase.createClient(cfg.url, cfg.key, { auth: { flowType: "pkce" } });
+    S.sb = sb;
+    var got = await sb.auth.getSession();
+    var session = got.data && got.data.session;
+    if (!session) {
+      var signed = await sb.auth.signInAnonymously();
+      if (signed.error) throw signed.error;
+      session = signed.data.session;
+    }
+    var uid = session.user.id;
+    S.db = makeSupabaseDb(sb, uid);
+    S.user = {
+      me: async function () { return { id: uid, name: "" }; },
+      canEdit: async function () { return false; },
+      can: async function () { return true; }
+    };
+    S.me = { id: uid, name: "" };
+    S.canWrite = true;
+    S.authError = false;
+  }
+  var retryT = null;
+  function scheduleRetry(cfg) {
+    if (retryT) return;
+    var tries = 0;
+    retryT = setInterval(async function () {
+      tries++;
+      try {
+        await connectSupabase(cfg);
+        clearInterval(retryT); retryT = null;
+        setStatus("");
+        walletStart(); route(); renderShop();
+      } catch (e) { if (tries >= 60) { clearInterval(retryT); retryT = null; } }
+    }, 8000);
+  }
+
   async function init() {
     route();
     var cfg = window.EULER_CONFIG;
     var c = window.claude;
     if (cfg && cfg.url && cfg.key && String(cfg.url).indexOf("PASTE") === -1 && window.supabase && !(c && c.use)) {
-      try {
-        var sb = window.supabase.createClient(cfg.url, cfg.key, { auth: { flowType: "pkce" } });
-        S.sb = sb;
-        var got = await sb.auth.getSession();
-        var session = got.data && got.data.session;
-        if (!session) {
-          var signed = await sb.auth.signInAnonymously();
-          if (signed.error) throw signed.error;
-          session = signed.data.session;
-        }
-        var uid = session.user.id;
-        S.db = makeSupabaseDb(sb, uid);
-        S.user = {
-          me: async function () { return { id: uid, name: "" }; },
-          canEdit: async function () { return false; },
-          can: async function () { return true; }
-        };
-        S.me = { id: uid, name: "" };
-        S.canWrite = true;
-      } catch (e) { S.db = null; }
+      try { await connectSupabase(cfg); }
+      catch (e) { S.db = null; S.authError = true; scheduleRetry(cfg); }
     } else if (c && c.use) {
       try {
         var res = await Promise.all([c.use("db"), c.use("user")]);
