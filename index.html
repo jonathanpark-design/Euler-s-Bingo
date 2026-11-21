@@ -176,6 +176,9 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .gsave { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
 .gsave p { margin: 0; font-size: 13px; color: var(--muted); }
 .gsave .actions .linkbtn { font-size: 13px; }
+label.siteopt { display: flex; flex-direction: row; gap: 8px; align-items: center; cursor: pointer; }
+label.siteopt span { font-family: var(--font-body); font-size: 13.5px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+.siteopt input { width: 16px; height: 16px; accent-color: var(--accent); }
 .mark { width: 0.82em; height: 0.82em; flex: none; border-radius: 22%; }
 h1 a { display: inline-flex; align-items: center; gap: 0.3em; }
 .nudge { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); right: 92px; bottom: max(16px, env(safe-area-inset-bottom, 0px)); max-width: 380px; z-index: 40; background: var(--ink); color: var(--bg); border-radius: 4px; padding: 10px 10px 10px 14px; display: flex; gap: 10px; align-items: center; font-size: 13px; line-height: 1.35; box-shadow: 3px 3px 0 var(--pen); animation: nudgein 0.25s ease-out; }
@@ -388,7 +391,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     </div>
     <div class="sheet">
       <h2>Backdrops</h2>
-      <p class="stats" id="themeHint">Backdrops change how your own bingo card looks. Earn coins by spinning, playing and chatting.</p>
+      <p class="stats" id="themeHint">A backdrop restyles your bingo card and the whole site. Earn coins by spinning, playing and chatting.</p>
+      <label class="siteopt"><input type="checkbox" id="siteTheme" checked> <span>Use my backdrop across the whole site</span></label>
       <div class="themes" id="themeGrid"></div>
     </div>
   </section>
@@ -2301,14 +2305,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var body = JSON.parse(JSON.stringify(W));
     body.name = S.name || ""; body.at = Date.now();
     walletChain = walletChain.then(function () { return S.db.doc("wallets/" + S.me.id).set(body); }).catch(function () { setStatus("Couldn't save your coins. Check your connection."); });
-    renderShop();
+    renderShop(); syncSite();
   }
   function walletStart() {
     if (!S.db || !S.me.id || walletReady) return;
     walletReady = true;
     S.db.doc("wallets/" + S.me.id).onSnapshot(function (snap) {
       if (snap.exists && (snap.owner === undefined || snap.owner === S.me.id)) adoptWallet(snap.data());
-      walletLoaded = true; renderShop(); applyTheme($("board"), W.theme);
+      walletLoaded = true; renderShop(); syncSite(); applyTheme($("board"), W.theme);
     }, function () {});
     refreshAuth();
   }
@@ -2593,6 +2597,62 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     try { await S.sb.auth.signOut(); } catch (e) {}
     location.href = authUrl();
   });
+
+  /* site-wide theme: the equipped backdrop restyles the whole page */
+  var SITE_KEY = "euler-bingo.sitetheme", CACHE_KEY = "euler-bingo.themeid";
+  function hexRgb(h) { h = h.replace("#", ""); return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]; }
+  function rgbHex(a) { return "#" + a.map(function (v) { return Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0"); }).join(""); }
+  function mixc(a, b, t) { var x = hexRgb(a), y = hexRgb(b); return rgbHex([0, 1, 2].map(function (i) { return x[i] * (1 - t) + y[i] * t; })); }
+  function lum(h) { var c = hexRgb(h).map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; }
+  function contrast(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  function baseOf(t) {
+    var m = t.b.match(/#[0-9A-Fa-f]{6}(?![0-9A-Fa-f])/g) || ["#888888"];
+    var sum = [0, 0, 0];
+    m.forEach(function (h) { var c = hexRgb(h); sum[0] += c[0]; sum[1] += c[1]; sum[2] += c[2]; });
+    return rgbHex(sum.map(function (v) { return v / m.length; }));
+  }
+  function siteVars(t) {
+    var base = baseOf(t), darkInk = lum(base) > 0.22, ink = darkInk ? "#1B1A17" : "#F1EEE2";
+    var surface = darkInk ? mixc(base, "#ffffff", 0.6) : mixc(base, "#000000", 0.4), k = 0.6;
+    for (var i = 0; i < 12 && contrast(ink, surface) < 9; i++) { k = Math.min(0.97, k + 0.05); surface = darkInk ? mixc(base, "#ffffff", k) : mixc(base, "#000000", Math.min(0.95, 0.4 + (k - 0.6))); }
+    var page = mixc(base, surface, 0.78), muted = ink;
+    for (var m = 0.5; m >= 0; m -= 0.05) { muted = mixc(ink, surface, m); if (contrast(muted, surface) >= 4.6 && contrast(muted, page) >= 4.6) break; }
+    var accent = contrast(t.o, surface) >= 3.2 ? t.o : ink;
+    for (var q = 0; q < 10 && Math.max(contrast("#FFFFFF", accent), contrast("#1B1A17", accent)) < 4.6; q++) accent = mixc(accent, darkInk ? "#000000" : "#ffffff", 0.12);
+    var accentInk = contrast("#FFFFFF", accent) >= contrast("#1B1A17", accent) ? "#FFFFFF" : "#1B1A17";
+    var pen = darkInk ? "#C4321D" : "#FF8A6B";
+    if (contrast(pen, surface) < 3.2) pen = ink;
+    return {
+      "--bg": page, "--surface": surface, "--ink": ink, "--muted": muted, "--line": mixc(surface, ink, 0.3),
+      "--accent": accent, "--accent-ink": accentInk, "--pen": pen, "--pen-ink": contrast("#FFFFFF", pen) >= contrast("#1B1A17", pen) ? "#FFFFFF" : "#1B1A17",
+      "--ok-bg": mixc(surface, ink, 0.1), "--ok-ink": mixc(ink, surface, 0.15), "--ok-line": mixc(surface, ink, 0.3),
+      dark: !darkInk, base: base, wash: surface
+    };
+  }
+  var SITE_PROPS = ["--bg", "--surface", "--ink", "--muted", "--line", "--accent", "--accent-ink", "--pen", "--pen-ink", "--ok-bg", "--ok-ink", "--ok-line"];
+  function sitePref() { try { return localStorage.getItem(SITE_KEY) !== "0"; } catch (e) { return true; } }
+  function applySite(id) {
+    var root = document.documentElement, t = THEME[id];
+    SITE_PROPS.forEach(function (p) { root.style.removeProperty(p); });
+    root.style.colorScheme = ""; root.style.background = ""; document.body.style.background = "";
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (!t || !sitePref()) { if (meta) meta.setAttribute("content", "#F3EFE4"); return; }
+    var v = siteVars(t);
+    SITE_PROPS.forEach(function (p) { root.style.setProperty(p, v[p]); });
+    root.style.colorScheme = v.dark ? "dark" : "light";
+    document.body.style.background = "linear-gradient(" + v.wash + "C7," + v.wash + "C7), " + themeBg(t);
+    if (meta) meta.setAttribute("content", v["--bg"]);
+  }
+  function syncSite() {
+    applySite(W.theme);
+    try { localStorage.setItem(CACHE_KEY, W.theme || ""); } catch (e) {}
+  }
+  $("siteTheme").checked = sitePref();
+  $("siteTheme").addEventListener("change", function () {
+    try { localStorage.setItem(SITE_KEY, this.checked ? "1" : "0"); } catch (e) {}
+    syncSite();
+  });
+  try { var cached = localStorage.getItem(CACHE_KEY); if (cached && THEME[cached]) applySite(cached); } catch (e) {}
 
   /* nudges, confetti, invite */
   var nudgeT = null, nudgeSeen = {};
