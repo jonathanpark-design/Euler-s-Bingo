@@ -132,6 +132,31 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .codebox { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .code { font-family: var(--font-mono); font-size: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 3px; padding: 6px 10px; user-select: all; overflow-wrap: anywhere; }
 
+.board.themed { padding: 10px; border-radius: 6px; }
+.deco { text-align: center; letter-spacing: 0.3em; font-size: 15px; padding: 2px 0 6px; }
+.coinchip { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 14px; font-variant-numeric: tabular-nums; }
+.coin { width: 14px; height: 14px; border-radius: 50%; background: #E0B030; border: 2px solid #9A7410; box-sizing: border-box; display: inline-block; }
+.rewards { display: flex; flex-direction: column; }
+.rw { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+.rw:last-child { border-bottom: 0; }
+.rw strong { font-family: var(--font-display); font-size: 17px; }
+.rw small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.35; }
+.spinres { font-family: var(--font-mono); font-size: 14px; background: var(--ok-bg); border-radius: 3px; padding: 8px 12px; }
+.spinres.big { font-family: var(--font-display); font-weight: 700; font-size: 20px; background: var(--win); color: var(--win-ink); }
+.adbox { border: 1px dashed var(--ink); border-radius: 3px; padding: 12px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; background: var(--bg); }
+.adbox p { margin: 0; font-size: 13px; color: var(--muted); }
+.themes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.tcard { border: 1px solid var(--line); border-radius: 3px; padding: 8px; display: flex; flex-direction: column; gap: 8px; background: var(--bg); min-width: 0; }
+.tcard.using { border-color: var(--ink); }
+.tcard .btn { width: 100%; padding: 6px 8px; font-size: 13px; }
+.tinfo { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.tinfo strong { font-size: 14px; overflow-wrap: anywhere; }
+.tinfo small { color: var(--muted); font-size: 12px; }
+.tprev { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; padding: 7px; border-radius: 4px; border: 1px solid var(--line); aspect-ratio: 5 / 3; }
+.tprev i { border: 1px solid; border-radius: 1px; display: block; }
+.gsave { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.gsave p { margin: 0; font-size: 13px; color: var(--muted); }
+.gsave .actions .linkbtn { font-size: 13px; }
 .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .tab { font: inherit; font-weight: 600; font-size: 14px; color: var(--muted); background: none; border: 0; border-bottom: 3px solid var(--line); border-radius: 0; padding: 9px 6px; cursor: pointer; }
 .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--pen); }
@@ -139,10 +164,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .board { display: grid; grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 5px; }
 .board[data-n="3"] .cell { font-size: clamp(12px, 3.8vw, 17px); }
 .board[data-n="4"] .cell { font-size: clamp(10.5px, 3.2vw, 14.5px); }
-.cell { appearance: none; font: inherit; font-size: clamp(9.5px, 2.7vw, 13px); line-height: 1.2; font-weight: 500; text-align: center; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 2px; aspect-ratio: 1; padding: 3px; display: flex; align-items: center; justify-content: center; overflow-wrap: anywhere; hyphens: auto; cursor: pointer; min-width: 0; transition: background-color 0.12s, color 0.12s, transform 0.12s; }
+.cell { appearance: none; font: inherit; font-size: clamp(9.5px, 2.7vw, 13px); line-height: 1.2; font-weight: 500; text-align: center; color: var(--c-ink, var(--ink)); background: var(--c-bg, var(--bg)); border: 1px solid var(--c-line, var(--line)); border-radius: 2px; aspect-ratio: 1; padding: 3px; display: flex; align-items: center; justify-content: center; overflow-wrap: anywhere; hyphens: auto; cursor: pointer; min-width: 0; transition: background-color 0.12s, color 0.12s, transform 0.12s; }
 .cell:hover { border-color: var(--accent); }
 .cell:active { transform: scale(0.96); }
-.cell.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.cell.on { background: var(--c-on, var(--accent)); border-color: var(--c-on, var(--accent)); color: var(--c-on-ink, var(--accent-ink)); font-weight: 600; }
 .cell.win { background: var(--win); border-color: var(--win); color: var(--win-ink); font-weight: 600; }
 .cell.free { font-family: var(--font-mono); font-size: clamp(9px, 2.4vw, 12px); letter-spacing: 0.04em; text-transform: uppercase; cursor: default; }
 @media (prefers-reduced-motion: reduce) { .cell { transition: none; } }
@@ -273,6 +298,32 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       <div class="games">
         <button class="game big" type="button" data-game="bingo"><span class="gname">Euler's Bingo</span><span class="gdesc">Pitch lecture habits, vote on the best, then get your own shuffled bingo card.</span></button>
         <button class="game small" type="button" data-game="rush"><span class="gname">Pi's Point Rush</span><span class="gdesc">Predict how often your prof says 3 words.</span></button>
+      </div>
+    </div>
+    <div class="sheet" id="shop" hidden>
+      <div class="sheet-head"><h2 style="border:0;padding:0;margin:0">Shop</h2><span class="coinchip" title="Play coins. They have no cash value."><i class="coin" aria-hidden="true"></i><b id="coinN">0</b></span></div>
+      <div class="rewards">
+        <div class="rw"><div><strong>Daily spin</strong><small id="spinSub"></small></div><button class="btn primary" id="spinBtn" type="button">Spin</button></div>
+        <div class="rw"><div><strong>Weekly gift</strong><small id="weeklySub"></small></div><button class="btn primary" id="weeklyBtn" type="button">Open</button></div>
+        <div class="rw"><div><strong>Watch an ad</strong><small id="adSub"></small></div><button class="btn" id="adBtn" type="button">Watch</button></div>
+      </div>
+      <div class="spinres" id="spinResult" aria-live="polite" hidden></div>
+      <div class="adbox" id="adBox" hidden>
+        <strong>Sponsor slot</strong>
+        <p>Placeholder while real ads are being set up.</p>
+        <p id="adCountRow">Reward in <b id="adCount">8</b>s</p>
+        <button class="btn primary" id="adClaim" type="button" hidden>Claim coins</button>
+      </div>
+      <button class="btn" id="themeToggle" type="button">Browse backdrops</button>
+      <p class="stats" id="themeHint" hidden>Backdrops change how your own bingo card looks. Earn coins by spinning, playing and chatting.</p>
+      <div class="themes" id="themeGrid" hidden></div>
+      <div class="gsave" id="gsave" hidden>
+        <p id="gStatus"></p>
+        <div class="actions">
+          <button class="btn" id="gLink" type="button">Save with Google</button>
+          <button class="linkbtn" id="gSignin" type="button">Already saved? Sign in</button>
+          <button class="btn" id="gOut" type="button" hidden>Sign out</button>
+        </div>
       </div>
     </div>
     <div class="sheet">
@@ -496,7 +547,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   <footer class="foot">
     <div><strong>Prof Says</strong> · Free class games</div>
     <p>© 2026 Prof Says. Not affiliated with or endorsed by any university or instructor.</p>
-    <p>Free to play. No purchase, wagers or prizes. Instructors may ask for their class to be removed at any time.</p>
+    <p>Free to play. No purchase, wagers or prizes. Coins are play money with no cash value. Instructors may ask for their class to be removed at any time.</p>
   </footer>
 </div>
 
@@ -646,7 +697,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   /* ---------- routing ---------- */
   function parseSlug() {
     var h = (location.hash || "").replace(/^#/, "").toLowerCase();
-    return /^[a-z0-9-]{3,40}$/.test(h) ? h : null;
+    return /^[a-z0-9-]{3,40}$/.test(h) ? h : null; // OAuth leftovers contain "=" and never match
   }
   var delTimer = null;
   async function deleteCohort(slug, btn, after) {
@@ -1048,6 +1099,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
 
   function updateCard() {
+    applyTheme($("board"), W.theme);
     var cells = $("board").children;
     if (!cells.length) return;
     var res = lineCount(S.marked);
@@ -1080,6 +1132,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (S.marked.has(idx)) S.marked.delete(idx); else S.marked.add(idx);
     updateCard();
     queueSave();
+    earnLines(lineCount(S.marked).n);
   });
   $("clearBtn").addEventListener("click", function () {
     S.marked = new Set(S.freeIdx);
@@ -1099,7 +1152,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var res = lineCount(S.marked);
     var marked = Array.from(S.marked).filter(function (i) { return !S.freeIdx.has(i); }).sort(function (a, b) { return a - b; });
     var ref = S.db.doc("cohorts/" + S.slug + "/cards/" + S.me.id);
-    var body = { round: S.round, marked: marked, lines: res.n, n: marked.length, firstBingoAt: S.firstBingoAt || null, name: S.name || "", at: Date.now() };
+    var body = { round: S.round, marked: marked, lines: res.n, n: marked.length, firstBingoAt: S.firstBingoAt || null, name: S.name || "", theme: W.theme || "", at: Date.now() };
     try { await ref.set(body); } catch (e) { writeFailed(e); }
     writing = false;
     if (dirty) { clearTimeout(writeTimer); writeTimer = setTimeout(flush, 200); }
@@ -1185,6 +1238,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     banner.hidden = res.n === 0;
     banner.textContent = res.n === 0 ? "" : (res.n === 1 ? "Bingo! One line." : "Bingo! " + res.n + " lines.");
     var board = $("viewBoard");
+    applyTheme(board, c.theme);
     board.textContent = "";
     board.dataset.n = String(S.grid);
     board.style.setProperty("--n", String(S.grid));
@@ -1481,6 +1535,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       var sb = $("chatSend");
       sb.textContent = "Sent ✓"; sb.classList.add("sent");
       chatToast("Message sent");
+      earnChat();
       setTimeout(function () { sb.textContent = "Send"; sb.classList.remove("sent"); }, 1000);
     } catch (e) { writeFailed(e); }
   }
@@ -1651,7 +1706,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("rushResults").hidden = phase !== "done";
     if (phase === "pitch") renderWordList();
     else renderRows(phase);
-    if (phase === "done") renderRushBoard();
+    if (phase === "done") { renderRushBoard(); earnRush(); }
     var hostBox = $("rushHost");
     hostBox.hidden = !host;
     if (host) {
@@ -2071,6 +2126,355 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     return { doc: docRef, collection: colRef };
   }
 
+  /* ---------- shop, coins, daily spin, backdrops ---------- */
+  // Coins are play money: earned, never bought, never cashed out. Backdrops are cosmetic only.
+  var TH = [
+    // id, name, price, board background, cell bg, cell line, cell ink, marked bg, marked ink, decoration
+    ["graph", "Graph Paper", 100, "linear-gradient(#9DC6A855 1px,transparent 1px) 0 0/16px 16px,linear-gradient(90deg,#9DC6A855 1px,transparent 1px) 0 0/16px 16px,#F7FAF2", "#FFFFFFB0", "#9DC6A8", "#1F3A2A", "#2E7D5B", "#FFFFFF", ""],
+    ["chalk", "Chalkboard", 100, "#1F3A2D", "#2A4A3A", "#5E8570", "#EDEBDD", "#EDEBDD", "#1F3A2D", ""],
+    ["blueprint", "Blueprint", 120, "linear-gradient(#ffffff22 1px,transparent 1px) 0 0/20px 20px,linear-gradient(90deg,#ffffff22 1px,transparent 1px) 0 0/20px 20px,#1B4F8A", "#245FA3", "#8DB8E8", "#EAF3FF", "#EAF3FF", "#1B4F8A", ""],
+    ["midnight", "Midnight", 120, "#12142B", "#1C1F3F", "#3A3F78", "#D8DBFF", "#8C95FF", "#0B0C1E", ""],
+    ["sunset", "Sunset", 120, "linear-gradient(160deg,#FF9A5A,#E2557A 60%,#6B3FA0)", "#FFFFFF33", "#FFFFFF77", "#FFFFFF", "#FFFFFF", "#7A2250", ""],
+    ["forest", "Forest", 120, "#2F5D3A", "#3B6F47", "#6FA27A", "#EEF6E8", "#EEF6E8", "#2F5D3A", ""],
+    ["ocean", "Ocean", 150, "linear-gradient(180deg,#BFE7F2,#4FA3C7)", "#FFFFFF99", "#FFFFFFAA", "#0B3550", "#0B3550", "#E8F7FF", ""],
+    ["lavender", "Lavender", 150, "#E6DDF5", "#F6F1FD", "#B9A5DC", "#3B2A5F", "#6B4FA8", "#FFFFFF", ""],
+    ["mint", "Mint", 150, "#D8F0E4", "#F0FAF4", "#97CDB1", "#16402B", "#2E8B62", "#FFFFFF", ""],
+    ["rose", "Rose", 150, "#F8DDE2", "#FFF3F5", "#E3A3B0", "#5A1F2E", "#C2415D", "#FFFFFF", ""],
+    ["concrete", "Concrete", 150, "#C9CCCF", "#E4E6E8", "#9A9EA3", "#222222", "#333333", "#EEEEEE", ""],
+    ["harvest", "Harvest", 400, "#7A3E1D", "#F6E3C4", "#C9772F", "#3B1E0A", "#B5471A", "#FFFFFF", "🍂 🍁 🌽 🍁 🍂"],
+    ["snow", "Snow Day", 400, "linear-gradient(#E9F2FA,#C8DCEE)", "#FFFFFFDD", "#9FBBD6", "#16324D", "#2C6AA0", "#FFFFFF", "❄️ ☃️ ❄️"],
+    ["summer", "Summer Break", 400, "linear-gradient(#FFE08A,#FFB347)", "#FFF7DF", "#E59A2B", "#4A2A00", "#E5671B", "#FFFFFF", "🌴 ☀️ 🕶️ ☀️ 🌴"],
+    ["valentine", "Valentine's", 400, "#FBD3DD", "#FFF5F7", "#E8788F", "#6B1530", "#D6336C", "#FFFFFF", "💌 💗 💌"],
+    ["easter", "Easter", 400, "linear-gradient(#FDE9F3,#E5F6D6)", "#FFFFFFCC", "#E7B6D2", "#4A3A5A", "#9A6BC4", "#FFFFFF", "🐣 🌷 🥚 🌷 🐣"],
+    ["halloween", "Halloween", 400, "#1A1020", "#2B1A33", "#FF7A1A", "#FFE3C2", "#FF7A1A", "#1A1020", "🎃 🕸️ 👻 🕸️ 🎃"],
+    ["christmas", "Christmas", 400, "repeating-linear-gradient(45deg,#B3261E 0 14px,#8F1D17 14px 28px)", "#FFF8F0", "#2F6B3A", "#3A1210", "#2F6B3A", "#FFFFFF", "🎄 ❄️ 🎁 ❄️ 🎄"],
+    ["gridiron", "Gridiron", 500, "repeating-linear-gradient(90deg,#2E7D32 0 40px,#388E3C 40px 80px)", "#FFFFFFD9", "#FFFFFF", "#123B16", "#123B16", "#FFFFFF", "🏈 🏟️ 🏈"],
+    ["pitch", "Soccer Pitch", 500, "repeating-linear-gradient(0deg,#3C9A4A 0 36px,#46A857 36px 72px)", "#FFFFFFCC", "#FFFFFF", "#0F3A1A", "#111111", "#FFFFFF", "⚽ 🥅 ⚽"],
+    ["hardwood", "Hardwood", 500, "repeating-linear-gradient(90deg,#C98B4B 0 22px,#BC7E40 22px 44px)", "#F9E8CFDD", "#7A4A1C", "#3A1F08", "#D9531E", "#FFFFFF", "🏀 🏟️ 🏀"],
+    ["rink", "Ice Rink", 500, "linear-gradient(#EAF6FF,#CFE7F7)", "#FFFFFFE6", "#7FB2D9", "#0E2A44", "#C8102E", "#FFFFFF", "🏒 🥅 🏒"],
+    ["diamond", "Diamond", 500, "#C58B55", "#FFFFFFCC", "#8A5326", "#2A1708", "#1B3A8A", "#FFFFFF", "⚾ 🧢 ⚾"],
+    ["lecture", "Lecture Hall", 500, "#5B3A24", "#EAD7B7", "#3E2615", "#2A1708", "#2A1708", "#EAD7B7", "🎓 📚 🎓"],
+    ["library", "Late Night Library", 500, "#2B2218", "#3B2F22", "#C9A24A", "#F3E6C8", "#C9A24A", "#2B2218", "📚 🕯️ 📚"],
+    ["campus", "Campus Fall", 500, "linear-gradient(#F4B860,#C8553D)", "#FFF6E5DD", "#B5522E", "#3A1A0C", "#8A2E14", "#FFFFFF", "🍁 🏛️ 🍁"],
+    ["aurora", "Aurora", 900, "linear-gradient(160deg,#0B1D3A,#0F5C5A 45%,#6B3FA0 80%)", "#0B1D3A99", "#7FF2D0", "#E8FFF8", "#7FF2D0", "#0B1D3A", "✨ 🌌 ✨"],
+    ["neon", "Neon Arcade", 900, "#0D0221", "#1A0B3A", "#FF2E97", "#E9FDFF", "#00F0FF", "#0D0221", "🕹️ 👾 🕹️"],
+    ["gold", "Gold Foil", 900, "linear-gradient(135deg,#B8860B,#FFE27A 40%,#B8860B 70%,#FFD54A)", "#FFF7D6DD", "#8A6508", "#3A2A00", "#3A2A00", "#FFE27A", "🏆 ✨ 🏆"],
+    ["holo", "Holographic", 900, "linear-gradient(120deg,#FFB3E6,#B3E5FF 35%,#C9FFB3 65%,#FFE0B3)", "#FFFFFFB3", "#FFFFFF", "#2A2A4A", "#5B4FD6", "#FFFFFF", "💎 🌈 💎"]
+  ].map(function (a) {
+    return { id: a[0], name: a[1], price: a[2], b: a[3], c: a[4], l: a[5], k: a[6], o: a[7], oi: a[8], d: a[9], tier: a[2] <= 150 ? "Common" : (a[2] <= 500 ? "Rare" : "Epic") };
+  });
+  var THEME = {};
+  TH.forEach(function (t) { THEME[t.id] = t; });
+
+  var SPIN = [[10, 25], [15, 30], [20, 22], [25, 12], [40, 8], [100, 3]];
+  var AD_COINS = 25, AD_MAX = 3, AD_WAIT = 8, PLAY_CAP = 40, WEEKLY_COINS = 150;
+  var W = { v: 0, coins: 0, streak: 0, lastSpin: "", lastWeekly: "", owned: [], theme: "", adDay: "", adN: 0, playDay: "", playGot: 0, credited: {}, chatDay: "" };
+  var walletReady = false, walletChain = Promise.resolve(), shopOpen = false, spinning = false, adTimer = null;
+
+  function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function dayNum(k) { var p = k.split("-"); return Math.round(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000); }
+  function weekKey() { var d = new Date(); var back = (d.getDay() + 6) % 7; d.setDate(d.getDate() - back); return dayKey(d); }
+  function nint(x) { x = Math.floor(Number(x)); return isFinite(x) && x > 0 ? Math.min(x, 1e7) : 0; }
+
+  function adoptWallet(d) {
+    if (!d || typeof d !== "object") return;
+    if (nint(d.v) < W.v) return;
+    W.v = nint(d.v);
+    W.coins = nint(d.coins); W.streak = nint(d.streak);
+    W.lastSpin = typeof d.lastSpin === "string" ? d.lastSpin.slice(0, 10) : "";
+    W.lastWeekly = typeof d.lastWeekly === "string" ? d.lastWeekly.slice(0, 10) : "";
+    W.owned = (Array.isArray(d.owned) ? d.owned : []).filter(function (x, i, a) { return THEME[x] && a.indexOf(x) === i; });
+    W.theme = THEME[d.theme] && W.owned.indexOf(d.theme) !== -1 ? d.theme : "";
+    W.adDay = typeof d.adDay === "string" ? d.adDay.slice(0, 10) : ""; W.adN = nint(d.adN);
+    W.playDay = typeof d.playDay === "string" ? d.playDay.slice(0, 10) : ""; W.playGot = nint(d.playGot);
+    W.chatDay = typeof d.chatDay === "string" ? d.chatDay.slice(0, 10) : "";
+    W.credited = {};
+    if (d.credited && typeof d.credited === "object") Object.keys(d.credited).slice(0, 12).forEach(function (k) { W.credited[k.slice(0, 80)] = nint(d.credited[k]); });
+  }
+  function saveWallet() {
+    W.v++;
+    if (!S.db || !S.me.id || !S.canWrite) { renderShop(); return; }
+    var body = JSON.parse(JSON.stringify(W));
+    body.name = S.name || ""; body.at = Date.now();
+    walletChain = walletChain.then(function () { return S.db.doc("wallets/" + S.me.id).set(body); }).catch(function () { setStatus("Couldn't save your coins. Check your connection."); });
+    renderShop();
+  }
+  function walletStart() {
+    if (!S.db || !S.me.id || walletReady) return;
+    walletReady = true;
+    S.db.doc("wallets/" + S.me.id).onSnapshot(function (snap) {
+      if (snap.exists && (snap.owner === undefined || snap.owner === S.me.id)) adoptWallet(snap.data());
+      renderShop(); applyTheme($("board"), W.theme);
+    }, function () {});
+    refreshAuth();
+  }
+  function earn(n) { W.coins = Math.min(W.coins + n, 1e7); }
+  function playEarn(n, why) {
+    var today = dayKey();
+    if (W.playDay !== today) { W.playDay = today; W.playGot = 0; }
+    n = Math.min(n, PLAY_CAP - W.playGot);
+    if (n <= 0) return;
+    W.playGot += n; earn(n); saveWallet();
+    setStatus("+" + n + " coins " + why);
+  }
+  function earnLines(n) {
+    if (!S.slug || !S.round) return;
+    var key = "b|" + S.slug + "|" + S.round;
+    var had = W.credited[key] || 0;
+    if (n <= had) return;
+    W.credited[key] = n;
+    var keys = Object.keys(W.credited);
+    if (keys.length > 10) delete W.credited[keys[0]];
+    playEarn((n - had) * 5, "for a bingo line");
+  }
+  function earnRush() {
+    if (!S.slug || !S.rushRound) return;
+    var mine = S.picks.filter(function (p) { return p.id === S.me.id && p.round === S.rushRound; })[0];
+    var key = "r|" + S.slug + "|" + S.rushRound;
+    if (!mine || W.credited[key]) return;
+    W.credited[key] = 1;
+    var keys = Object.keys(W.credited);
+    if (keys.length > 10) delete W.credited[keys[0]];
+    playEarn(3, "for finishing a lecture");
+  }
+  function earnChat() {
+    var today = dayKey();
+    if (W.chatDay === today) return;
+    W.chatDay = today;
+    playEarn(5, "for chatting today");
+  }
+
+  /* backdrops on cards */
+  function applyTheme(board, id) {
+    if (!board) return;
+    var t = THEME[id];
+    ["--c-bg", "--c-line", "--c-ink", "--c-on", "--c-on-ink"].forEach(function (p) { board.style.removeProperty(p); });
+    board.style.background = "";
+    board.classList.remove("themed");
+    var deco = board.previousElementSibling && board.previousElementSibling.classList.contains("deco") ? board.previousElementSibling : null;
+    if (!t) { if (deco) deco.hidden = true; return; }
+    board.style.setProperty("--c-bg", t.c); board.style.setProperty("--c-line", t.l); board.style.setProperty("--c-ink", t.k);
+    board.style.setProperty("--c-on", t.o); board.style.setProperty("--c-on-ink", t.oi);
+    board.style.background = t.b;
+    board.classList.add("themed");
+    if (t.d) {
+      if (!deco) { deco = el("div", "deco"); deco.setAttribute("aria-hidden", "true"); board.parentNode.insertBefore(deco, board); }
+      deco.hidden = false; deco.textContent = t.d;
+    } else if (deco) deco.hidden = true;
+  }
+
+  /* shop UI */
+  function untilMidnight() {
+    var n = new Date(), m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1);
+    var mins = Math.max(1, Math.ceil((m - n) / 60000));
+    return Math.floor(mins / 60) + "h " + (mins % 60) + "m";
+  }
+  function untilMonday() {
+    var d = new Date(), days = 7 - ((d.getDay() + 6) % 7);
+    return days === 1 ? "tomorrow" : "in " + days + " days";
+  }
+  function previewNode(t) {
+    var p = el("div", "tprev");
+    p.style.background = t.b;
+    for (var i = 0; i < 9; i++) {
+      var c = el("i");
+      c.style.background = i === 4 || i === 0 ? t.o : t.c;
+      c.style.borderColor = t.l;
+      p.appendChild(c);
+    }
+    return p;
+  }
+  var buyArm = null, buyTimer = null;
+  function renderShop() {
+    var box = $("shop");
+    if (!box) return;
+    var ok = !!S.db && !!S.me.id && S.canWrite;
+    box.hidden = !ok;
+    if (!ok) return;
+    var today = dayKey();
+    $("coinN").textContent = String(W.coins);
+    // spin
+    var spun = W.lastSpin === today;
+    var live = W.lastSpin && (dayNum(today) - dayNum(W.lastSpin) <= 2) ? W.streak : 0;
+    $("spinBtn").disabled = spun || spinning;
+    $("spinBtn").textContent = spun ? "Spun" : "Spin";
+    $("spinSub").textContent = spun ? "Next spin in " + untilMidnight() + ". Streak: " + W.streak + (W.streak === 1 ? " day" : " days") + "." :
+      (live ? "Streak: " + live + (live === 1 ? " day" : " days") + ". Spin to keep it going." : "Free once a day. Come back daily for a bigger bonus.");
+    // weekly
+    var got = W.lastWeekly === weekKey();
+    $("weeklyBtn").disabled = got;
+    $("weeklyBtn").textContent = got ? "Opened" : "Open";
+    $("weeklySub").textContent = got ? "Next gift " + untilMonday() + "." : "A free backdrop, once a week.";
+    // ad
+    var used = W.adDay === today ? W.adN : 0;
+    $("adBtn").disabled = used >= AD_MAX || !!adTimer;
+    $("adBtn").textContent = used >= AD_MAX ? "Done today" : "Watch · +" + AD_COINS;
+    $("adSub").textContent = (AD_MAX - Math.min(used, AD_MAX)) + " of " + AD_MAX + " left today.";
+    // themes
+    $("themeToggle").textContent = shopOpen ? "Hide backdrops" : "Browse backdrops (" + TH.length + ")";
+    $("themeGrid").hidden = !shopOpen;
+    $("themeHint").hidden = !shopOpen;
+    if (shopOpen) {
+      var grid = $("themeGrid");
+      grid.textContent = "";
+      var list = [{ id: "", name: "Handout", price: 0, b: "var(--bg)", c: "var(--bg)", l: "var(--line)", o: "var(--accent)", tier: "Free" }].concat(TH);
+      list.forEach(function (t) {
+        var owned = t.id === "" || W.owned.indexOf(t.id) !== -1;
+        var using = (W.theme || "") === t.id;
+        var card = el("div", "tcard" + (using ? " using" : ""));
+        card.appendChild(previewNode(t));
+        var info = el("div", "tinfo");
+        info.appendChild(el("strong", "", t.name));
+        info.appendChild(el("small", "", t.tier + (t.price && !owned ? " · " + t.price : "")));
+        card.appendChild(info);
+        var b = el("button", "btn" + (using ? "" : (owned ? "" : " primary")));
+        b.type = "button"; b.dataset.th = t.id;
+        if (using) { b.textContent = "Using"; b.disabled = true; }
+        else if (owned) b.textContent = "Use";
+        else if (buyArm === t.id) { b.textContent = "Confirm"; b.dataset.buy = "1"; }
+        else { b.textContent = "Buy " + t.price; b.disabled = W.coins < t.price; b.dataset.buy = "1"; }
+        card.appendChild(b);
+        grid.appendChild(card);
+      });
+    }
+  }
+  function shopMsg(text, good) {
+    var r = $("spinResult");
+    r.hidden = !text; r.textContent = text || "";
+    r.classList.toggle("big", !!good);
+  }
+  function weighted(table) {
+    var tot = table.reduce(function (s, r) { return s + r[1]; }, 0), x = Math.random() * tot;
+    for (var i = 0; i < table.length; i++) { x -= table[i][1]; if (x < 0) return table[i][0]; }
+    return table[0][0];
+  }
+  $("spinBtn").addEventListener("click", function () {
+    var today = dayKey();
+    if (spinning || W.lastSpin === today) return;
+    spinning = true; $("spinBtn").disabled = true;
+    var gap = W.lastSpin ? dayNum(today) - dayNum(W.lastSpin) : 99;
+    var streak = gap >= 1 && gap <= 2 ? W.streak + 1 : 1;
+    var base = weighted(SPIN);
+    var mult = 1 + Math.min(streak - 1, 7) * 0.1;
+    var prize = Math.round(base * mult);
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var t0 = Date.now();
+    function finish() {
+      W.lastSpin = today; W.streak = streak; earn(prize); saveWallet();
+      spinning = false;
+      shopMsg("+" + prize + " coins" + (mult > 1 ? "  (" + base + " × " + mult.toFixed(1) + " streak bonus)" : ""), true);
+      renderShop();
+    }
+    if (still) { finish(); return; }
+    var iv = setInterval(function () {
+      var fake = SPIN[Math.floor(Math.random() * SPIN.length)][0];
+      shopMsg(String(fake), true);
+      if (Date.now() - t0 > 1400) { clearInterval(iv); finish(); }
+    }, 70);
+  });
+  $("weeklyBtn").addEventListener("click", function () {
+    if (W.lastWeekly === weekKey()) return;
+    var pool = TH.filter(function (t) { return t.tier !== "Epic" && W.owned.indexOf(t.id) === -1; });
+    W.lastWeekly = weekKey();
+    if (pool.length) {
+      var t = pool[Math.floor(Math.random() * pool.length)];
+      W.owned.push(t.id);
+      shopMsg("This week's gift: the " + t.name + " backdrop.", true);
+    } else {
+      earn(WEEKLY_COINS);
+      shopMsg("You own every free-gift backdrop. +" + WEEKLY_COINS + " coins instead.", true);
+    }
+    saveWallet();
+  });
+  $("adBtn").addEventListener("click", function () {
+    var today = dayKey();
+    if (adTimer || (W.adDay === today && W.adN >= AD_MAX)) return;
+    var left = AD_WAIT;
+    var box = $("adBox"); box.hidden = false;
+    $("adCount").textContent = String(left);
+    $("adClaim").hidden = true; $("adCountRow").hidden = false;
+    adTimer = setInterval(function () {
+      left--;
+      $("adCount").textContent = String(left);
+      if (left <= 0) { clearInterval(adTimer); adTimer = null; $("adCountRow").hidden = true; $("adClaim").hidden = false; renderShop(); }
+    }, 1000);
+    renderShop();
+  });
+  $("adClaim").addEventListener("click", function () {
+    var today = dayKey();
+    if (W.adDay !== today) { W.adDay = today; W.adN = 0; }
+    if (W.adN >= AD_MAX) return;
+    W.adN++; earn(AD_COINS); saveWallet();
+    $("adBox").hidden = true;
+    shopMsg("+" + AD_COINS + " coins", true);
+  });
+  $("themeToggle").addEventListener("click", function () { shopOpen = !shopOpen; buyArm = null; renderShop(); });
+  $("themeGrid").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-th]");
+    if (!b || b.disabled) return;
+    var id = b.dataset.th, t = THEME[id];
+    if (b.dataset.buy) {
+      if (buyArm !== id) {
+        buyArm = id; clearTimeout(buyTimer);
+        buyTimer = setTimeout(function () { buyArm = null; renderShop(); }, 3000);
+        renderShop(); return;
+      }
+      if (!t || W.coins < t.price || W.owned.indexOf(id) !== -1) { buyArm = null; renderShop(); return; }
+      W.coins -= t.price; W.owned.push(id); W.theme = id; buyArm = null;
+      shopMsg(t.name + " is yours and in use.", true);
+    } else {
+      W.theme = id && W.owned.indexOf(id) !== -1 ? id : "";
+    }
+    saveWallet();
+    applyTheme($("board"), W.theme);
+    if (S.deck && S.slug && S.canWrite) { dirty = true; clearTimeout(writeTimer); flush(); }
+  });
+  setInterval(function () { if (!$("home").hidden) renderShop(); }, 30000);
+
+  /* Google sign-in: keeps coins and backdrops on a real account instead of this one device */
+  var authBusy = false;
+  function authUrl() { return location.origin + location.pathname; }
+  async function refreshAuth() {
+    var row = $("gsave");
+    if (!S.sb || !S.sb.auth || !S.sb.auth.getUser) { row.hidden = true; return; }
+    try {
+      var r = await S.sb.auth.getUser();
+      var u = r && r.data && r.data.user;
+      if (!u) { row.hidden = true; return; }
+      var google = (u.identities || []).some(function (i) { return i.provider === "google"; });
+      row.hidden = false;
+      $("gStatus").textContent = google ? "Progress saved to Google" + (u.email ? " (" + u.email + ")" : "") + "." : "Playing on this device only. Clear your browser data and your coins are gone.";
+      $("gLink").hidden = google; $("gSignin").hidden = google; $("gOut").hidden = !google;
+      $("gLink").textContent = "Save with Google";
+    } catch (e) { row.hidden = true; }
+  }
+  function gFail(e) {
+    var m = String((e && e.message) || e || "");
+    if (/provider is not enabled|Unsupported provider/i.test(m)) shopMsg("Google sign-in isn't switched on for this site yet.");
+    else if (/manual linking/i.test(m)) shopMsg("Account linking isn't switched on for this site yet.");
+    else shopMsg("Couldn't start Google sign-in. Try again in a minute.");
+    authBusy = false;
+  }
+  $("gLink").addEventListener("click", async function () {
+    if (authBusy || !S.sb) return; authBusy = true;
+    try {
+      var r = await S.sb.auth.linkIdentity({ provider: "google", options: { redirectTo: authUrl() } });
+      if (r && r.error) gFail(r.error);
+    } catch (e) { gFail(e); }
+  });
+  $("gSignin").addEventListener("click", async function () {
+    if (authBusy || !S.sb) return; authBusy = true;
+    try {
+      var r = await S.sb.auth.signInWithOAuth({ provider: "google", options: { redirectTo: authUrl() } });
+      if (r && r.error) gFail(r.error);
+    } catch (e) { gFail(e); }
+  });
+  $("gOut").addEventListener("click", async function () {
+    if (!S.sb) return;
+    try { await S.sb.auth.signOut(); } catch (e) {}
+    location.href = authUrl();
+  });
+
   /* ---------- boot ---------- */
   async function init() {
     route();
@@ -2078,7 +2482,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var c = window.claude;
     if (cfg && cfg.url && cfg.key && String(cfg.url).indexOf("PASTE") === -1 && window.supabase && !(c && c.use)) {
       try {
-        var sb = window.supabase.createClient(cfg.url, cfg.key);
+        var sb = window.supabase.createClient(cfg.url, cfg.key, { auth: { flowType: "pkce" } });
+        S.sb = sb;
         var got = await sb.auth.getSession();
         var session = got.data && got.data.session;
         if (!session) {
@@ -2109,7 +2514,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       } catch (e) {}
     }
     S.ready = true;
+    walletStart();
     route();
+    renderShop();
   }
   init();
 })();
