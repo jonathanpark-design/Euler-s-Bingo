@@ -8,6 +8,9 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Prof Says">
 <meta name="theme-color" content="#F3EFE4">
 <meta property="og:title" content="Prof Says">
 <meta property="og:description" content="Free class games for lecture. Euler's Bingo and Pi's Point Rush.">
@@ -173,6 +176,18 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .gsave { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
 .gsave p { margin: 0; font-size: 13px; color: var(--muted); }
 .gsave .actions .linkbtn { font-size: 13px; }
+.mark { width: 0.82em; height: 0.82em; flex: none; border-radius: 22%; }
+h1 a { display: inline-flex; align-items: center; gap: 0.3em; }
+.nudge { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); right: 92px; bottom: max(16px, env(safe-area-inset-bottom, 0px)); max-width: 380px; z-index: 40; background: var(--ink); color: var(--bg); border-radius: 4px; padding: 10px 10px 10px 14px; display: flex; gap: 10px; align-items: center; font-size: 13px; line-height: 1.35; box-shadow: 3px 3px 0 var(--pen); animation: nudgein 0.25s ease-out; }
+.nudge[hidden] { display: none; }
+.nudge span { flex: 1; min-width: 0; }
+.nudge .btn.primary { background: var(--bg); color: var(--ink); border-color: var(--bg); padding: 5px 10px; font-size: 12.5px; flex: none; }
+.nudge .x { appearance: none; border: 0; background: none; color: inherit; font-size: 20px; line-height: 1; cursor: pointer; padding: 0 4px; opacity: 0.8; }
+@keyframes nudgein { from { transform: translateY(14px); opacity: 0; } }
+.confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 60; }
+.confetti i { position: absolute; top: -16px; width: 8px; height: 14px; animation: cfall 2.3s ease-in forwards; }
+@keyframes cfall { to { transform: translateY(108vh) rotate(720deg); } }
+@media (prefers-reduced-motion: reduce) { .confetti, .nudge { animation: none; } .confetti { display: none; } }
 .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .tab { font: inherit; font-weight: 600; font-size: 14px; color: var(--muted); background: none; border: 0; border-bottom: 3px solid var(--line); border-radius: 0; padding: 9px 6px; cursor: pointer; }
 .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--pen); }
@@ -294,7 +309,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.100.0"></script>
 <div class="wrap">
   <header>
-    <h1><a href="#" id="logo" aria-label="Prof Says, all cohorts">Prof Says</a></h1>
+    <h1><a href="#" id="logo" aria-label="Prof Says, all cohorts"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="#1B1A17"/><rect x="9" y="9" width="14" height="14" rx="2" fill="#FFD84A"/><rect x="25" y="9" width="14" height="14" rx="2" fill="#F3EFE4"/><rect x="41" y="9" width="14" height="14" rx="2" fill="#F3EFE4"/><rect x="9" y="25" width="14" height="14" rx="2" fill="#F3EFE4"/><rect x="25" y="25" width="14" height="14" rx="2" fill="#C4321D"/><rect x="41" y="25" width="14" height="14" rx="2" fill="#F3EFE4"/><rect x="9" y="41" width="14" height="14" rx="2" fill="#F3EFE4"/><rect x="25" y="41" width="14" height="14" rx="2" fill="#F3EFE4"/><rect x="41" y="41" width="14" height="14" rx="2" fill="#FFD84A"/></svg><span>Prof Says</span></a></h1>
   </header>
 
   <p class="status" id="status" role="status" hidden></p>
@@ -329,6 +344,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       <h2>Your cohorts</h2>
       <ul class="recent" id="recent"></ul>
     </div>
+    <button class="shopbtn" id="shopOpen" type="button" hidden><span><strong>Shop</strong><small id="shopSub">Daily spin, weekly gift, card backdrops</small></span><span class="coinchip"><span class="dot" id="shopDot" hidden></span><i class="coin" aria-hidden="true"></i><b id="shopCoins">0</b></span></button>
     <div class="userbadge" id="userBadge" hidden>
       <div class="ubrow" id="ubView">
         <span class="ubcheck" aria-hidden="true"><span>✓</span></span>
@@ -341,7 +357,6 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <button class="btn" id="ubCancel" type="button">Cancel</button>
       </div>
     </div>
-    <button class="shopbtn" id="shopOpen" type="button" hidden><span><strong>Shop</strong><small>Daily spin, weekly gift, card backdrops</small></span><span class="coinchip"><span class="dot" id="shopDot" hidden></span><i class="coin" aria-hidden="true"></i><b id="shopCoins">0</b></span></button>
   </section>
 
   <section id="shopPage" class="stack" hidden>
@@ -363,11 +378,6 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <button class="btn primary" id="adClaim" type="button" hidden>Claim coins</button>
       </div>
     </div>
-    <div class="sheet">
-      <h2>Backdrops</h2>
-      <p class="stats" id="themeHint">Backdrops change how your own bingo card looks. Earn coins by spinning, playing and chatting.</p>
-      <div class="themes" id="themeGrid"></div>
-    </div>
     <div class="sheet gsave" id="gsave" hidden>
       <p id="gStatus"></p>
       <div class="actions">
@@ -375,6 +385,11 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <button class="linkbtn" id="gSignin" type="button">Already saved? Sign in</button>
         <button class="btn" id="gOut" type="button" hidden>Sign out</button>
       </div>
+    </div>
+    <div class="sheet">
+      <h2>Backdrops</h2>
+      <p class="stats" id="themeHint">Backdrops change how your own bingo card looks. Earn coins by spinning, playing and chatting.</p>
+      <div class="themes" id="themeGrid"></div>
     </div>
   </section>
 
@@ -420,6 +435,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     <div class="codebox" id="codeBox">
       <span class="code" id="cohortCode"></span>
       <button class="btn" id="copyCode" type="button">Copy code</button>
+      <button class="btn" id="shareBtn" type="button" hidden>Invite</button>
       <button class="btn" id="copyLink" type="button">Copy link</button>
       <button class="btn" id="membersBtn" type="button" hidden>People</button>
       <button class="btn danger" id="deleteBtn" type="button" hidden>Delete cohort</button>
@@ -568,6 +584,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       </button>
     </div>
   </section>
+
+  <div class="nudge" id="nudge" role="status" hidden><span id="nudgeText"></span><button class="btn primary" id="nudgeGo" type="button">Open shop</button><button class="x" id="nudgeX" type="button" aria-label="Dismiss">×</button></div>
 
   <footer class="foot">
     <div><strong>Prof Says</strong> · Free class games</div>
@@ -1154,10 +1172,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!b) return;
     var idx = Number(b.dataset.i);
     if (S.freeIdx.has(idx)) return;
+    var prevN = lineCount(S.marked).n;
     if (S.marked.has(idx)) S.marked.delete(idx); else S.marked.add(idx);
     updateCard();
     queueSave();
-    earnLines(lineCount(S.marked).n);
+    var nowN = lineCount(S.marked).n;
+    earnLines(nowN);
+    if (nowN > prevN) { confetti(); setTimeout(nudge, 3000); }
   });
   $("clearBtn").addEventListener("click", function () {
     S.marked = new Set(S.freeIdx);
@@ -1329,7 +1350,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   function queueMembers() {
     if (membersQueued) return;
     membersQueued = true;
-    setTimeout(function () { membersQueued = false; renderMembers(); }, 60);
+    setTimeout(function () { membersQueued = false; updateCount(); renderMembers(); }, 60);
   }
   function renderMembers() {
     var panel = $("membersPanel");
@@ -2022,7 +2043,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   $("nfBack").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
 
   function joinByCode() {
-    var code = $("joinCode").value.trim().toLowerCase().replace(/^#/, "");
+    var code = $("joinCode").value.trim().toLowerCase();
+    if (code.indexOf("#") !== -1) code = code.split("#").pop();
     if (!/^[a-z0-9-]{3,40}$/.test(code)) { setStatus("Codes use letters, numbers and dashes. Check what your host sent you."); return; }
     location.hash = code;
   }
@@ -2251,7 +2273,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   var SPIN = [[10, 25], [15, 30], [20, 22], [25, 12], [40, 8], [100, 3]];
   var AD_COINS = 25, AD_MAX = 3, AD_WAIT = 8, PLAY_CAP = 40, WEEKLY_COINS = 150;
   var W = { v: 0, coins: 0, streak: 0, lastSpin: "", lastWeekly: "", owned: [], theme: "", adDay: "", adN: 0, playDay: "", playGot: 0, credited: {}, chatDay: "" };
-  var walletReady = false, walletChain = Promise.resolve(), shopOpen = false, spinning = false, adTimer = null;
+  var walletLoaded = false, walletReady = false, walletChain = Promise.resolve(), shopOpen = false, spinning = false, adTimer = null;
 
   function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
   function dayNum(k) { var p = k.split("-"); return Math.round(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000); }
@@ -2286,7 +2308,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     walletReady = true;
     S.db.doc("wallets/" + S.me.id).onSnapshot(function (snap) {
       if (snap.exists && (snap.owner === undefined || snap.owner === S.me.id)) adoptWallet(snap.data());
-      renderShop(); applyTheme($("board"), W.theme);
+      walletLoaded = true; renderShop(); applyTheme($("board"), W.theme);
     }, function () {});
     refreshAuth();
   }
@@ -2313,7 +2335,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!S.slug || !S.rushRound) return;
     var mine = S.picks.filter(function (p) { return p.id === S.me.id && p.round === S.rushRound; })[0];
     var key = "r|" + S.slug + "|" + S.rushRound;
-    if (!mine || W.credited[key]) return;
+    if (!mine) return;
+    nudgeLater();
+    if (W.credited[key]) return;
     W.credited[key] = 1;
     var keys = Object.keys(W.credited);
     if (keys.length > 10) delete W.credited[keys[0]];
@@ -2374,7 +2398,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!ok) return;
     var today = dayKey();
     $("coinN").textContent = String(W.coins); $("shopCoins").textContent = String(W.coins);
-    $("shopDot").hidden = !(W.lastSpin !== dayKey() || W.lastWeekly !== weekKey());
+    var spinReady = W.lastSpin !== dayKey(), giftReady = W.lastWeekly !== weekKey();
+    $("shopDot").hidden = !(spinReady || giftReady);
+    $("shopSub").textContent = spinReady ? "Your daily spin is ready" : (giftReady ? "Your weekly gift is ready" : (W.streak > 0 ? "Streak: " + W.streak + (W.streak === 1 ? " day" : " days") : "Daily spin, weekly gift, card backdrops"));
     // spin
     var spun = W.lastSpin === today;
     var live = W.lastSpin && (dayNum(today) - dayNum(W.lastSpin) <= 2) ? W.streak : 0;
@@ -2487,13 +2513,21 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("adBox").hidden = true;
     shopMsg("+" + AD_COINS + " coins", true);
   });
-  $("shopOpen").addEventListener("click", function () {
+  function openShop() {
+    S.shopFrom = S.slug && S.cohort ? S.slug : null;
     hideAll(); setStatus(""); shopMsg(""); buyArm = null;
+    $("chatSheet").hidden = true; $("chatBox").hidden = true;
     $("shopPage").hidden = false;
     renderShop(); refreshAuth();
     window.scrollTo(0, 0);
+  }
+  $("shopOpen").addEventListener("click", openShop);
+  $("shopBack").addEventListener("click", function () {
+    if (S.shopFrom && S.slug === S.shopFrom && S.cohort) {
+      hideAll(); $("cohort").hidden = false; $("chatSheet").hidden = false; S.shopFrom = null;
+      window.scrollTo(0, 0);
+    } else if (location.hash) location.hash = ""; else route();
   });
-  $("shopBack").addEventListener("click", function () { if (location.hash) location.hash = ""; else route(); });
   $("themeGrid").addEventListener("click", function (e) {
     var b = e.target.closest("button[data-th]");
     if (!b || b.disabled) return;
@@ -2559,6 +2593,58 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     try { await S.sb.auth.signOut(); } catch (e) {}
     location.href = authUrl();
   });
+
+  /* nudges, confetti, invite */
+  var nudgeT = null, nudgeSeen = {};
+  function nudge() {
+    if (!S.db || !S.canWrite || !walletLoaded) return;
+    if (!$("shopPage").hidden || !$("home").hidden) return;
+    var today = dayKey(), parts = [];
+    if (W.lastSpin !== today) parts.push("daily spin");
+    if (W.lastWeekly !== weekKey()) parts.push("weekly gift");
+    if (!parts.length) return;
+    var key = today + "|" + parts.join();
+    if (nudgeSeen[key]) return;
+    nudgeSeen[key] = 1;
+    $("nudgeText").textContent = "Nice game. Your " + parts.join(" and ") + (parts.length > 1 ? " are" : " is") + " waiting.";
+    $("nudge").hidden = false;
+    clearTimeout(nudgeT);
+    nudgeT = setTimeout(function () { $("nudge").hidden = true; }, 10000);
+  }
+  function nudgeLater() { clearTimeout(nudgeT); nudgeT = setTimeout(nudge, 2500); }
+  $("nudgeX").addEventListener("click", function () { $("nudge").hidden = true; });
+  $("nudgeGo").addEventListener("click", function () { $("nudge").hidden = true; openShop(); });
+  function confetti() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var box = el("div", "confetti"); box.setAttribute("aria-hidden", "true");
+    var colors = ["#FFD84A", "#C4321D", "#1B1A17", "#2E7D32", "#F3EFE4", "#4A90D9"];
+    for (var i = 0; i < 46; i++) {
+      var p = el("i");
+      p.style.left = Math.random() * 100 + "%";
+      p.style.background = colors[i % colors.length];
+      p.style.animationDelay = Math.random() * 0.5 + "s";
+      p.style.animationDuration = 1.7 + Math.random() * 1.2 + "s";
+      p.style.transform = "rotate(" + Math.floor(Math.random() * 180) + "deg)";
+      box.appendChild(p);
+    }
+    document.body.appendChild(box);
+    setTimeout(function () { box.remove(); }, 3600);
+  }
+  if (navigator.share) $("shareBtn").hidden = false;
+  $("shareBtn").addEventListener("click", function () {
+    var url = location.href.split("#")[0] + "#" + (S.slug || "");
+    var name = S.cohort && S.cohort.name ? S.cohort.name : "my class";
+    navigator.share({ title: "Prof Says", text: "Join " + name + " on Prof Says. Free bingo and word-count games for lecture.", url: url }).catch(function () {});
+  });
+  function updateCount() {
+    if (!S.cohort) return;
+    var ids = {};
+    if (S.cohort.host) ids[S.cohort.host] = 1;
+    S.cards.forEach(function (c) { if (c.owner === undefined || c.owner === c.id) ids[c.id] = 1; });
+    S.picks.forEach(function (c) { if (c.owner === undefined || c.owner === c.id) ids[c.id] = 1; });
+    var n = Object.keys(ids).length;
+    $("cohortEyebrow").textContent = "Cohort · " + n + (n === 1 ? " player" : " players");
+  }
 
   /* ---------- boot ---------- */
   async function init() {
