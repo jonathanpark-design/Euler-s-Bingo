@@ -2276,7 +2276,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   var SPIN = [[10, 25], [15, 30], [20, 22], [25, 12], [40, 8], [100, 3]];
   var AD_COINS = 25, AD_MAX = 3, AD_WAIT = 8, PLAY_CAP = 40, WEEKLY_COINS = 150;
-  var W = { v: 0, coins: 0, streak: 0, lastSpin: "", lastWeekly: "", owned: [], theme: "", adDay: "", adN: 0, playDay: "", playGot: 0, credited: {}, chatDay: "" };
+  var W = { v: 0, coins: 0, lastSpin: "", lastWeekly: "", owned: [], theme: "", adDay: "", adN: 0, playDay: "", playGot: 0, credited: {}, chatDay: "" };
   var walletLoaded = false, walletReady = false, walletChain = Promise.resolve(), shopOpen = false, spinning = false, adTimer = null;
 
   function dayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
@@ -2288,7 +2288,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!d || typeof d !== "object") return;
     if (nint(d.v) < W.v) return;
     W.v = nint(d.v);
-    W.coins = nint(d.coins); W.streak = nint(d.streak);
+    W.coins = nint(d.coins);
     W.lastSpin = typeof d.lastSpin === "string" ? d.lastSpin.slice(0, 10) : "";
     W.lastWeekly = typeof d.lastWeekly === "string" ? d.lastWeekly.slice(0, 10) : "";
     W.owned = (Array.isArray(d.owned) ? d.owned : []).filter(function (x, i, a) { return THEME[x] && a.indexOf(x) === i; });
@@ -2404,14 +2404,12 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("coinN").textContent = String(W.coins); $("shopCoins").textContent = String(W.coins);
     var spinReady = W.lastSpin !== dayKey(), giftReady = W.lastWeekly !== weekKey();
     $("shopDot").hidden = !(spinReady || giftReady);
-    $("shopSub").textContent = spinReady ? "Your daily spin is ready" : (giftReady ? "Your weekly gift is ready" : (W.streak > 0 ? "Streak: " + W.streak + (W.streak === 1 ? " day" : " days") : "Daily spin, weekly gift, card backdrops"));
+    $("shopSub").textContent = spinReady ? "Your daily spin is ready" : (giftReady ? "Your weekly gift is ready" : "Daily spin, weekly gift, card backdrops");
     // spin
     var spun = W.lastSpin === today;
-    var live = W.lastSpin && (dayNum(today) - dayNum(W.lastSpin) <= 2) ? W.streak : 0;
     $("spinBtn").disabled = spun || spinning;
     $("spinBtn").textContent = spun ? "Spun" : "Spin";
-    $("spinSub").textContent = spun ? "Next spin in " + untilMidnight() + ". Streak: " + W.streak + (W.streak === 1 ? " day" : " days") + "." :
-      (live ? "Streak: " + live + (live === 1 ? " day" : " days") + ". Spin to keep it going." : "Free once a day. Come back daily for a bigger bonus.");
+    $("spinSub").textContent = spun ? "Next spin in " + untilMidnight() + "." : "Free once a day.";
     // weekly
     var got = W.lastWeekly === weekKey();
     $("weeklyBtn").disabled = got;
@@ -2461,17 +2459,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var today = dayKey();
     if (spinning || W.lastSpin === today) return;
     spinning = true; $("spinBtn").disabled = true;
-    var gap = W.lastSpin ? dayNum(today) - dayNum(W.lastSpin) : 99;
-    var streak = gap >= 1 && gap <= 2 ? W.streak + 1 : 1;
     var base = weighted(SPIN);
-    var mult = 1 + Math.min(streak - 1, 7) * 0.1;
-    var prize = Math.round(base * mult);
+    var prize = base;
     var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var t0 = Date.now();
     function finish() {
-      W.lastSpin = today; W.streak = streak; earn(prize); saveWallet();
+      W.lastSpin = today; earn(prize); saveWallet();
       spinning = false;
-      shopMsg("+" + prize + " coins" + (mult > 1 ? "  (" + base + " × " + mult.toFixed(1) + " streak bonus)" : ""), true);
+      shopMsg("+" + prize + " coins", true);
       renderShop();
     }
     if (still) { finish(); return; }
