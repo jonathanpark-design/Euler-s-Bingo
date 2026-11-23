@@ -273,6 +273,19 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .pscore { font-family: var(--font-display); font-weight: 700; font-size: 20px; }
 .feed li { display: block; padding: 6px 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 3px; font-size: 14px; }
 .piSteps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+
+.hostgrid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cohort-head { align-items: center; }
+.cohort-head > div { flex: 1; min-width: 0; }
+.infobtn { appearance: none; flex: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--ink); background: var(--surface); color: var(--ink); font: italic 700 20px var(--font-display); cursor: pointer; }
+.infobtn:hover { background: var(--ink); color: var(--bg); }
+.infomodal { position: fixed; inset: 0; z-index: 85; background: rgba(10,10,14,.6); display: flex; align-items: center; justify-content: center; padding: 16px; animation: rvin .2s ease-out; }
+.infomodal[hidden] { display: none; }
+.infocard { width: min(100%, 380px); background: var(--surface); color: var(--ink); border: 2px solid var(--ink); border-radius: 12px; padding: 18px; box-shadow: 5px 5px 0 var(--ink); display: flex; flex-direction: column; gap: 12px; animation: popin2 .3s cubic-bezier(.2,1.5,.4,1); }
+.infocard ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+.bigmic { min-height: 56px; font-size: 18px; }
+.bigmic.on { background: var(--win); border-color: var(--win); color: var(--win-ink); }
+@keyframes popin2 { from { transform: scale(.85); opacity: 0; } }
 .spinres { font-family: var(--font-mono); font-size: 14px; background: var(--ok-bg); border-radius: 3px; padding: 8px 12px; }
 .spinres.big { font-family: var(--font-display); font-weight: 700; font-size: 20px; background: var(--win); color: var(--win-ink); }
 .adbox { border: 1px dashed var(--ink); border-radius: 3px; padding: 12px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; background: var(--bg); }
@@ -436,7 +449,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.100.0"></script>
 <div class="wrap">
   <header>
-    <h1><a href="#" id="logo" aria-label="Prof Says, all cohorts"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" class="b"/><rect x="9" y="9" width="14" height="14" rx="2" class="w"/><rect x="25" y="9" width="14" height="14" rx="2" class="c"/><rect x="41" y="9" width="14" height="14" rx="2" class="c"/><rect x="9" y="25" width="14" height="14" rx="2" class="c"/><rect x="25" y="25" width="14" height="14" rx="2" class="p"/><rect x="41" y="25" width="14" height="14" rx="2" class="c"/><rect x="9" y="41" width="14" height="14" rx="2" class="c"/><rect x="25" y="41" width="14" height="14" rx="2" class="c"/><rect x="41" y="41" width="14" height="14" rx="2" class="w"/></svg><span>Prof Says</span></a></h1>
+    <h1><a href="#" id="logo" aria-label="Prof Says, all games"><svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" class="b"/><rect x="9" y="9" width="14" height="14" rx="2" class="w"/><rect x="25" y="9" width="14" height="14" rx="2" class="c"/><rect x="41" y="9" width="14" height="14" rx="2" class="c"/><rect x="9" y="25" width="14" height="14" rx="2" class="c"/><rect x="25" y="25" width="14" height="14" rx="2" class="p"/><rect x="41" y="25" width="14" height="14" rx="2" class="c"/><rect x="9" y="41" width="14" height="14" rx="2" class="c"/><rect x="25" y="41" width="14" height="14" rx="2" class="c"/><rect x="41" y="41" width="14" height="14" rx="2" class="w"/></svg><span>Prof Says</span></a></h1>
   </header>
 
   <p class="status" id="status" role="status" hidden></p>
@@ -452,22 +465,22 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   <section id="home" class="stack" hidden>
     <div class="sheet" id="gamePicker">
-      <h2>Create a game or join with a code</h2>
+      <h2>Start a game</h2>
       <div class="games">
-        <button class="game big" type="button" data-game="bingo"><span class="gname">Euler's Bingo</span><span class="gdesc">Pitch lecture habits, vote on the best, then get your own shuffled bingo card.</span></button>
-        <button class="game small" type="button" data-game="rush"><span class="gname">Avogadro's Number</span><span class="gdesc">Predict how many times your prof says a few chosen words.</span></button>
-        <button class="game small" type="button" data-game="pi"><span class="gname">Pi's Point Rush</span><span class="gdesc">Beat the clock: write words your prof will say, then score points when they say them.</span></button>
+        <button class="game big" type="button" data-game="bingo"><span class="gname">Euler's Bingo</span><span class="gdesc">Vote on lecture habits, then play on your own shuffled card.</span></button>
+        <button class="game small" type="button" data-game="pi"><span class="gname">Pi's Point Rush</span><span class="gdesc">Write words your prof will say. Score when they say them.</span></button>
+        <button class="game small" type="button" data-game="rush"><span class="gname">Avogadro's Number</span><span class="gdesc">Guess how often your prof says a few words.</span></button>
       </div>
-      <div class="joinsep"><h3>Join with a code</h3>
+      <div class="joinsep"><h3>Have a code?</h3>
       <div class="row">
-        <label for="joinCode"><span>Cohort code</span>
-          <input type="text" id="joinCode" maxlength="40" placeholder="e.g. math-135-k7f" autocomplete="off">
+        <label for="joinCode"><span>Code</span>
+          <input type="text" id="joinCode" maxlength="40" placeholder="Enter code" autocomplete="off">
         </label>
         <button class="btn" id="joinBtn" type="button">Join</button>
       </div></div>
     </div>
     <div class="sheet" id="recentBox" hidden>
-      <h2>Your cohorts</h2>
+      <h2>Your games</h2>
       <ul class="recent" id="recent"></ul>
     </div>
     <button class="shopbtn" id="shopOpen" type="button" hidden><span><strong>Shop</strong><small id="shopSub">Daily spin, weekly gift, card backdrops</small></span><span class="coinchip"><span class="dot" id="shopDot" hidden></span><i class="coin" aria-hidden="true"></i><b id="shopCoins">0</b></span></button>
@@ -526,12 +539,12 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       <button class="btn" id="startBack" type="button">← Back</button>
       <div>
         <div class="eyebrow" id="startGame">Euler's Bingo</div>
-        <h2 id="startTitle">Name your cohort</h2>
+        <h2 id="startTitle">Name your game</h2>
       </div>
     </div>
     <div class="sheet">
       <div class="row">
-        <label for="newName"><span>Cohort name</span>
+        <label for="newName"><span>Name</span>
           <input type="text" id="newName" maxlength="40" placeholder="e.g. ECE 105 · 2029 ECE" autocomplete="off">
         </label>
         <button class="btn primary" id="createBtn" type="button">Create</button>
@@ -545,9 +558,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     <p class="note" id="nfCode"></p>
     <div class="row" id="nfForm">
       <label for="nfName"><span>Start it as</span>
-        <input type="text" id="nfName" maxlength="40" placeholder="Cohort name" autocomplete="off">
+        <input type="text" id="nfName" maxlength="40" placeholder="Game name" autocomplete="off">
       </label>
-      <button class="btn primary" id="nfCreate" type="button">Start cohort</button>
+      <button class="btn primary" id="nfCreate" type="button">Start game</button>
     </div>
     <div class="actions"><button class="btn" id="nfBack" type="button">Back</button></div>
   </section>
@@ -559,6 +572,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <div class="eyebrow" id="cohortEyebrow">Cohort</div>
         <h2 id="cohortName"></h2>
       </div>
+      <button class="infobtn" id="infoBtn" type="button" aria-label="How to play">i</button>
     </div>
     <div class="codebox" id="codeBox">
       <span class="code" id="cohortCode"></span>
@@ -576,34 +590,25 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     <div id="rush" class="stack" hidden>
       <div class="sheet">
         <div class="sheet-head">
-          <div class="eyebrow" id="rushPhase">Step 1</div>
+          <div class="eyebrow" id="rushPhase"></div>
           <div class="stats" id="rushStats"></div>
         </div>
-        <p class="note" id="rushHelp"></p>
-      </div>
-      <div class="hostbox" id="rushHost" hidden>
-        <div class="eyebrow">Host controls</div>
-        <label for="nWordsSel" id="nWordsLbl" hidden><span>Words to predict each lecture</span>
+        <label for="nWordsSel" id="nWordsLbl" hidden><span>Words per lecture</span>
           <select id="nWordsSel"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select>
         </label>
-        <p class="note" id="rushHostNote"></p>
-        <div class="actions"><button class="btn primary" id="rushNext" type="button">Next</button></div>
       </div>
+      <div class="actions" id="rushTop" hidden></div>
       <div class="sheet" id="rushPitch" hidden>
-        <h2>Pitch &amp; vote words</h2>
+        <h2>Pitch &amp; vote</h2>
         <div class="row">
-          <label for="wordInput"><span>Your word</span>
-            <input type="text" id="wordInput" maxlength="20" placeholder="One word your prof says" autocomplete="off">
+          <label for="wordInput"><span>Word</span>
+            <input type="text" id="wordInput" maxlength="20" placeholder="One word" autocomplete="off">
           </label>
           <button class="btn primary" id="wordBtn" type="button">Pitch</button>
         </div>
         <p class="note" id="wordCount"></p>
         <ul class="plist" id="wordList"></ul>
         <button class="btn morebtn" id="moreWords" type="button" hidden></button>
-      </div>
-      <div class="sheet" id="rushPlay" hidden>
-        <h2 id="rushPlayTitle"></h2>
-        <ul class="wrows" id="wordRows"></ul>
       </div>
       <div class="sheet" id="rushResults" hidden>
         <h2>Scoreboard</h2>
@@ -615,38 +620,35 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
           <ul class="wrows" id="rushViewList"></ul>
         </div>
       </div>
+      <div class="sheet" id="rushPlay" hidden>
+        <h2 id="rushPlayTitle"></h2>
+        <ul class="wrows" id="wordRows"></ul>
+      </div>
+      <div class="actions" id="rushBottom" hidden><button class="btn primary block" id="rushNext" type="button">Next</button></div>
     </div>
 
     <div id="pi" class="stack" hidden>
       <div class="sheet">
         <div class="sheet-head">
-          <div class="eyebrow" id="piPhase">Step 1</div>
+          <div class="eyebrow" id="piPhase"></div>
           <div class="stats" id="piStats"></div>
         </div>
-        <p class="note" id="piHelp"></p>
       </div>
-      <div class="hostbox" id="piHost" hidden>
-        <div class="eyebrow">Host controls</div>
-        <div class="hostgrid" id="piSettings">
-          <label for="piDur"><span>Writing time</span><select id="piDur"><option value="30">30 seconds</option><option value="60">1 minute</option><option value="90" selected>90 seconds</option><option value="120">2 minutes</option><option value="180">3 minutes</option><option value="300">5 minutes</option></select></label>
-          <label for="piBanN"><span>Words to ban</span><select id="piBanN"><option value="3">3</option><option value="5" selected>5</option><option value="8">8</option><option value="10">10</option><option value="15">15</option></select></label>
+      <div class="sheet" id="piSetup" hidden>
+        <h2>Setup</h2>
+        <div class="hostgrid two">
+          <label for="piDur"><span>Writing time</span><select id="piDur"></select></label>
+          <label for="piBanN"><span>Words to ban</span><input type="text" id="piBanN" inputmode="numeric" maxlength="2" autocomplete="off"></label>
         </div>
-        <p class="note" id="piHostNote"></p>
-        <div class="actions"><button class="btn primary" id="piNext" type="button">Next</button></div>
+        <label class="siteopt"><input type="checkbox" id="piMicSet" checked> <span>Phones listen for words</span></label>
+        <p class="note" id="piSetMsg" role="status"></p>
       </div>
-      <div class="sheet" id="piLobby" hidden>
-        <h2>How a round works</h2>
-        <ol class="piSteps">
-          <li><strong>Write.</strong> A timer starts. Type as many words as you can that your prof might say.</li>
-          <li><strong>Ban.</strong> The class votes to ban the obvious words, so only clever ones score.</li>
-          <li><strong>Lecture.</strong> Tap a word when you hear your prof say it. Longer words are worth more points.</li>
-        </ol>
-      </div>
+      <div class="sheet" id="piWait" hidden><p class="note">Waiting for the host to start.</p></div>
       <div class="sheet" id="piWrite" hidden>
-        <div class="sheet-head"><h2>Write your words</h2><div class="pitimer" id="piTimer">0:00</div></div>
+        <div class="sheet-head"><h2>Write words</h2><div class="pitimer" id="piTimer">0:00</div></div>
         <div class="row">
-          <label for="piWordInput"><span>A word your prof might say</span>
-            <input type="text" id="piWordInput" maxlength="20" placeholder="One word, then Enter" autocomplete="off">
+          <label for="piWordInput"><span>Word</span>
+            <input type="text" id="piWordInput" maxlength="20" placeholder="Type, then Enter" autocomplete="off">
           </label>
           <button class="btn primary" id="piWordBtn" type="button">Add</button>
         </div>
@@ -654,21 +656,19 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <ul class="chips" id="piMine"></ul>
       </div>
       <div class="sheet" id="piBan" hidden>
-        <h2>Ban the obvious words</h2>
+        <h2>Ban words</h2>
         <p class="note" id="piBanNote"></p>
-        <label for="piBanFind"><span>Search words</span><input type="text" id="piBanFind" maxlength="20" placeholder="Search" autocomplete="off"></label>
+        <label for="piBanFind"><span>Search</span><input type="text" id="piBanFind" maxlength="20" placeholder="Find a word" autocomplete="off"></label>
         <ul class="plist" id="piBanList"></ul>
         <button class="btn morebtn" id="piBanMore" type="button" hidden></button>
       </div>
       <div class="sheet" id="piLive" hidden>
-        <div class="sheet-head"><h2>Tap when you hear it</h2><div class="pscore" id="piScore"></div></div>
-        <p class="note" id="piLiveNote"></p>
+        <div class="sheet-head"><h2>Live</h2><div class="pscore" id="piScore"></div></div>
+        <button class="btn primary block bigmic" id="piMic" type="button" hidden>Turn on listening</button>
+        <p class="note" id="piMicNote" hidden>Your browser's speech service may process audio. Prof Says never saves it.</p>
         <div class="pwords" id="piBtns"></div>
-        <div id="piHeardBox" hidden><div class="eyebrow">Others just heard these. Tap if you heard them too</div><div class="pwords" id="piHeard"></div></div>
-        <label for="piFind"><span>Heard a word that isn't on your list?</span><input type="text" id="piFind" maxlength="20" placeholder="Type it here" autocomplete="off"></label>
-        <div class="pwords" id="piFindRes"></div>
-        <div class="actions"><button class="btn" id="piMic" type="button" hidden>Let my phone listen (beta)</button></div>
-        <p class="note" id="piMicNote" hidden>Your browser's speech service listens while this is on and may process the audio. Prof Says never records or saves it.</p>
+        <div id="piHeardBox" hidden><div class="eyebrow">Others heard</div><div class="pwords" id="piHeard"></div></div>
+        <p class="note" id="piLiveNote"></p>
         <ul class="plist feed" id="piFeed"></ul>
       </div>
       <div class="sheet" id="piResults" hidden>
@@ -676,12 +676,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <p class="note" id="piResNote"></p>
         <ul class="lb" id="piLb"></ul>
         <div id="piViewer" class="stack" hidden>
-          <div class="actions viewtop"><button class="btn" id="piViewBack" type="button">← Back to scoreboard</button></div>
+          <div class="actions viewtop"><button class="btn" id="piViewBack" type="button">← Back</button></div>
           <div class="eyebrow" id="piViewTitle">Player</div>
           <ul class="wrows" id="piViewList"></ul>
         </div>
         <div class="actions"><button class="btn" id="piShare" type="button">Share my score</button></div>
       </div>
+      <div class="actions" id="piBottom" hidden><button class="btn primary block" id="piNext" type="button">Next</button></div>
     </div>
 
     <nav class="tabs" id="tabs" aria-label="Cohort sections">
@@ -710,7 +711,6 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
     <div id="panelVote" class="sheet" hidden>
       <h2>Pitch &amp; vote</h2>
-      <p class="note">Pitch things your prof does in lecture. Pitches are anonymous. The class votes, the host picks how many of the top-voted prompts get used, and every player gets their own shuffled card.</p>
       <div class="row">
         <label for="pitchInput"><span>Your pitch</span>
           <input type="text" id="pitchInput" maxlength="34" placeholder="Something that happens every lecture" autocomplete="off">
@@ -719,16 +719,16 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       </div>
       <p class="note" id="pitchCount"></p>
       <div class="hostbox" id="hostBox" hidden>
-        <div class="eyebrow">Host controls</div>
+        <div class="eyebrow">Setup</div>
         <div class="hostgrid">
-          <label for="gridSel"><span>Grid size</span>
+          <label for="gridSel"><span>Grid</span>
             <select id="gridSel">
               <option value="3">3 × 3</option>
               <option value="4">4 × 4</option>
               <option value="5" selected>5 × 5</option>
             </select>
           </label>
-          <label for="freeSel"><span>Free squares</span>
+          <label for="freeSel"><span>Free</span>
             <select id="freeSel">
               <option value="0">None</option>
               <option value="1" selected>1</option>
@@ -736,12 +736,11 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
               <option value="3">3</option>
             </select>
           </label>
-          <label for="deckSize"><span>How many prompts to use</span>
+          <label for="deckSize"><span>Prompts to use</span>
             <input type="text" id="deckSize" inputmode="numeric" maxlength="2" value="40" autocomplete="off">
           </label>
         </div>
         <p class="note" id="deckMsg" role="status"></p>
-        <p class="note" id="hostNote"></p>
         <div class="actions"><button class="btn primary" id="lockBtn" type="button">Lock prompts and deal cards</button></div>
       </div>
       <p class="note" id="deckState"></p>
@@ -764,7 +763,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       </div>
     </div>
 
-    <div class="dangerzone" id="dangerZone" hidden><button class="btn danger" id="deleteBtn" type="button">Delete cohort</button></div>
+    <div class="dangerzone" id="dangerZone" hidden><button class="btn danger" id="deleteBtn" type="button">Delete game</button></div>
 
     <div class="chatwrap" id="chatSheet" hidden>
       <div class="chatpanel" id="chatBox" role="dialog" aria-label="Class chat" hidden>
@@ -787,6 +786,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     </div>
   </section>
 
+  <div class="infomodal" id="info" role="dialog" aria-modal="true" aria-labelledby="infoTitle" hidden>
+    <div class="infocard"><h2 id="infoTitle">How to play</h2><ol id="infoList"></ol><p class="note" id="infoNote" hidden></p><button class="btn primary block" id="infoClose" type="button">Got it</button></div>
+  </div>
   <div class="pop" id="pop" role="status" aria-live="polite" hidden><span class="popck" aria-hidden="true">&#10003;</span><span id="popText"></span><button class="btn primary" id="popGo" type="button" hidden></button></div>
   <div class="bingobar" id="bingoBar" role="status" aria-live="assertive" hidden></div>
   <div class="nudge" id="nudge" role="status" hidden><span id="nudgeText"></span><button class="btn primary" id="nudgeGo" type="button">Open shop</button><button class="x" id="nudgeX" type="button" aria-label="Dismiss">×</button></div>
@@ -910,7 +912,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     forget(S.slug);
   }
   function guardWrite() {
-    if (S.removed) { setStatus("You were removed from this cohort."); return false; }
+    if (S.removed) { setStatus("You were removed from this game."); return false; }
     if (!S.db) { setStatus(S.authError ? "Lots of people are joining from your network right now. Hang tight, we keep retrying." : "Cohorts need the Claude viewer with a signed-in account."); return false; }
     if (!S.canWrite) { setStatus("You can look around, but playing needs Contributor access. Ask the host to invite you."); return false; }
     return true;
@@ -975,7 +977,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!sure && !btn.dataset.confirm) {
       btn.dataset.confirm = "1";
       btn.dataset.label = btn.textContent;
-      btn.textContent = btn.id === "deleteBtn" ? "Tap again to delete this cohort for everyone" : "Click again to delete";
+      btn.textContent = btn.id === "deleteBtn" ? "Tap again to delete for everyone" : "Click again to delete";
       clearTimeout(delTimer);
       delTimer = setTimeout(function () { delete btn.dataset.confirm; btn.textContent = btn.dataset.label; }, 4000);
       return;
@@ -1026,7 +1028,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("createBtn").disabled = !ok; $("joinBtn").disabled = !ok;
     if (!S.ready) setStatus("Connecting to the class database…", true);
     else if (!S.db) setStatus(S.authError ? "Lots of people are joining from your network right now. Hang tight, we keep retrying." : "Cohorts need the Claude viewer with a signed-in account.", true);
-    else if (!S.canWrite) setStatus("You can browse cohorts, but starting or playing one needs Contributor access.", true);
+    else if (!S.canWrite) setStatus("You can browse games, but playing needs Contributor access.", true);
   }
 
   /* ---------- cohort data ---------- */
@@ -1173,6 +1175,25 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.votes.forEach(function (v) { if (v.u === S.me.id) set.add(v.p); });
     return set;
   }
+  /* ---------- how to play ---------- */
+  var INFO = {
+    bingo: ["Pitch things your prof does in lecture.", "Vote for your favorites.", "The host locks the top prompts and deals everyone a shuffled card.", "Tap squares as they happen. First bingo wins."],
+    rush: ["Pitch and vote on words your prof says.", "The top words get locked in. Guess how many times each is said.", "In lecture, tap + every time you hear one.", "Closest guesses score. Exact is 3, off by 1 is 2, off by 2 is 1."],
+    pi: ["Write words your prof might say before the timer ends.", "Vote to ban the obvious ones.", "In lecture, phones listen for the words and classmates confirm them.", "Each confirmed word scores its letters. Rare words score more, and catching every one earns a bonus."]
+  };
+  function openInfo() {
+    var g = S.cohort && S.cohort.game === "pi" ? "pi" : (S.cohort && S.cohort.game === "rush" ? "rush" : "bingo");
+    var ol = $("infoList"); ol.textContent = "";
+    INFO[g].forEach(function (t) { ol.appendChild(el("li", "", t)); });
+    var n = $("infoNote"); n.hidden = g !== "pi"; n.textContent = "Listening uses your browser's speech service. Prof Says never saves audio.";
+    $("info").hidden = false; $("infoClose").focus();
+  }
+  function closeInfo() { $("info").hidden = true; }
+  $("infoBtn").addEventListener("click", openInfo);
+  $("infoClose").addEventListener("click", closeInfo);
+  $("info").addEventListener("click", function (e) { if (e.target === $("info")) closeInfo(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !$("info").hidden) closeInfo(); });
+
   /* ---------- confirmation pop, bingo bar ---------- */
   var popT = null, popFn = null, barT = null;
   function pop(text, label, fn, ms) {
@@ -1269,15 +1290,12 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         $("freeSel").value = String(S.freeN);
         $("deckSize").value = String(S.deck ? S.deck.length : DECK_SIZE);
       }
-      $("hostNote").textContent = S.round > 0
-        ? "Round " + S.round + " is dealt. Dealing again uses these settings, gives everyone a new card and clears their marks."
-        : "When voting is done, lock the top prompts. Everyone then gets their own shuffled card.";
       $("lockBtn").textContent = S.round > 0 ? "Deal a new round" : "Lock prompts and deal cards";
       updateDeckMsg();
     }
     $("deckState").textContent = S.round > 0
       ? "Prompts locked. Round " + S.round + " · " + S.grid + "×" + S.grid + " card · " + S.freeN + " free · top " + (S.deck ? S.deck.length : 0) + " prompts."
-      : "Prompts not locked yet." + (host ? "" : " The host (whoever started this cohort) locks it once voting is done.");
+      : "Prompts not locked yet." + (host ? "" : " The host locks them after voting.");
     var canPlay = S.canWrite;
     $("pitchBtn").disabled = !canPlay; $("pitchInput").disabled = !canPlay;
     keepEditFocus();
@@ -1528,7 +1546,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     });
     note.textContent = cards.length === 0
       ? "Nobody has joined this round yet."
-      : "Round " + S.round + ". Bingo times first, then most squares marked. Tap a row to see that player's card. Players without a username get a random alias.";
+      : "Round " + S.round + ". Fastest bingo wins. Tap a player to see their card.";
     var used = {}, names = {};
     cards.map(function (c) { return c.id; }).sort().forEach(function (id) {
       var h = xmur3(id + "|" + S.slug);
@@ -1707,7 +1725,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       }
       if (canRemove(id)) {
         var x = el("button", "btn xdel", "×");
-        x.type = "button"; x.dataset.kick = id; x.setAttribute("aria-label", "Remove " + name + " from the cohort");
+        x.type = "button"; x.dataset.kick = id; x.setAttribute("aria-label", "Remove " + name + " from the game");
         li.appendChild(x);
       }
       ul.appendChild(li);
@@ -2119,7 +2137,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     live: "The lecture is on. Tap + each time you hear a word. Your guesses are locked in.",
     done: "Lecture over. The official count for each word is the most common tally across the class. Closest guesses score: exact 3, off by 1 is 2, off by 2 is 1."
   };
-  var PHASE_NAME = { pitch: "Step 1 of 4 · Pick the words", predict: "Step 2 of 4 · Predict", live: "Step 3 of 4 · Lecture is live", done: "Step 4 of 4 · Results" };
+  var PHASE_NAME = { pitch: "Pick words", predict: "Predict", live: "Lecture is live", done: "Results" };
 
   function renderRush() {
     queueMembers();
@@ -2128,27 +2146,21 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var host = isHost();
     $("rushPhase").textContent = PHASE_NAME[phase] || "";
     $("rushStats").textContent = "Lecture " + S.round;
-    $("rushHelp").textContent = phase === "pitch" ? "Pitch single words your prof says a lot, and vote on them. The host locks the top " + maxWords() + (maxWords() === 1 ? " word" : " words") + " when voting is done." : (HELP[phase] || "");
     $("rushPitch").hidden = phase !== "pitch";
     $("rushPlay").hidden = phase === "pitch";
     $("rushResults").hidden = phase !== "done";
     if (phase === "pitch") renderWordList();
     else renderRows(phase);
     if (phase === "done") { renderRushBoard(); earnRush(); }
-    var hostBox = $("rushHost");
-    hostBox.hidden = !host;
+    var top = $("rushTop"), bottom = $("rushBottom"), btn = $("rushNext");
+    top.hidden = !(host && phase === "pitch"); bottom.hidden = !(host && phase !== "pitch");
+    var holder = phase === "pitch" ? top : bottom;
+    if (btn.parentNode !== holder) holder.appendChild(btn);
+    $("nWordsLbl").hidden = !(host && phase === "pitch");
     if (host) {
-      $("nWordsLbl").hidden = phase !== "pitch";
       if (document.activeElement !== $("nWordsSel")) $("nWordsSel").value = String(maxWords());
-      var btn = $("rushNext");
-      var label = { pitch: "Lock top " + maxWords() + (maxWords() === 1 ? " word" : " words"), predict: "Start the lecture", live: "End the lecture", done: "Start next lecture" }[phase];
+      var label = { pitch: "Lock top " + maxWords() + (maxWords() === 1 ? " word" : " words"), predict: "Start the lecture", live: "End the lecture", done: "Next lecture" }[phase];
       if (!btn.dataset.confirm) btn.textContent = label;
-      $("rushHostNote").textContent = {
-        pitch: "When voting is done, lock the top " + maxWords() + (maxWords() === 1 ? " word" : " words") + ". Everyone then makes their predictions.",
-        predict: "Start the lecture when class begins. This locks everyone's guesses.",
-        live: "End the lecture when class is over. Players' tallies become the official counts.",
-        done: "Starts a fresh lecture with new words. This clears everyone's current tallies."
-      }[phase];
     }
     $("wordBtn").disabled = !S.canWrite; $("wordInput").disabled = !S.canWrite;
   }
@@ -2312,7 +2324,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var n = talliers().length;
     $("rushNote").textContent = n === 0
       ? "Nobody tallied anything this lecture, so there are no official counts."
-      : n + " player" + (n === 1 ? "" : "s") + " tallied. Tap a row to see that player's guesses.";
+      : n + " player" + (n === 1 ? "" : "s") + " tallied. Tap a player to see their guesses.";
     var ul = $("rushLb");
     ul.textContent = "";
     players.forEach(function (p, i) {
@@ -2367,7 +2379,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var btn = $("rushNext");
     if ((phase === "live" || phase === "done") && !btn.dataset.confirm) {
       btn.dataset.confirm = "1";
-      btn.textContent = "Click again to confirm";
+      btn.textContent = "Tap again to confirm";
       clearTimeout(confirmTimer);
       confirmTimer = setTimeout(function () { delete btn.dataset.confirm; renderRush(); }, 4000);
       return;
@@ -2393,13 +2405,15 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   });
 
   /* ---------- Pi's Point Rush: write words, ban the obvious, tap when you hear them ---------- */
-  var PI_WINDOW = 8000, PI_DURS = [30, 60, 90, 120, 180, 300], PI_BANS = [3, 5, 8, 10, 15];
+  var PI_WINDOW = 8000, PI_DURS = [15, 20, 30, 45, 60, 90, 120, 180];
   var piTimerId = null, piSaveT = null, piWriting = false, piDirty = false, piAutoAdv = false, piMic = null, piMicOn = false;
   var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   function isPi() { return !!S.cohort && S.cohort.game === "pi"; }
   function piPhase() { return (S.cohort && S.cohort.phase) || "lobby"; }
-  function piDur() { var d = S.cohort && S.cohort.piDur; return PI_DURS.indexOf(d) !== -1 ? d : 90; }
-  function piBanN() { var d = S.cohort && S.cohort.piBan; return PI_BANS.indexOf(d) !== -1 ? d : 5; }
+  function piDur() { var d = S.cohort && S.cohort.piDur; return PI_DURS.indexOf(d) !== -1 ? d : 60; }
+  function piBanN() { var d = S.cohort && S.cohort.piBan; return d >= 1 && d <= 30 ? Math.floor(d) : 5; }
+  function piMicSetting() { return !S.cohort || S.cohort.piMic !== false; }
+  function durLabel(d) { return d < 60 ? d + " sec" : (d % 60 ? Math.floor(d / 60) + ":" + (d % 60) : (d / 60) + " min"); }
   function piEnd() { return ((S.cohort && S.cohort.wStart) || 0) + piDur() * 1000; }
   function normWord(t) { return String(t || "").trim().toLowerCase(); }
   function mmss(ms) { var t = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(t / 60) + ":" + (t % 60 < 10 ? "0" : "") + (t % 60); }
@@ -2593,7 +2607,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var pool = piPool(), counts = piBanCounts(), mine = piMyBans(), n = piBanN();
     var items = Object.keys(pool).map(function (w) { return { w: w, a: Object.keys(pool[w].authors).length, v: counts[w] || 0 }; });
     items.sort(function (a, b) { return (b.v - a.v) || (b.a - a.a) || a.w.localeCompare(b.w); });
-    $("piBanNote").textContent = items.length + " word" + (items.length === 1 ? "" : "s") + " from the class. The " + n + " most-banned words are out for this lecture. Words that lots of people wrote are the ones to ban.";
+    $("piBanNote").textContent = items.length + " word" + (items.length === 1 ? "" : "s") + ". The top " + n + " most-banned are out.";
     var q = S.piFind.trim().toLowerCase();
     var list = items.filter(function (x) { return !q || x.w.indexOf(q) !== -1; });
     var shown = q || S.piShowAll ? list : list.slice(0, 25);
@@ -2608,7 +2622,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       b.setAttribute("aria-label", (on ? "Remove your ban vote for " : "Vote to ban ") + x.w);
       li.appendChild(b);
       li.appendChild(el("span", "ptext", x.w));
-      li.appendChild(el("span", "tag", x.a + (x.a === 1 ? " wrote it" : " wrote it")));
+      li.appendChild(el("span", "tag", x.a + " wrote"));
       ul.appendChild(li);
     });
     var mb = $("piBanMore");
@@ -2654,7 +2668,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var mine = S.piWords.filter(function (w) { return C.pool[w] && !C.banned.has(w); });
     var me = S.me.id;
     $("piScore").textContent = "You: " + (C.scores[me] || 0) + " pts";
-    $("piLiveNote").textContent = "A word counts once " + C.quorum + (C.quorum === 1 ? " player taps" : " of you tap") + " it within " + (PI_WINDOW / 1000) + " seconds. Longer words are worth more. " + (mine.length ? "" : "You didn't write any words that survived the ban. You can still help confirm words below.");
+    $("piLiveNote").textContent = "Counts when " + C.quorum + (C.quorum === 1 ? " player hears" : " players hear") + " it.";
     // my word buttons (rebuilt only when the list changes so taps never get lost)
     var key = mine.join("|");
     var box = $("piBtns");
@@ -2689,14 +2703,6 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       S.piHeardKey = hk; hb.textContent = "";
       heard.forEach(function (w) { hb.appendChild(piWordBtn(w, true, "+1 for helping")); });
     }
-    // search results
-    var q = normWord($("piFind").value), res = $("piFindRes");
-    res.textContent = "";
-    if (q.length >= 2) {
-      Object.keys(C.pool).filter(function (w) { return !C.banned.has(w) && w.indexOf(q) !== -1; }).sort(function (a, b) { return (a.indexOf(q) === 0 ? 0 : 1) - (b.indexOf(q) === 0 ? 0 : 1) || a.length - b.length; })
-        .slice(0, 6).forEach(function (w) { res.appendChild(piWordBtn(w, true, "+1 for helping")); });
-      if (!res.children.length) res.appendChild(el("p", "note", "No word like that was written. Try another spelling."));
-    }
     // confirmed feed + my confirmations
     var feed = $("piFeed"); feed.textContent = "";
     var evs = C.events.slice(-5).reverse();
@@ -2720,15 +2726,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
   $("piBtns").addEventListener("click", piTapClick);
   $("piHeard").addEventListener("click", piTapClick);
-  $("piFindRes").addEventListener("click", piTapClick);
-  $("piFind").addEventListener("input", function () { if (isPi() && piPhase() === "live") renderPiLive(); });
   setInterval(function () { if (isPi() && piPhase() === "live") renderPiLive(); }, 1500);
 
   /* optional: let the phone listen and tap for you */
   function piStopMic() {
     piMicOn = false;
     if (piMic) { try { piMic.onend = null; piMic.stop(); } catch (e) {} piMic = null; }
-    var b = $("piMic"); if (b) { b.textContent = "Let my phone listen (beta)"; b.setAttribute("aria-pressed", "false"); }
+    var b = $("piMic"); if (b) { b.textContent = "Turn on listening"; b.classList.remove("on"); b.setAttribute("aria-pressed", "false"); }
   }
   function piStartMic() {
     if (!SR || piMic) return;
@@ -2766,7 +2770,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     C.events.forEach(function (ev) { top[ev.w] = (top[ev.w] || 0) + 1; });
     var topW = Object.keys(top).sort(function (a, b) { return top[b] - top[a]; }).slice(0, 3).map(function (w) { return w + " ×" + top[w]; });
     $("piResNote").textContent = ids.length === 0 ? "Nobody wrote or tapped anything this lecture."
-      : C.events.length + " word" + (C.events.length === 1 ? "" : "s") + " confirmed by the class" + (topW.length ? " (most heard: " + topW.join(", ") + ")" : "") + ". Tap a row to see that player's words.";
+      : C.events.length + " word" + (C.events.length === 1 ? "" : "s") + " confirmed by the class" + (topW.length ? " (most heard: " + topW.join(", ") + ")" : "") + ". Tap a player to see their words.";
     var ul = $("piLb"); ul.textContent = "";
     ids.forEach(function (id, i) {
       var li = el("li", "link" + (i === 0 && (C.scores[id] || 0) > 0 ? " hit" : ""));
@@ -2819,23 +2823,16 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     playEarn(3, "for finishing a lecture");
   }
 
-  /* render + host controls */
-  var PI_HELP = {
-    lobby: "Write words your prof might say, ban the obvious ones as a class, then score when your prof actually says yours. Longer words are worth more.",
-    write: "Type as many words as you can that your prof might say before the timer ends. One word at a time.",
-    ban: "Vote to ban words. The most-banned words are out, so only the less obvious words score.",
-    live: "Tap a word every time your prof says it. It counts once enough classmates tap it too. You earn bonus points for catching as many as the class did, so don't miss them and don't spam.",
-    done: "Lecture over. Each time the class confirmed your word you earn its letter count, doubled if only you wrote it. You also earn up to 3 per word for catching as many as the class did. Helping confirm someone else's word earns 1."
-  };
-  var PI_NAME = { lobby: "Step 1 of 4 · Get ready", write: "Step 2 of 4 · Write words", ban: "Step 3 of 4 · Ban words", live: "Step 4 of 4 · Lecture is live", done: "Results" };
+  /* render + host actions */
+  var PI_NAME = { lobby: "Get ready", write: "Write words", ban: "Ban words", live: "Lecture is live", done: "Results" };
   function renderPi() {
     queueMembers();
     if (!isPi()) return;
     var ph = piPhase(), host = isHost();
     $("piPhase").textContent = PI_NAME[ph] || "";
     $("piStats").textContent = "Lecture " + S.round;
-    $("piHelp").textContent = PI_HELP[ph] || "";
-    $("piLobby").hidden = ph !== "lobby";
+    $("piSetup").hidden = !(ph === "lobby" && host);
+    $("piWait").hidden = !(ph === "lobby" && !host);
     $("piWrite").hidden = ph !== "write";
     $("piBan").hidden = ph !== "ban";
     $("piLive").hidden = ph !== "live";
@@ -2843,39 +2840,44 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (ph !== "write") piAutoAdv = false;
     if (ph === "write") { renderPiWrite(); piTick(); if (!piTimerId) piTimerId = setInterval(piTick, 250); } else piStopTimer();
     if (ph === "ban") renderPiBan();
-    if (ph === "live") { renderPiLive(); $("piMic").hidden = !SR; if (!SR) $("piMicNote").hidden = true; else $("piMicNote").hidden = !piMicOn; } else piStopMic();
+    if (ph === "live") { renderPiLive(); var showMic = !!SR && piMicSetting(); $("piMic").hidden = !showMic; $("piMicNote").hidden = !showMic; if (!showMic) piStopMic(); } else piStopMic();
     if (ph === "done") { renderPiBoard(); earnPi(); }
-    var hb = $("piHost");
-    hb.hidden = !host;
+    $("piBottom").hidden = !host;
     if (!host) return;
-    $("piSettings").hidden = ph !== "lobby";
-    if (document.activeElement !== $("piDur")) $("piDur").value = String(piDur());
-    if (document.activeElement !== $("piBanN")) $("piBanN").value = String(piBanN());
-    var btn = $("piNext");
-    var timeUp = ph === "write" && Date.now() > piEnd();
-    var label = { lobby: "Start the " + mmss(piDur() * 1000) + " writing timer", write: timeUp ? "Open the ban vote" : "End writing early", ban: "Ban the top " + piBanN() + " and start the lecture", live: "End the lecture", done: "Start next lecture" }[ph];
+    if (ph === "lobby") {
+      if (document.activeElement !== $("piDur")) $("piDur").value = String(piDur());
+      if (document.activeElement !== $("piBanN")) $("piBanN").value = String(piBanN());
+      $("piMicSet").checked = piMicSetting();
+    }
+    var btn = $("piNext"), timeUp = ph === "write" && Date.now() > piEnd();
+    var label = { lobby: "Start writing", write: timeUp ? "Open ban vote" : "Skip to ban vote", ban: "Start the lecture", live: "End the lecture", done: "Next lecture" }[ph];
     if (!btn.dataset.confirm) btn.textContent = label;
-    $("piHostNote").textContent = {
-      lobby: "Set the writing time and how many words get banned, then start. Everyone writes at the same time.",
-      write: "The ban vote opens by itself when the timer ends. You can also open it early.",
-      ban: "Let the class vote, then lock in the bans and start the lecture. Tell everyone to open the app.",
-      live: "End the lecture when class is over. Scores are worked out from what the class tapped.",
-      done: "Starts a fresh lecture and clears this lecture's words and taps."
-    }[ph];
   }
+  (function () { var sel = $("piDur"); PI_DURS.forEach(function (d) { var o = el("option", "", durLabel(d)); o.value = String(d); sel.appendChild(o); }); })();
+  function piSetMsg(t, ok) { var m = $("piSetMsg"); m.className = "note" + (ok === true ? " ok" : ok === false ? " err" : ""); m.textContent = t; }
   async function piSetting(field, val, msg) {
     if (!guardWrite() || !isPi() || !isHost()) return;
     var o = {}; o[field] = val;
-    try { await S.db.doc("cohorts/" + S.slug).update(o); pop(msg); } catch (e) { writeFailed(e); }
+    try { await S.db.doc("cohorts/" + S.slug).update(o); piSetMsg(msg, true); } catch (e) { writeFailed(e); }
   }
-  $("piDur").addEventListener("change", function () { var v = Number(this.value); piSetting("piDur", v, "Writing time set to " + mmss(v * 1000) + "."); });
-  $("piBanN").addEventListener("change", function () { var v = Number(this.value); piSetting("piBan", v, "The top " + v + " words will be banned."); });
+  $("piDur").addEventListener("change", function () { var v = Number(this.value); piSetting("piDur", v, "Writing time: " + durLabel(v)); });
+  var piBanT = null;
+  $("piBanN").addEventListener("input", function () {
+    var raw = this.value.replace(/\D/g, "").slice(0, 2);
+    if (raw !== this.value) this.value = raw;
+    var n = parseInt(raw, 10);
+    clearTimeout(piBanT);
+    if (!(n >= 1 && n <= 30)) { piSetMsg("Enter 1 to 30.", false); return; }
+    piSetMsg("Saving…");
+    piBanT = setTimeout(function () { piSetting("piBan", n, "Top " + n + " word" + (n === 1 ? "" : "s") + " will be banned"); }, 600);
+  });
+  $("piMicSet").addEventListener("change", function () { piSetting("piMic", this.checked, this.checked ? "Phones will listen" : "Listening is off"); });
   $("piNext").addEventListener("click", async function () {
     if (!guardWrite() || !isPi() || !isHost()) return;
     var ph = piPhase(), btn = $("piNext");
     if ((ph === "live" || ph === "done" || (ph === "write" && Date.now() <= piEnd())) && !btn.dataset.confirm) {
       btn.dataset.confirm = "1";
-      btn.textContent = "Click again to confirm";
+      btn.textContent = "Tap again to confirm";
       clearTimeout(confirmTimer);
       confirmTimer = setTimeout(function () { delete btn.dataset.confirm; renderPi(); }, 4000);
       return;
@@ -2883,16 +2885,16 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     delete btn.dataset.confirm;
     var ref = S.db.doc("cohorts/" + S.slug);
     try {
-      if (ph === "lobby") { await ref.update({ phase: "write", wStart: Date.now() }); pop("Timer started. Everyone is writing."); }
-      else if (ph === "write") { await ref.update({ phase: "ban" }); pop("Ban vote is open."); }
+      if (ph === "lobby") { await ref.update({ phase: "write", wStart: Date.now() }); pop("Timer started"); }
+      else if (ph === "write") { await ref.update({ phase: "ban" }); pop("Ban vote is open"); }
       else if (ph === "ban") {
         var counts = piBanCounts(), n = piBanN();
         var out = Object.keys(counts).sort(function (a, b) { return (counts[b] - counts[a]) || a.localeCompare(b); }).slice(0, n);
         await ref.update({ banned: out, phase: "live", startedAt: Date.now() });
-        pop(out.length + " word" + (out.length === 1 ? "" : "s") + " banned. The lecture is live.");
+        pop("Lecture is live");
       }
-      else if (ph === "live") { await ref.update({ phase: "done", endedAt: Date.now() }); pop("Lecture ended. Results are in."); }
-      else { await ref.update({ round: (S.cohort.round || 1) + 1, phase: "lobby", banned: null, wStart: null, startedAt: null, endedAt: null }); pop("New lecture ready."); }
+      else if (ph === "live") { await ref.update({ phase: "done", endedAt: Date.now() }); pop("Lecture ended"); }
+      else { await ref.update({ round: (S.cohort.round || 1) + 1, phase: "lobby", banned: null, wStart: null, startedAt: null, endedAt: null }); pop("New lecture ready"); }
     } catch (e) { writeFailed(e); }
   });
 
@@ -2916,12 +2918,12 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
   async function createCohort(name, fixedSlug) {
     name = name.trim().replace(/\s+/g, " ").slice(0, 40);
-    if (!name) { setStatus("Give your cohort a name first."); return; }
+    if (!name) { setStatus("Name your game first."); return; }
     if (!guardWrite()) return;
     var game = S.pickGame || "bingo";
     var slug = fixedSlug || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
     var body = game === "pi"
-      ? { name: name, host: S.me.id, game: "pi", round: 1, phase: "lobby", piDur: 90, piBan: 5, banned: null, createdAt: Date.now() }
+      ? { name: name, host: S.me.id, game: "pi", round: 1, phase: "lobby", piDur: 60, piBan: 5, piMic: true, banned: null, createdAt: Date.now() }
       : game === "rush"
       ? { name: name, host: S.me.id, game: "rush", round: 1, phase: "pitch", words: null, nwords: 3, createdAt: Date.now() }
       : { name: name, host: S.me.id, game: "bingo", round: 0, deck: null, grid: 5, free: 1, createdAt: Date.now() };
@@ -3235,7 +3237,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     n = Math.min(n, PLAY_CAP - W.playGot);
     if (n <= 0) return;
     W.playGot += n; earn(n); saveWallet();
-    setStatus("+" + n + " coins " + why);
+    setStatus("+" + n + " coins " + why, false, 1800);
   }
   function earnLines(n) {
     if (!S.slug || !S.round) return;
@@ -3359,10 +3361,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       });
     }
   }
+  var shopMsgT = null;
   function shopMsg(text, good) {
     var r = $("spinResult");
     r.hidden = !text; r.textContent = text || "";
     r.classList.toggle("big", !!good);
+    clearTimeout(shopMsgT);
+    if (text) shopMsgT = setTimeout(function () { r.hidden = true; }, 2200);
   }
   function weighted(table) {
     var tot = table.reduce(function (s, r) { return s + r[1]; }, 0), x = Math.random() * tot;
@@ -3758,7 +3763,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.picks.forEach(function (c) { if ((c.owner === undefined || c.owner === c.id) && !isKicked(c.id)) ids[c.id] = 1; });
     S.pi.forEach(function (c) { if ((c.owner === undefined || c.owner === c.id) && !isKicked(c.id)) ids[c.id] = 1; });
     var n = Object.keys(ids).length;
-    $("cohortEyebrow").textContent = "Cohort · " + n + (n === 1 ? " player" : " players");
+    $("cohortEyebrow").textContent = "" + n + (n === 1 ? " player" : " players");
   }
 
   /* ---------- boot ---------- */
