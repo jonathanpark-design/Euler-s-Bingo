@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://qicvehmdaxkxtssbqwld.supabase.co" crossorigin>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Prof Says</title>
-<meta name="description" content="Prof Says: free class games for lecture. Euler's Bingo and Pi's Point Rush.">
+<meta name="description" content="Prof Says: free class games for lecture. Euler's Bingo, Avogadro's Number and Pi's Point Rush.">
 <link rel="canonical" href="https://jonathanpark-design.github.io/Euler-s-Bingo/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Prof Says","applicationCategory":"GameApplication","operatingSystem":"Any","description":"Free class games for lecture: Euler's Bingo and Pi's Point Rush.","url":"https://jonathanpark-design.github.io/Euler-s-Bingo/","offers":{"@type":"Offer","price":"0","priceCurrency":"CAD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Prof Says","applicationCategory":"GameApplication","operatingSystem":"Any","description":"Free class games for lecture: Euler's Bingo, Avogadro's Number and Pi's Point Rush.","url":"https://jonathanpark-design.github.io/Euler-s-Bingo/","offers":{"@type":"Offer","price":"0","priceCurrency":"CAD"}}</script>
 <link rel="icon" href="favicon-192.png" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -19,11 +19,11 @@
 <meta name="apple-mobile-web-app-title" content="Prof Says">
 <meta name="theme-color" content="#F3EFE4">
 <meta property="og:title" content="Prof Says">
-<meta property="og:description" content="Free class games for lecture. Euler's Bingo and Pi's Point Rush.">
+<meta property="og:description" content="Free class games for lecture. Euler's Bingo, Avogadro's Number and Pi's Point Rush.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://jonathanpark-design.github.io/Euler-s-Bingo/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&family=Zilla+Slab:wght@500;700&family=Permanent+Marker&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bitter:wght@500;700&family=Permanent+Marker&display=swap">
 <style>
 :root { color-scheme: light; }
 body { margin: 0; }
@@ -50,10 +50,10 @@ img { max-width: 100%; }
   --good-ink: #1F4D22;
   --good-line: #9CC596;
   --danger: #B3261E;
-  --font-display: "Zilla Slab", Georgia, "Times New Roman", serif;
+  --font-display: "Bitter", Georgia, "Times New Roman", serif;
   --font-logo: "Permanent Marker", "Zilla Slab", Georgia, cursive;
-  --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+  --font-mono: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -114,7 +114,7 @@ body {
 .wrap { max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
 .stack { display: flex; flex-direction: column; gap: 14px; }
 
-.eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.eyebrow { font-size: 13px; font-weight: 700; color: var(--muted); }
 h1 { font-family: var(--font-logo); font-weight: 400; font-size: clamp(38px, 11vw, 54px); line-height: 1; letter-spacing: 0; margin: 4px 0 6px; display: inline-block; transform: rotate(-1.5deg); transform-origin: left center; }
 h2 { font-family: var(--font-display); font-weight: 700; font-size: 23px; line-height: 1.1; margin: 0; text-wrap: balance; }
 .lede { color: var(--muted); max-width: 48ch; margin: 0; }
@@ -122,7 +122,7 @@ h2 { font-family: var(--font-display); font-weight: 700; font-size: 23px; line-h
 .status { margin: 0; padding: 8px 12px; border-left: 4px solid var(--pen); background: var(--surface); font-size: 13.5px; }
 
 label { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-label span { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+label span { font-size: 13px; font-weight: 700; color: var(--muted); }
 input[type="text"] { font: inherit; color: var(--ink); background: transparent; border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; padding: 8px 2px; min-width: 0; width: 100%; }
 input[type="text"]::placeholder { color: var(--muted); opacity: 0.7; }
 select { font: inherit; color: var(--ink); background: transparent; border: 0; border-bottom: 2px solid var(--ink); border-radius: 0; padding: 8px 2px; min-width: 0; width: 100%; }
@@ -166,6 +166,113 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 .rw:last-child { border-bottom: 0; }
 .rw strong { font-family: var(--font-display); font-size: 17px; }
 .rw small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.35; }
+.wheelwrap { display: flex; justify-content: center; padding: 14px 0 6px; border-bottom: 1px dashed var(--line); }
+.wheelbox { position: relative; width: min(100%, 250px); aspect-ratio: 1; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.wheelbox svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.wheelbox #wheelG { transform-origin: 100px 100px; transition: transform 5.2s cubic-bezier(.1,.6,.06,1); }
+.wheelbox .wptr { position: absolute; top: -6px; left: 50%; width: 0; height: 0; margin-left: -11px; border-left: 11px solid transparent; border-right: 11px solid transparent; border-top: 22px solid var(--pen); filter: drop-shadow(0 1px 0 var(--ink)); z-index: 2; }
+.wheelwrap.done .wheelbox { opacity: .55; cursor: default; }
+.wheelwrap.hit .wheelbox { animation: wpop .6s ease; }
+@keyframes wpop { 40% { transform: scale(1.05); } }
+@media (prefers-reduced-motion: reduce) { .wheelbox #wheelG { transition: none; } .wheelwrap.hit .wheelbox { animation: none; } }
+
+.wheelbox svg { filter: drop-shadow(0 6px 5px rgba(0,0,0,.28)); }
+.wheelbox .wptr { transform-origin: 50% 0; }
+.rv { position: fixed; inset: 0; z-index: 80; background: radial-gradient(circle at 50% 42%, rgba(40,32,70,.92), rgba(6,6,12,.96)); display: flex; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); color: #fff; overflow: hidden; animation: rvin .25s ease-out; }
+@keyframes rvin { from { opacity: 0; } }
+.rv-rays { position: absolute; left: 50%; top: 44%; width: 160vmax; height: 160vmax; margin: -80vmax 0 0 -80vmax; background: repeating-conic-gradient(from 0deg, color-mix(in srgb, var(--rc) 55%, transparent) 0 7deg, transparent 7deg 20deg); -webkit-mask: radial-gradient(circle, #000 0, transparent 38%); mask: radial-gradient(circle, #000 0, transparent 38%); opacity: 0; transition: opacity .5s; animation: rvspin 14s linear infinite; pointer-events: none; }
+.rv.done .rv-rays { opacity: .85; }
+@keyframes rvspin { to { transform: rotate(360deg); } }
+.rv-stage { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px; width: min(100%, 340px); text-align: center; }
+.rv-box { appearance: none; border: 0; background: none; padding: 0; width: 220px; cursor: pointer; animation: rvfloat 1.6s ease-in-out infinite; filter: drop-shadow(0 0 18px var(--rc)); -webkit-tap-highlight-color: transparent; }
+.rv-box svg { width: 100%; display: block; overflow: visible; }
+.rv-lid { transform-box: fill-box; transform-origin: 0% 100%; transition: transform .45s cubic-bezier(.3,1.6,.5,1), opacity .4s; }
+.rv-box.shake { animation: rvshake var(--shk, 1.5s) ease-in forwards; cursor: default; }
+.rv-box.pop { animation: rvpop .35s ease-out forwards; }
+.rv-box.pop .rv-lid { transform: rotate(-65deg) translateY(-14px); opacity: 0; }
+@keyframes rvfloat { 50% { transform: translateY(-9px) rotate(-1.5deg); } }
+@keyframes rvshake {
+  0% { transform: rotate(0) scale(1); filter: drop-shadow(0 0 14px var(--rc)); }
+  12% { transform: rotate(-3deg) scale(1.02); } 24% { transform: rotate(4deg) scale(1.04); }
+  36% { transform: rotate(-6deg) scale(1.06); } 48% { transform: rotate(7deg) scale(1.08); }
+  60% { transform: rotate(-9deg) scale(1.11); filter: drop-shadow(0 0 30px var(--rc)); } 72% { transform: rotate(10deg) scale(1.14); }
+  84% { transform: rotate(-12deg) scale(1.18); } 94% { transform: rotate(12deg) scale(1.22); filter: drop-shadow(0 0 60px var(--rc)); }
+  100% { transform: rotate(0) scale(1.25); filter: drop-shadow(0 0 70px var(--rc)); } }
+@keyframes rvpop { to { transform: scale(1.6); opacity: 0; } }
+.rv-hint { margin: 0; font-size: 16px; font-weight: 700; color: #fff; opacity: .85; animation: rvblink 1.2s ease-in-out infinite; }
+@keyframes rvblink { 50% { opacity: .4; } }
+.rv-flash { position: absolute; inset: -20%; background: #fff; opacity: 0; pointer-events: none; }
+.rv-flash.go { animation: rvflash .55s ease-out; }
+@keyframes rvflash { 0% { opacity: .95; } 100% { opacity: 0; } }
+.rv-card { width: 100%; background: #14121f; border: 3px solid var(--rc); border-radius: 14px; padding: 16px 16px 18px; box-shadow: 0 0 40px color-mix(in srgb, var(--rc) 65%, transparent); display: flex; flex-direction: column; align-items: center; gap: 10px; animation: rvcard .6s cubic-bezier(.2,1.5,.4,1); }
+@keyframes rvcard { from { transform: scale(.2) rotate(-8deg); opacity: 0; } }
+.rv-rar { align-self: center; background: var(--rc); color: #111; font-family: var(--font-mono); font-weight: 700; font-size: 12px; letter-spacing: .16em; padding: 3px 12px; border-radius: 99px; }
+.rv-card .tprev { width: 200px; max-width: 100%; border-color: rgba(255,255,255,.35); }
+.rv-name { font-family: var(--font-display); font-size: 28px; line-height: 1.1; }
+.rv-card small { display: block; opacity: .75; font-size: 13px; }
+.rv-acts { display: flex; gap: 8px; width: 100%; margin-top: 4px; }
+.rv-acts button { flex: 1; min-height: 44px; border-radius: 6px; border: 2px solid #fff; background: transparent; color: #fff; font: 600 15px var(--font-body, inherit); cursor: pointer; }
+.rv-acts button.main { background: var(--rc); border-color: var(--rc); color: #111; }
+.rv-skip { position: absolute; top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); min-height: 40px; padding: 0 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,.4); background: rgba(0,0,0,.35); color: #fff; font-size: 13px; cursor: pointer; }
+.rv-bit { position: absolute; left: 50%; top: 44%; width: 10px; height: 10px; border-radius: 2px; pointer-events: none; animation: rvbit 1.3s cubic-bezier(.1,.7,.3,1) forwards; }
+@keyframes rvbit { from { transform: translate(-50%,-50%) scale(1); opacity: 1; } to { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--rot)) scale(.5); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .rv-box, .rv-box.shake, .rv-rays, .rv-hint, .rv-card, .rv-flash.go, .rv-bit { animation: none; } .rv-flash, .rv-bit { display: none; } }
+
+.pop { position: fixed; left: 50%; bottom: max(84px, calc(env(safe-area-inset-bottom, 0px) + 76px)); transform: translateX(-50%); z-index: 70; width: max-content; max-width: calc(100vw - 32px); display: flex; align-items: center; gap: 12px; background: var(--ink); color: var(--bg); border-radius: 12px; padding: 12px 14px; box-shadow: 0 8px 24px rgba(0,0,0,.35), 4px 4px 0 var(--win); font-weight: 700; font-size: 16px; line-height: 1.25; animation: popin .45s cubic-bezier(.2,1.6,.4,1); }
+.pop[hidden] { display: none; }
+.pop .popck { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--win); color: var(--win-ink); display: grid; place-items: center; font-size: 20px; animation: popck .5s .1s cubic-bezier(.2,1.8,.4,1) both; }
+.pop .btn { flex: none; white-space: nowrap; background: var(--bg); color: var(--ink); border-color: var(--bg); }
+@keyframes popin { from { transform: translateX(-50%) scale(.6) translateY(20px); opacity: 0; } }
+@keyframes popck { from { transform: scale(0) rotate(-90deg); } }
+.bingobar { position: fixed; left: 0; right: 0; top: 0; z-index: 75; text-align: center; padding: max(14px, env(safe-area-inset-top, 0px)) 16px 14px; background: var(--win); color: var(--win-ink); font-family: var(--font-display); font-weight: 700; font-size: clamp(20px, 6vw, 28px); box-shadow: 0 6px 20px rgba(0,0,0,.3); animation: bingodrop .5s cubic-bezier(.2,1.4,.4,1); }
+.bingobar[hidden] { display: none; }
+@keyframes bingodrop { from { transform: translateY(-100%); } }
+@media (prefers-reduced-motion: reduce) { .pop, .pop .popck, .bingobar { animation: none; } }
+.note.err { color: var(--danger); font-weight: 700; }
+.note.ok::before { content: "\2713  "; color: var(--win); font-weight: 700; }
+.savedtick { font-size: 13px; }
+.savedtick.ok { color: var(--ink); }
+.savedtick.ok::before { content: "\2713  "; color: var(--win); font-weight: 700; }
+.savedtick.err { color: var(--danger); font-weight: 700; }
+.dangerzone { margin: 18px 0 72px; padding-top: 14px; border-top: 1px dashed var(--line); display: flex; }
+.dangerzone .btn { width: 100%; min-height: 48px; justify-content: center; text-align: center; }
+.dangerzone .btn[data-confirm] { background: var(--danger); color: #fff; border-color: var(--danger); }
+.viewtop { display: flex; }
+.chat li { flex-wrap: wrap; }
+.chat .rx { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 4px; align-items: center; }
+.rchip { appearance: none; font: inherit; font-size: 13px; min-height: 28px; padding: 2px 8px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+.rchip.on { border-color: var(--accent); background: var(--ok-bg); font-weight: 700; }
+.rchip.radd { opacity: .55; padding: 2px 7px; }
+.rchip.radd:hover, .rchip.radd:focus-visible { opacity: 1; }
+.rchip.pick { font-size: 17px; padding: 0 6px; }
+.person { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+.person .av { flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; font-weight: 700; }
+.person .pn { flex: 1; min-width: 0; font-weight: 700; overflow-wrap: anywhere; }
+.person .pn small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+.person .btn { min-height: 38px; padding: 4px 10px; font-size: 13px; }
+.person .btn.on { background: var(--ok-bg); }
+.person.confirming { padding: 0; border: 0; background: none; }
+.person.confirming .btn { width: 100%; min-height: 46px; justify-content: center; }
+.morebtn { align-self: center; }
+.btn.block { width: 100%; justify-content: center; }
+
+.pitimer { font-family: var(--font-display); font-weight: 700; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
+.pitimer.low { color: var(--danger); animation: rvblink .6s ease-in-out infinite; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; background: var(--bg); border: 1px solid var(--line); border-radius: 16px; padding: 4px 6px 4px 12px; font-weight: 700; }
+.chip button { appearance: none; border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 18px; line-height: 1; min-width: 28px; min-height: 28px; }
+.pwords { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.pword { appearance: none; font: inherit; text-align: left; min-height: 68px; padding: 10px 12px; border-radius: 8px; border: 2px solid var(--ink); background: var(--bg); color: var(--ink); cursor: pointer; display: flex; flex-direction: column; justify-content: center; gap: 2px; overflow-wrap: anywhere; box-shadow: 3px 3px 0 var(--ink); transition: transform .08s; }
+.pword b { font-size: 19px; }
+.pword small { color: var(--muted); font-size: 12.5px; }
+.pword:active, .pword.hit { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.pword.hit { background: var(--win); color: var(--win-ink); border-color: var(--win); }
+.pword.hit small { color: var(--win-ink); }
+.pword.buzz { border-color: var(--pen); animation: wpop .6s ease 2; }
+.pword.sm { min-height: 48px; box-shadow: none; border-width: 1px; }
+.pscore { font-family: var(--font-display); font-weight: 700; font-size: 20px; }
+.feed li { display: block; padding: 6px 8px; background: var(--bg); border: 1px solid var(--line); border-radius: 3px; font-size: 14px; }
+.piSteps { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
 .spinres { font-family: var(--font-mono); font-size: 14px; background: var(--ok-bg); border-radius: 3px; padding: 8px 12px; }
 .spinres.big { font-family: var(--font-display); font-weight: 700; font-size: 20px; background: var(--win); color: var(--win-ink); }
 .adbox { border: 1px dashed var(--ink); border-radius: 3px; padding: 12px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; background: var(--bg); }
@@ -215,7 +322,7 @@ h1 a { display: inline-flex; align-items: center; gap: 0.3em; }
 .cell:active { transform: scale(0.96); }
 .cell.on { background: var(--c-on, var(--accent)); border-color: var(--c-on, var(--accent)); color: var(--c-on-ink, var(--accent-ink)); font-weight: 600; }
 .cell.win { background: var(--win); border-color: var(--win); color: var(--win-ink); font-weight: 600; }
-.cell.free { font-family: var(--font-mono); font-size: clamp(9px, 2.4vw, 12px); letter-spacing: 0.04em; text-transform: uppercase; cursor: default; }
+.cell.free { font-size: clamp(10px, 2.6vw, 13px); font-weight: 700; cursor: default; }
 @media (prefers-reduced-motion: reduce) { .cell { transition: none; } }
 #shareBox { width: 100%; font-family: var(--font-mono); font-size: 12px; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 3px; padding: 8px; resize: none; }
 
@@ -224,9 +331,9 @@ h1 a { display: inline-flex; align-items: center; gap: 0.3em; }
 .vote { font: inherit; font-family: var(--font-mono); font-size: 12px; min-width: 54px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 2px; padding: 5px 8px; cursor: pointer; font-variant-numeric: tabular-nums; }
 .vote.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .ptext { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-.tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.tag { font-size: 12px; font-weight: 700; color: var(--muted); }
 .rm { font: inherit; color: var(--muted); background: none; border: 0; cursor: pointer; padding: 0 6px; font-size: 18px; line-height: 1; }
-.cut { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-align: center; border-top: 1px dashed var(--line); padding-top: 8px; }
+.cut { font-size: 13px; color: var(--muted); text-align: center; border-top: 1px dashed var(--line); padding-top: 8px; }
 .hostbox { border: 1px dashed var(--line); border-radius: 3px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
 
 .lb li { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: 3px; background: var(--bg); }
@@ -284,6 +391,11 @@ h1 a { display: inline-flex; align-items: center; gap: 0.3em; }
 .view .cell.on, .view .cell.win { cursor: default; }
 .lb .res { font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
 
+.joinsep { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); }
+.joinsep h3 { margin: 0 0 8px; font-size: 14px; font-weight: 700; color: var(--muted); }
+.recent li.confirming button { width: 100%; justify-content: center; text-align: center; }
+button.btn.xdel { flex: 0 0 auto; width: 44px; min-height: 44px; padding: 0; font-size: 22px; line-height: 1; text-align: center; color: var(--muted); }
+button.btn.xdel:hover:not(:disabled) { color: var(--danger); border-color: var(--danger); }
 .recent li { display: flex; gap: 8px; align-items: center; }
 .recent button { flex: 1; text-align: left; }
 
@@ -340,20 +452,19 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   <section id="home" class="stack" hidden>
     <div class="sheet" id="gamePicker">
-      <h2>Pick a game</h2>
+      <h2>Create a game or join with a code</h2>
       <div class="games">
         <button class="game big" type="button" data-game="bingo"><span class="gname">Euler's Bingo</span><span class="gdesc">Pitch lecture habits, vote on the best, then get your own shuffled bingo card.</span></button>
-        <button class="game small" type="button" data-game="rush"><span class="gname">Pi's Point Rush</span><span class="gdesc">Predict how often your prof says 3 words.</span></button>
+        <button class="game small" type="button" data-game="rush"><span class="gname">Avogadro's Number</span><span class="gdesc">Predict how many times your prof says a few chosen words.</span></button>
+        <button class="game small" type="button" data-game="pi"><span class="gname">Pi's Point Rush</span><span class="gdesc">Beat the clock: write words your prof will say, then score points when they say them.</span></button>
       </div>
-    </div>
-    <div class="sheet">
-      <h2>Join with a code</h2>
+      <div class="joinsep"><h3>Join with a code</h3>
       <div class="row">
         <label for="joinCode"><span>Cohort code</span>
           <input type="text" id="joinCode" maxlength="40" placeholder="e.g. math-135-k7f" autocomplete="off">
         </label>
         <button class="btn" id="joinBtn" type="button">Join</button>
-      </div>
+      </div></div>
     </div>
     <div class="sheet" id="recentBox" hidden>
       <h2>Your cohorts</h2>
@@ -382,6 +493,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     <div class="sheet">
       <div class="rewards">
         <div class="rw"><div><strong>Daily spin</strong><small id="spinSub"></small></div><button class="btn primary" id="spinBtn" type="button">Spin</button></div>
+        <div class="wheelwrap" id="wheelWrap"><div class="wheelbox"><svg id="wheelSvg" viewBox="0 0 200 200" role="img" aria-label="Prize wheel"></svg><i class="wptr" aria-hidden="true"></i></div></div>
         <div class="rw"><div><strong>Weekly gift</strong><small id="weeklySub"></small></div><button class="btn primary" id="weeklyBtn" type="button">Open</button></div>
         <div class="rw"><div><strong>Watch an ad</strong><small id="adSub"></small></div><button class="btn" id="adBtn" type="button">Watch</button></div>
       </div>
@@ -454,7 +566,6 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       <button class="btn" id="shareBtn" type="button" hidden>Invite</button>
       <button class="btn" id="copyLink" type="button">Copy link</button>
       <button class="btn" id="membersBtn" type="button" hidden>People</button>
-      <button class="btn danger" id="deleteBtn" type="button" hidden>Delete cohort</button>
     </div>
     <div class="sheet" id="membersPanel" hidden>
       <h2>People</h2>
@@ -470,6 +581,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         </div>
         <p class="note" id="rushHelp"></p>
       </div>
+      <div class="hostbox" id="rushHost" hidden>
+        <div class="eyebrow">Host controls</div>
+        <label for="nWordsSel" id="nWordsLbl" hidden><span>Words to predict each lecture</span>
+          <select id="nWordsSel"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option></select>
+        </label>
+        <p class="note" id="rushHostNote"></p>
+        <div class="actions"><button class="btn primary" id="rushNext" type="button">Next</button></div>
+      </div>
       <div class="sheet" id="rushPitch" hidden>
         <h2>Pitch &amp; vote words</h2>
         <div class="row">
@@ -480,6 +599,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         </div>
         <p class="note" id="wordCount"></p>
         <ul class="plist" id="wordList"></ul>
+        <button class="btn morebtn" id="moreWords" type="button" hidden></button>
       </div>
       <div class="sheet" id="rushPlay" hidden>
         <h2 id="rushPlayTitle"></h2>
@@ -490,15 +610,77 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         <p class="note" id="rushNote"></p>
         <ul class="lb" id="rushLb"></ul>
         <div id="rushViewer" class="stack" hidden>
+          <div class="actions viewtop"><button class="btn" id="rushViewBack" type="button">← Back to scoreboard</button></div>
           <div class="eyebrow" id="rushViewTitle">Player</div>
           <ul class="wrows" id="rushViewList"></ul>
-          <div class="actions"><button class="btn" id="rushViewBack" type="button">Back to scoreboard</button></div>
         </div>
       </div>
-      <div class="hostbox" id="rushHost" hidden>
+    </div>
+
+    <div id="pi" class="stack" hidden>
+      <div class="sheet">
+        <div class="sheet-head">
+          <div class="eyebrow" id="piPhase">Step 1</div>
+          <div class="stats" id="piStats"></div>
+        </div>
+        <p class="note" id="piHelp"></p>
+      </div>
+      <div class="hostbox" id="piHost" hidden>
         <div class="eyebrow">Host controls</div>
-        <p class="note" id="rushHostNote"></p>
-        <div class="actions"><button class="btn primary" id="rushNext" type="button">Next</button></div>
+        <div class="hostgrid" id="piSettings">
+          <label for="piDur"><span>Writing time</span><select id="piDur"><option value="30">30 seconds</option><option value="60">1 minute</option><option value="90" selected>90 seconds</option><option value="120">2 minutes</option><option value="180">3 minutes</option><option value="300">5 minutes</option></select></label>
+          <label for="piBanN"><span>Words to ban</span><select id="piBanN"><option value="3">3</option><option value="5" selected>5</option><option value="8">8</option><option value="10">10</option><option value="15">15</option></select></label>
+        </div>
+        <p class="note" id="piHostNote"></p>
+        <div class="actions"><button class="btn primary" id="piNext" type="button">Next</button></div>
+      </div>
+      <div class="sheet" id="piLobby" hidden>
+        <h2>How a round works</h2>
+        <ol class="piSteps">
+          <li><strong>Write.</strong> A timer starts. Type as many words as you can that your prof might say.</li>
+          <li><strong>Ban.</strong> The class votes to ban the obvious words, so only clever ones score.</li>
+          <li><strong>Lecture.</strong> Tap a word when you hear your prof say it. Longer words are worth more points.</li>
+        </ol>
+      </div>
+      <div class="sheet" id="piWrite" hidden>
+        <div class="sheet-head"><h2>Write your words</h2><div class="pitimer" id="piTimer">0:00</div></div>
+        <div class="row">
+          <label for="piWordInput"><span>A word your prof might say</span>
+            <input type="text" id="piWordInput" maxlength="20" placeholder="One word, then Enter" autocomplete="off">
+          </label>
+          <button class="btn primary" id="piWordBtn" type="button">Add</button>
+        </div>
+        <p class="note" id="piWriteNote" role="status"></p>
+        <ul class="chips" id="piMine"></ul>
+      </div>
+      <div class="sheet" id="piBan" hidden>
+        <h2>Ban the obvious words</h2>
+        <p class="note" id="piBanNote"></p>
+        <label for="piBanFind"><span>Search words</span><input type="text" id="piBanFind" maxlength="20" placeholder="Search" autocomplete="off"></label>
+        <ul class="plist" id="piBanList"></ul>
+        <button class="btn morebtn" id="piBanMore" type="button" hidden></button>
+      </div>
+      <div class="sheet" id="piLive" hidden>
+        <div class="sheet-head"><h2>Tap when you hear it</h2><div class="pscore" id="piScore"></div></div>
+        <p class="note" id="piLiveNote"></p>
+        <div class="pwords" id="piBtns"></div>
+        <div id="piHeardBox" hidden><div class="eyebrow">Others just heard these. Tap if you heard them too</div><div class="pwords" id="piHeard"></div></div>
+        <label for="piFind"><span>Heard a word that isn't on your list?</span><input type="text" id="piFind" maxlength="20" placeholder="Type it here" autocomplete="off"></label>
+        <div class="pwords" id="piFindRes"></div>
+        <div class="actions"><button class="btn" id="piMic" type="button" hidden>Let my phone listen (beta)</button></div>
+        <p class="note" id="piMicNote" hidden>Your browser's speech service listens while this is on and may process the audio. Prof Says never records or saves it.</p>
+        <ul class="plist feed" id="piFeed"></ul>
+      </div>
+      <div class="sheet" id="piResults" hidden>
+        <h2>Scoreboard</h2>
+        <p class="note" id="piResNote"></p>
+        <ul class="lb" id="piLb"></ul>
+        <div id="piViewer" class="stack" hidden>
+          <div class="actions viewtop"><button class="btn" id="piViewBack" type="button">← Back to scoreboard</button></div>
+          <div class="eyebrow" id="piViewTitle">Player</div>
+          <ul class="wrows" id="piViewList"></ul>
+        </div>
+        <div class="actions"><button class="btn" id="piShare" type="button">Share my score</button></div>
       </div>
     </div>
 
@@ -510,8 +692,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
     <div id="panelCard" class="sheet">
       <div id="waiting" hidden>
-        <h2>Deck not locked yet</h2>
-        <p class="note">The host locks the deck once voting is done, and then your card appears here. Pitch and vote in the meantime.</p>
+        <h2>Prompts not locked yet</h2>
+        <p class="note">The host locks the prompts once voting is done, and then your card appears here. Pitch and vote in the meantime.</p>
       </div>
       <div id="cardArea" class="stack">
         <div class="sheet-head">
@@ -528,7 +710,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
     <div id="panelVote" class="sheet" hidden>
       <h2>Pitch &amp; vote</h2>
-      <p class="note">Pitch things your prof does in lecture. Pitches are anonymous. The class votes, the host decides how many top prompts make the deck, and every player gets their own shuffled card.</p>
+      <p class="note">Pitch things your prof does in lecture. Pitches are anonymous. The class votes, the host picks how many of the top-voted prompts get used, and every player gets their own shuffled card.</p>
       <div class="row">
         <label for="pitchInput"><span>Your pitch</span>
           <input type="text" id="pitchInput" maxlength="34" placeholder="Something that happens every lecture" autocomplete="off">
@@ -554,15 +736,17 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
               <option value="3">3</option>
             </select>
           </label>
-          <label for="deckSize"><span>Deck size (top N)</span>
+          <label for="deckSize"><span>How many prompts to use</span>
             <input type="text" id="deckSize" inputmode="numeric" maxlength="2" value="40" autocomplete="off">
           </label>
         </div>
+        <p class="note" id="deckMsg" role="status"></p>
         <p class="note" id="hostNote"></p>
-        <div class="actions"><button class="btn primary" id="lockBtn" type="button">Lock deck and deal cards</button></div>
+        <div class="actions"><button class="btn primary" id="lockBtn" type="button">Lock prompts and deal cards</button></div>
       </div>
       <p class="note" id="deckState"></p>
       <ul class="plist" id="promptList"></ul>
+      <button class="btn morebtn" id="morePrompts" type="button" hidden></button>
     </div>
 
     <div id="panelBoard" class="sheet" hidden>
@@ -570,15 +754,17 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       <p class="note" id="lbNote"></p>
       <ul class="lb" id="lb"></ul>
       <div id="viewer" class="stack view" hidden>
+        <div class="actions viewtop"><button class="btn" id="viewBack" type="button">← Back to leaderboard</button></div>
         <div class="sheet-head">
           <div class="eyebrow" id="viewTitle">Card</div>
           <div class="stats" id="viewStats"></div>
         </div>
         <div class="banner" id="viewBanner" role="status" hidden></div>
         <div class="board" id="viewBoard" role="group" aria-label="Their bingo squares"></div>
-        <div class="actions"><button class="btn" id="viewBack" type="button">Back to leaderboard</button></div>
       </div>
     </div>
+
+    <div class="dangerzone" id="dangerZone" hidden><button class="btn danger" id="deleteBtn" type="button">Delete cohort</button></div>
 
     <div class="chatwrap" id="chatSheet" hidden>
       <div class="chatpanel" id="chatBox" role="dialog" aria-label="Class chat" hidden>
@@ -601,6 +787,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     </div>
   </section>
 
+  <div class="pop" id="pop" role="status" aria-live="polite" hidden><span class="popck" aria-hidden="true">&#10003;</span><span id="popText"></span><button class="btn primary" id="popGo" type="button" hidden></button></div>
+  <div class="bingobar" id="bingoBar" role="status" aria-live="assertive" hidden></div>
   <div class="nudge" id="nudge" role="status" hidden><span id="nudgeText"></span><button class="btn primary" id="nudgeGo" type="button">Open shop</button><button class="x" id="nudgeX" type="button" aria-label="Dismiss">×</button></div>
 
   <noscript><p class="foot">Prof Says needs JavaScript turned on to run.</p></noscript>
@@ -689,27 +877,40 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     prompts: [], votes: [], cards: [], cardsLoaded: false,
     deck: null, round: 0, grid: 5, freeN: 1, squares: [], marked: new Set(), freeIdx: new Set(), hostInit: false,
     hydrated: false, firstBingoAt: null, tab: "card", tabSet: false,
-    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, rushSub: false, rushRound: 0, rushHydrated: false, guesses: [null, null, null], tally: [0, 0, 0], rushView: null, rowsKey: "", pickGame: null, modsRaw: {}, adminsRaw: {}, showMembers: false, lastUnread: 0, editingName: false, chatIds: new Set(), chatNodes: new Map(), chatPrimed: false, chat: [], chatOpen: false, chatSeen: 0, editing: null, editVal: ""
+    unsubs: [], boardToken: 0, name: "", names: {}, viewing: null, words: [], picks: [], picksLoaded: false, pi: [], bans: [], piSub: false, piRound: 0, piHydrated: false, piWords: [], piTaps: [], piView: null, piLastTap: {}, piEvPrimed: false, piSeenEv: new Set(), piShowAll: false, piFind: "", piBtnKey: "", piHeardKey: "", rushSub: false, rushRound: 0, rushHydrated: false, guesses: nullArr(), tally: zeroArr(), rushView: null, rowsKey: "", pickGame: null, modsRaw: {}, adminsRaw: {}, kickRaw: {}, removed: false, reacts: [], rxOpen: null, rmConfirm: null, bingoSeen: new Set(), cardsPrimed: false, showAllPrompts: false, showAllWords: false, showMembers: false, lastUnread: 0, editingName: false, chatIds: new Set(), chatNodes: new Map(), chatPrimed: false, chat: [], chatOpen: false, chatSeen: 0, editing: null, editVal: ""
   };
   var statusTimer = null, writeTimer = null, writing = false, dirty = false, confirmTimer = null;
 
-  function setStatus(msg, sticky) {
+  function setStatus(msg, sticky, ms) {
     var s = $("status");
     clearTimeout(statusTimer);
     if (!msg) { s.hidden = true; s.textContent = ""; return; }
     s.hidden = false;
     s.textContent = msg;
-    if (!sticky) statusTimer = setTimeout(function () { s.hidden = true; }, 7000);
+    if (!sticky) statusTimer = setTimeout(function () { s.hidden = true; }, ms || 7000);
   }
   function writeFailed(e) {
     if (e && e.code === "quota_exceeded") setStatus("This page's storage is full, so that wasn't saved.");
+    else if (S.cohort && S.me.id && S.cohort.host !== S.me.id && isAdminUid(S.me.id)) setStatus("Couldn't save that. Host controls for admins need the one-time database update (upgrade-admins.sql). Ask the host.");
     else setStatus("Couldn't save that. You may need Contributor access to this page.");
   }
   function dbError(e) {
     if (e && e.code === "revoked") setStatus("Your access to this page changed. Reload to try again.", true);
     else setStatus("Couldn't reach the class database" + (e && e.code ? " (" + e.code + ")" : "") + ".", true);
   }
+  function checkRemoved() {
+    if (!S.cohort || !S.me.id || !isKicked(S.me.id)) return;
+    S.removed = true;
+    hideAll();
+    $("chatSheet").hidden = true;
+    $("notFound").hidden = false;
+    $("nfTitle").textContent = "You were removed from this cohort";
+    $("nfCode").textContent = "The host or an admin removed you, so you can't play in it anymore.";
+    $("nfForm").hidden = true;
+    forget(S.slug);
+  }
   function guardWrite() {
+    if (S.removed) { setStatus("You were removed from this cohort."); return false; }
     if (!S.db) { setStatus(S.authError ? "Lots of people are joining from your network right now. Hang tight, we keep retrying." : "Cohorts need the Claude viewer with a signed-in account."); return false; }
     if (!S.canWrite) { setStatus("You can look around, but playing needs Contributor access. Ask the host to invite you."); return false; }
     return true;
@@ -745,10 +946,18 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       b.addEventListener("click", function () { location.hash = x.slug; });
       li.appendChild(b);
       if (x.host) {
-        var d = el("button", "btn danger", "Delete");
+        var d = el("button", "btn xdel", "\u00D7");
         d.type = "button";
         d.setAttribute("aria-label", "Delete " + x.name);
-        d.addEventListener("click", function () { deleteCohort(x.slug, d, null); });
+        d.addEventListener("click", function () {
+          li.textContent = ""; li.classList.add("confirming");
+          var c = el("button", "btn danger", "Tap to confirm delete of " + x.name);
+          c.type = "button";
+          c.addEventListener("click", function () { clearTimeout(delTimer); deleteCohort(x.slug, c, null, true); });
+          li.appendChild(c);
+          clearTimeout(delTimer);
+          delTimer = setTimeout(renderRecent, 4000);
+        });
         li.appendChild(d);
       }
       ul.appendChild(li);
@@ -761,12 +970,12 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     return /^[a-z0-9-]{3,40}$/.test(h) ? h : null; // OAuth leftovers contain "=" and never match
   }
   var delTimer = null;
-  async function deleteCohort(slug, btn, after) {
+  async function deleteCohort(slug, btn, after, sure) {
     if (!guardWrite()) return;
-    if (!btn.dataset.confirm) {
+    if (!sure && !btn.dataset.confirm) {
       btn.dataset.confirm = "1";
       btn.dataset.label = btn.textContent;
-      btn.textContent = "Click again to delete";
+      btn.textContent = btn.id === "deleteBtn" ? "Tap again to delete this cohort for everyone" : "Click again to delete";
       clearTimeout(delTimer);
       delTimer = setTimeout(function () { delete btn.dataset.confirm; btn.textContent = btn.dataset.label; }, 4000);
       return;
@@ -793,8 +1002,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.cohort = undefined; S.prompts = []; S.votes = []; S.cards = []; S.cardsLoaded = false;
     S.deck = null; S.round = 0; S.grid = 5; S.freeN = 1; S.squares = []; S.marked = new Set(); S.freeIdx = new Set();
     S.hydrated = false; S.firstBingoAt = null; S.tabSet = false; S.hostInit = false; S.viewing = null; S.names = {};
-    S.words = []; S.picks = []; S.picksLoaded = false; S.rushSub = false; S.rushRound = 0; S.rushHydrated = false; S.guesses = [null, null, null]; S.tally = [0, 0, 0]; S.rushView = null; S.rowsKey = "";
-    S.modsRaw = {}; S.adminsRaw = {}; S.showMembers = false; $("membersPanel").hidden = true; S.chatIds = new Set(); S.chatNodes.forEach(function (n) { n.remove(); }); S.chatNodes = new Map(); S.chatPrimed = false; S.lastUnread = 0; S.chat = []; S.chatOpen = false; S.editing = null; S.editVal = "";
+    S.words = []; S.picks = []; S.picksLoaded = false; S.pi = []; S.bans = []; S.piSub = false; S.piRound = 0; S.piHydrated = false; S.piWords = []; S.piTaps = []; S.piView = null; S.piLastTap = {}; S.piEvPrimed = false; S.piSeenEv = new Set(); S.piShowAll = false; S.piFind = ""; S.piBtnKey = ""; S.piHeardKey = ""; piStopTimer(); piStopMic(); S.rushSub = false; S.rushRound = 0; S.rushHydrated = false; S.guesses = nullArr(); S.tally = zeroArr(); S.rushView = null; S.rowsKey = "";
+    S.modsRaw = {}; S.adminsRaw = {}; S.kickRaw = {}; S.removed = false; S.reacts = []; S.rxOpen = null; S.rmConfirm = null; S.bingoSeen = new Set(); S.cardsPrimed = false; S.showAllPrompts = false; S.showAllWords = false; S.showMembers = false; $("membersPanel").hidden = true; S.chatIds = new Set(); S.chatNodes.forEach(function (n) { n.remove(); }); S.chatNodes = new Map(); S.chatPrimed = false; S.lastUnread = 0; S.chat = []; S.chatOpen = false; S.editing = null; S.editVal = "";
     $("chatSheet").hidden = true; $("chatBox").hidden = true;
   }
   function route() {
@@ -833,13 +1042,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     }, dbError));
     S.unsubs.push(db.collection(base + "/votes").onSnapshot(function (snap) {
       S.votes = snap.docs.map(function (d) { return d.data(); });
-      if (isRush()) renderRush(); else renderVote();
+      rerender();
     }, dbError));
     S.chatSeen = Date.now();
     S.unsubs.push(db.collection(base + "/admins").onSnapshot(function (snap) {
       S.adminsRaw = {};
       snap.docs.forEach(function (d) { S.adminsRaw[d.id] = { owner: d.owner }; });
-      $("membersBtn").hidden = !isMod();
+      $("membersBtn").hidden = !isMod(); $("dangerZone").hidden = !isHost();
       rerender();
       renderChat();
       queueMembers();
@@ -850,6 +1059,16 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       rerender();
       renderChat();
     }, dbError));
+    S.unsubs.push(db.collection(base + "/react").onSnapshot(function (snap) {
+      S.reacts = snap.docs.map(function (d) { return Object.assign({ owner: d.owner }, d.data()); })
+        .filter(function (x) { return x.owner === undefined || x.owner === x.u; });
+      renderChat();
+    }, dbError));
+    S.unsubs.push(db.collection(base + "/kick").onSnapshot(function (snap) {
+      S.kickRaw = {};
+      snap.docs.forEach(function (d) { S.kickRaw[d.id] = { owner: d.owner }; });
+      checkRemoved(); rerender(); renderChat(); renderBoard(); queueMembers();
+    }, dbError));
     S.unsubs.push(db.collection(base + "/chat").onSnapshot(function (snap) {
       S.chat = snap.docs.map(function (d) { return Object.assign({ id: d.id, owner: d.owner }, d.data()); });
       renderChat();
@@ -858,6 +1077,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       S.cards = snap.docs.map(function (d) { return Object.assign({ id: d.id, owner: d.owner }, d.data()); })
         .filter(function (c) { return c.owner === undefined || c.owner === c.id; });
       S.cardsLoaded = true;
+      announceBingos();
       hydrate();
       renderBoard();
     }, dbError));
@@ -885,6 +1105,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     }
     setStatus("");
     S.cohort = snap.data();
+    if (isKicked(S.me.id)) { checkRemoved(); return; }
     $("notFound").hidden = true;
     $("home").hidden = true;
     $("cohort").hidden = false;
@@ -894,12 +1115,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     $("cohortName").textContent = S.cohort.name || S.slug;
     $("cohortCode").textContent = S.slug;
     remember(S.slug, S.cohort.name, S.cohort.host === S.me.id);
-    $("deleteBtn").hidden = !isHost();
+    $("dangerZone").hidden = !isHost();
     $("membersBtn").hidden = !isMod();
     $("chatSheet").hidden = false;
     renderChat();
-    if (S.cohort.game === "rush") { onRush(); return; }
-    $("rush").hidden = true;
+    if (S.cohort.game === "rush") { $("pi").hidden = true; onRush(); return; }
+    if (S.cohort.game === "pi") { $("rush").hidden = true; onPi(); return; }
+    $("rush").hidden = true; $("pi").hidden = true;
     var round = S.cohort.round || 0;
     var deck = Array.isArray(S.cohort.deck) ? S.cohort.deck : null;
     var grid = [3, 4, 5].indexOf(S.cohort.grid) !== -1 ? S.cohort.grid : 5;
@@ -951,9 +1173,51 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.votes.forEach(function (v) { if (v.u === S.me.id) set.add(v.p); });
     return set;
   }
-  function isHost() {
-    return !!S.cohort && !!S.me.id && (S.cohort.host === S.me.id || S.isAdmin);
+  /* ---------- confirmation pop, bingo bar ---------- */
+  var popT = null, popFn = null, barT = null;
+  function pop(text, label, fn, ms) {
+    var p = $("pop"), g = $("popGo");
+    $("popText").textContent = text;
+    g.hidden = !label; if (label) g.textContent = label;
+    popFn = fn || null;
+    p.hidden = true; void p.offsetWidth; p.hidden = false;
+    clearTimeout(popT);
+    popT = setTimeout(function () { p.hidden = true; }, ms || (label ? 6500 : 2600));
   }
+  $("popGo").addEventListener("click", function () { $("pop").hidden = true; var f = popFn; popFn = null; if (f) f(); });
+  function bingoBar(text) {
+    var b = $("bingoBar");
+    b.textContent = text;
+    b.hidden = true; void b.offsetWidth; b.hidden = false;
+    clearTimeout(barT);
+    barT = setTimeout(function () { b.hidden = true; }, 5200);
+    confetti();
+  }
+  function isKicked(id) {
+    var k = S.kickRaw && S.kickRaw[id];
+    return !!k && !!S.cohort && (k.owner === undefined || k.owner === S.cohort.host || isAdminUid(k.owner));
+  }
+  function aliasOne(id) {
+    var h = xmur3(id + "|" + S.slug);
+    return ADJ[h % ADJ.length] + " " + NOUN[(h >>> 8) % NOUN.length];
+  }
+  function announceBingos() {
+    if (!S.bingoSeen) S.bingoSeen = new Set();
+    var all = S.cards.filter(function (c) { return c.lines > 0 && !isKicked(c.id); });
+    if (!S.cardsPrimed) { S.cardsPrimed = true; all.forEach(function (c) { S.bingoSeen.add(c.id + "|" + c.round); }); return; }
+    all.filter(function (c) { return c.round === S.round; }).forEach(function (c) {
+      var k = c.id + "|" + c.round;
+      if (S.bingoSeen.has(k)) return;
+      var first = true;
+      S.bingoSeen.forEach(function (x) { if (x.split("|")[1] === String(c.round)) first = false; });
+      S.bingoSeen.add(k);
+      if (c.id === S.me.id) return;
+      var who = c.name ? String(c.name).slice(0, 20) : aliasOne(c.id);
+      bingoBar("BINGO! " + who + (first ? " got the first bingo" : " got a bingo") + "!");
+    });
+  }
+  function isOwner() { return !!S.cohort && !!S.me.id && S.cohort.host === S.me.id; }
+  function isHost() { return isOwner() || (!!S.me.id && isAdminUid(S.me.id)); }
   function isAdminUid(uid) {
     var a = S.adminsRaw[uid];
     return !!a && !!S.cohort && (a.owner === undefined || a.owner === S.cohort.host);
@@ -962,14 +1226,15 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
 
   function renderVote() {
     queueMembers();
-    if (!S.cohort || isRush()) return;
+    if (!S.cohort || isRush() || isPi()) return;
     var items = ranked();
     var mine = myVotes();
     var list = $("promptList");
     list.textContent = "";
     var limit = S.deck ? S.deck.length : (parseInt($("deckSize").value, 10) || DECK_SIZE);
-    items.forEach(function (it, idx) {
-      if (idx === limit) list.appendChild(el("li", "cut", "Below the line: not in the deck"));
+    var shown = S.showAllPrompts ? items : items.slice(0, 12);
+    shown.forEach(function (it, idx) {
+      if (idx === limit) list.appendChild(el("li", "cut", "Below the line: not used on cards"));
       if (S.editing === it.id && isMod()) { list.appendChild(editRow(it)); return; }
       var li = el("li", "prompt");
       var vb = el("button", "vote" + (mine.has(it.id) ? " on" : ""), "▲ " + it.v);
@@ -990,6 +1255,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       }
       list.appendChild(li);
     });
+    var mb = $("morePrompts");
+    mb.hidden = items.length <= 12;
+    mb.textContent = S.showAllPrompts ? "Show fewer prompts" : "Show all " + items.length + " prompts (top 12 shown)";
     var used = S.prompts.filter(function (p) { return p.by === S.me.id; }).length;
     $("pitchCount").textContent = used + " of " + MAX_PITCH + " pitches used. " + S.prompts.length + " pitched by the class so far.";
     var host = isHost();
@@ -1003,12 +1271,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       }
       $("hostNote").textContent = S.round > 0
         ? "Round " + S.round + " is dealt. Dealing again uses these settings, gives everyone a new card and clears their marks."
-        : "When voting is done, lock the top prompts into the deck. Everyone then gets their own shuffled card.";
-      $("lockBtn").textContent = S.round > 0 ? "Deal a new round" : "Lock deck and deal cards";
+        : "When voting is done, lock the top prompts. Everyone then gets their own shuffled card.";
+      $("lockBtn").textContent = S.round > 0 ? "Deal a new round" : "Lock prompts and deal cards";
+      updateDeckMsg();
     }
     $("deckState").textContent = S.round > 0
-      ? "Deck locked. Round " + S.round + " · " + S.grid + "×" + S.grid + " card · " + S.freeN + " free · top " + (S.deck ? S.deck.length : 0) + " prompts."
-      : "Deck not locked yet." + (host ? "" : " The host (whoever started this cohort) locks it once voting is done.");
+      ? "Prompts locked. Round " + S.round + " · " + S.grid + "×" + S.grid + " card · " + S.freeN + " free · top " + (S.deck ? S.deck.length : 0) + " prompts."
+      : "Prompts not locked yet." + (host ? "" : " The host (whoever started this cohort) locks it once voting is done.");
     var canPlay = S.canWrite;
     $("pitchBtn").disabled = !canPlay; $("pitchInput").disabled = !canPlay;
     keepEditFocus();
@@ -1053,6 +1322,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       var ref = await S.db.collection("cohorts/" + S.slug + "/prompts").add({ text: text, by: S.me.id, at: Date.now() });
       await S.db.doc("cohorts/" + S.slug + "/votes/" + ref.id + "~" + S.me.id).set({ p: ref.id, u: S.me.id, at: Date.now() });
       input.value = "";
+      pop("Pitch added. You voted for it too.");
     } catch (e) { writeFailed(e); }
     $("pitchBtn").disabled = !S.canWrite;
   }
@@ -1067,7 +1337,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!(freeN >= 0 && freeN <= 3)) freeN = 0;
     var need = n * n - freeN;
     if (!(size >= need)) {
-      setStatus("A " + n + "×" + n + " card with " + freeN + " free needs a deck of at least " + need + " prompts.");
+      setStatus("A " + n + "×" + n + " card with " + freeN + " free square" + (freeN === 1 ? "" : "s") + " needs at least " + need + " prompts. Change the number or add more pitches.");
       return null;
     }
     if (size > 60) size = 60;
@@ -1075,7 +1345,22 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (size > available) size = available;
     return { grid: n, free: freeN, size: size };
   }
-  $("deckSize").addEventListener("input", renderVote);
+  function updateDeckMsg() {
+    var m = $("deckMsg");
+    if (!m) return;
+    var n = Number($("gridSel").value) || 5, f = Number($("freeSel").value) || 0, need = n * n - f;
+    var raw = $("deckSize").value.trim(), size = parseInt(raw, 10), avail = ranked().length;
+    var card = n + "\u00D7" + n + " card with " + f + " free square" + (f === 1 ? "" : "s");
+    if (raw === "" || isNaN(size)) { m.className = "note err"; m.textContent = "Type a number. A " + card + " needs at least " + need + " prompts."; }
+    else if (size < need) { m.className = "note err"; m.textContent = size + " is too few. A " + card + " needs at least " + need + " prompts."; }
+    else if (size > 60) { m.className = "note err"; m.textContent = "The most you can use is 60 prompts."; }
+    else if (size > avail) { m.className = "note"; m.textContent = "Only " + avail + " prompts exist so far, so cards will use " + avail + ". Get more pitches or lower the number."; }
+    else { m.className = "note ok"; m.textContent = "The top " + size + " voted prompts will be used. Each player's card is a random " + need + " of them."; }
+  }
+  $("deckSize").addEventListener("input", function () { updateDeckMsg(); renderVote(); });
+  $("gridSel").addEventListener("change", updateDeckMsg);
+  $("freeSel").addEventListener("change", updateDeckMsg);
+  $("morePrompts").addEventListener("click", function () { S.showAllPrompts = !S.showAllPrompts; renderVote(); });
 
   $("lockBtn").addEventListener("click", async function () {
     if (!guardWrite() || !S.cohort || !isHost()) return;
@@ -1093,7 +1378,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var deck = ranked().slice(0, cfg.size).map(function (x) { return x.text; });
     try {
       await S.db.doc("cohorts/" + S.slug).update({ deck: deck, round: (S.cohort.round || 0) + 1, grid: cfg.grid, free: cfg.free, lockedAt: Date.now() });
-      setStatus("Deck locked. Cards are dealt.");
+      setStatus("");
+      pop("Prompts locked. Cards are dealt.", "Go to my card", function () { setTab("card"); window.scrollTo(0, 0); });
     } catch (e) { writeFailed(e); }
   });
 
@@ -1196,7 +1482,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     queueSave();
     var nowN = lineCount(S.marked).n;
     earnLines(nowN);
-    if (nowN > prevN) { confetti(); setTimeout(nudge, 3000); }
+    if (nowN > prevN) { bingoBar(nowN === 1 && prevN === 0 ? "BINGO! You got a line!" : "BINGO! " + nowN + " lines!"); setTimeout(nudge, 3000); }
   });
   $("clearBtn").addEventListener("click", function () {
     S.marked = new Set(S.freeIdx);
@@ -1225,16 +1511,16 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   /* ---------- leaderboard ---------- */
   async function renderBoard() {
     queueMembers();
-    if (!S.cohort || isRush()) return;
+    if (!S.cohort || isRush() || isPi()) return;
     var token = ++S.boardToken;
     var ul = $("lb");
     var note = $("lbNote");
     if (!S.round) {
       ul.textContent = "";
-      note.textContent = "The leaderboard starts once the host locks the deck and cards are dealt.";
+      note.textContent = "The leaderboard starts once the host locks the prompts and cards are dealt.";
       return;
     }
-    var cards = S.cards.filter(function (c) { return c.round === S.round; });
+    var cards = S.cards.filter(function (c) { return c.round === S.round && !isKicked(c.id); });
     cards.sort(function (a, b) {
       var ab = a.firstBingoAt || Infinity, bb = b.firstBingoAt || Infinity;
       if (ab !== bb) return ab < bb ? -1 : 1;
@@ -1333,7 +1619,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.name = v.slice(0, 20);
     S.editingName = false;
     try { localStorage.setItem(NAME_KEY, S.name); } catch (e) {}
-    setStatus("Username saved as " + S.name + ".");
+    setStatus("Username saved as " + S.name + ".", false, 1800);
     renderUserBar();
     var badge = $("userBadge");
     badge.classList.remove("saved"); void badge.offsetWidth; badge.classList.add("saved", "fresh");
@@ -1343,6 +1629,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       S.db.doc("users/" + S.me.id).set({ name: S.name, at: Date.now() }).catch(function () {});
       if (S.slug && !S.solo && S.deck && !isRush()) { dirty = true; clearTimeout(writeTimer); flush(); }
       if (isRush() && S.cohort.words) { rushDirty = true; clearTimeout(rushTimer); rushFlush(); }
+      if (isPi()) piQueueSave();
     }
     renderBoard();
     if (isRush()) renderRush();
@@ -1370,16 +1657,19 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     membersQueued = true;
     setTimeout(function () { membersQueued = false; updateCount(); renderMembers(); }, 60);
   }
+  function canRemove(id) { return isMod() && id !== S.cohort.host && id !== S.me.id && (isOwner() || !isAdminUid(id)); }
+  var rmT = null;
   function renderMembers() {
     var panel = $("membersPanel");
     if (!S.cohort || !isMod() || !S.showMembers) { panel.hidden = true; return; }
     panel.hidden = false;
     var seen = {}, nm = {};
-    function add(id, name) { if (!id) return; seen[id] = true; if (name) nm[id] = String(name).slice(0, 20); }
+    function add(id, name) { if (!id || isKicked(id)) return; seen[id] = true; if (name) nm[id] = String(name).slice(0, 20); }
     add(S.cohort.host);
     Object.keys(S.adminsRaw).forEach(function (id) { if (isAdminUid(id)) add(id); });
     S.cards.forEach(function (c) { add(c.id, c.name); });
     S.picks.forEach(function (c) { add(c.id, c.name); });
+    S.pi.forEach(function (c) { add(c.id, c.name); });
     S.chat.forEach(function (m) { add(m.by, m.name); });
     S.prompts.forEach(function (x) { add(x.by); });
     S.words.forEach(function (x) { add(x.by); });
@@ -1391,19 +1681,34 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       var ra = a === S.cohort.host ? 0 : isAdminUid(a) ? 1 : 2, rb = b === S.cohort.host ? 0 : isAdminUid(b) ? 1 : 2;
       return (ra - rb) || String(nm[a] || alias[a]).localeCompare(String(nm[b] || alias[b]));
     });
-    $("membersNote").textContent = ids.length + " here so far. " + (isHost() ? "Admins can edit and remove prompts, words and chat messages. Only you can run the game and delete the cohort." : "Admins can edit and remove prompts, words and chat messages.");
+    var removedN = Object.keys(S.kickRaw).filter(isKicked).length;
+    $("membersNote").textContent = ids.length + (ids.length === 1 ? " person" : " people") + " here" + (removedN ? " · " + removedN + " removed" : "") + ". " +
+      (isOwner() ? "Admins can run the game, edit and remove prompts, words, messages and people. Only you can make or remove admins." : "You can run the game and remove prompts, messages and people.");
     var ul = $("membersList");
     ul.textContent = "";
     ids.forEach(function (id) {
-      var li = el("li", "prompt");
+      var name = nm[id] || alias[id];
       var role = id === S.cohort.host ? "Host" : isAdminUid(id) ? "Admin" : "";
-      li.appendChild(el("span", "ptext", (nm[id] || alias[id]) + (id === S.me.id ? " (you)" : "")));
-      if (role) li.appendChild(el("span", "tag", role));
-      if (isHost() && id !== S.cohort.host) {
+      var li = el("li", "person");
+      if (S.rmConfirm === id) {
+        li.classList.add("confirming");
+        var c = el("button", "btn danger", "Tap to remove " + name);
+        c.type = "button"; c.dataset.kick = id;
+        li.appendChild(c); ul.appendChild(li); return;
+      }
+      li.appendChild(el("span", "av", name.charAt(0).toUpperCase()));
+      var pn = el("span", "pn", name + (id === S.me.id ? " (you)" : ""));
+      if (role) pn.appendChild(el("small", "", role));
+      li.appendChild(pn);
+      if (isOwner() && id !== S.cohort.host) {
         var b = el("button", "btn", isAdminUid(id) ? "Remove admin" : "Make admin");
-        b.type = "button";
-        b.dataset.admin = id;
+        b.type = "button"; b.dataset.admin = id;
         li.appendChild(b);
+      }
+      if (canRemove(id)) {
+        var x = el("button", "btn xdel", "×");
+        x.type = "button"; x.dataset.kick = id; x.setAttribute("aria-label", "Remove " + name + " from the cohort");
+        li.appendChild(x);
       }
       ul.appendChild(li);
     });
@@ -1414,8 +1719,17 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     renderMembers();
   });
   $("membersList").addEventListener("click", async function (e) {
+    var k = e.target.closest("[data-kick]");
+    if (k) {
+      var kid = k.dataset.kick;
+      if (!isMod() || !guardWrite() || !canRemove(kid)) return;
+      if (S.rmConfirm !== kid) { S.rmConfirm = kid; clearTimeout(rmT); rmT = setTimeout(function () { S.rmConfirm = null; renderMembers(); }, 4000); renderMembers(); return; }
+      S.rmConfirm = null; clearTimeout(rmT);
+      try { await S.db.doc("cohorts/" + S.slug + "/kick/" + kid).set({ by: S.me.id, at: Date.now() }); pop("Removed from the cohort."); } catch (err) { writeFailed(err); }
+      return;
+    }
     var b = e.target.closest("[data-admin]");
-    if (!b || !isHost() || !guardWrite()) return;
+    if (!b || !isOwner() || !guardWrite()) return;
     var uid = b.dataset.admin;
     var ref = S.db.doc("cohorts/" + S.slug + "/admins/" + uid);
     b.disabled = true;
@@ -1443,7 +1757,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
   function rerender() {
     if (!S.cohort) return;
-    if (isRush()) renderRush(); else renderVote();
+    if (isRush()) renderRush(); else if (isPi()) renderPi(); else renderVote();
   }
   function editRow(it) {
     var li = el("li", "prompt editing");
@@ -1513,6 +1827,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     return S.chat.filter(function (m) {
       if (typeof m.t !== "string" || !m.by) return false;
       if (m.owner !== undefined && m.owner !== m.by) return false;
+      if (isKicked(m.by)) return false;
       var mod = modOf("m-" + m.id);
       return !(mod && mod.hide);
     }).sort(function (a, b) { return (a.at || 0) - (b.at || 0); }).slice(-100);
@@ -1568,9 +1883,10 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         if (wantX && !hasX) {
           var x2 = el("button", "cx", "×");
           x2.type = "button"; x2.dataset.cdel = m.id; x2.setAttribute("aria-label", "Remove message");
-          node.appendChild(x2);
+          node.insertBefore(x2, node.querySelector(".rx"));
         } else if (!wantX && hasX) node.querySelector("[data-cdel]").remove();
       }
+      renderRx(node, m.id);
       var at = ul.children[i + 1];
       if (at !== node) ul.insertBefore(node, at || null);
     });
@@ -1579,6 +1895,42 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (atBottom) ul.scrollTop = ul.scrollHeight;
     $("chatInput").disabled = !S.canWrite; $("chatSend").disabled = !S.canWrite;
   }
+  var REACTS = ["\uD83D\uDC4D", "\u2764\uFE0F", "\uD83D\uDE02", "\uD83D\uDE2E", "\uD83C\uDF89"];
+  function renderRx(node, id) {
+    var box = node.querySelector(".rx");
+    if (!box) { box = el("div", "rx"); node.appendChild(box); }
+    box.textContent = "";
+    var by = {};
+    S.reacts.forEach(function (r) { if (r.m === id && !isKicked(r.u)) (by[r.e] = by[r.e] || []).push(r.u); });
+    REACTS.forEach(function (e) {
+      var u = by[e]; if (!u) return;
+      var b = el("button", "rchip" + (u.indexOf(S.me.id) !== -1 ? " on" : ""), e + " " + u.length);
+      b.type = "button"; b.dataset.rx = id; b.dataset.e = e;
+      b.setAttribute("aria-label", e + " reaction, " + u.length + (u.indexOf(S.me.id) !== -1 ? ", yours. Tap to remove" : ". Tap to add yours"));
+      box.appendChild(b);
+    });
+    if (S.rxOpen === id) {
+      REACTS.forEach(function (e) {
+        var b = el("button", "rchip pick", e); b.type = "button"; b.dataset.rx = id; b.dataset.e = e; b.setAttribute("aria-label", "React " + e); box.appendChild(b);
+      });
+    } else {
+      var a = el("button", "rchip radd", "\uD83D\uDE42+"); a.type = "button"; a.dataset.radd = id; a.setAttribute("aria-label", "Add a reaction"); box.appendChild(a);
+    }
+  }
+  async function toggleReact(mid, e) {
+    S.rxOpen = null;
+    if (!guardWrite() || !S.slug) { renderChat(); return; }
+    var ref = S.db.doc("cohorts/" + S.slug + "/react/" + mid + "~" + S.me.id);
+    var mine = S.reacts.filter(function (r) { return r.m === mid && r.u === S.me.id; })[0];
+    try {
+      if (mine && mine.e === e) await ref.delete(); else await ref.set({ m: mid, u: S.me.id, e: e, at: Date.now() });
+    } catch (err) { writeFailed(err); }
+  }
+  $("chatList").addEventListener("click", function (ev) {
+    var a = ev.target.closest("[data-radd]"), r = ev.target.closest("[data-rx]");
+    if (a) { S.rxOpen = a.dataset.radd; renderChat(); }
+    else if (r) toggleReact(r.dataset.rx, r.dataset.e);
+  });
   $("chatToggle").addEventListener("click", function () {
     S.chatOpen = !S.chatOpen;
     renderChat();
@@ -1598,7 +1950,6 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       input.value = "";
       var sb = $("chatSend");
       sb.textContent = "Sent ✓"; sb.classList.add("sent");
-      chatToast("Message sent");
       earnChat();
       setTimeout(function () { sb.textContent = "Send"; sb.classList.remove("sent"); }, 1000);
     } catch (e) { writeFailed(e); }
@@ -1628,16 +1979,19 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     } catch (err) { if (li) li.classList.remove("leaving"); writeFailed(err); }
   });
 
-  /* ---------- Pi's Point Rush ---------- */
+  /* ---------- Avogadro's Number ---------- */
   var WORDS = ["basically", "obviously", "actually", "literally", "essentially", "clearly", "right", "okay", "simply", "just", "so", "um"];
   var WORD_RE = /^[\p{L}][\p{L}'’-]{1,19}$/u;
-  var MAX_WORDS = 3;
+  var PITCH_CAP = 3;
+  function maxWords() { var n = S.cohort && S.cohort.nwords; return n >= 1 && n <= 8 ? Math.floor(n) : 3; }
+  function nullArr() { return [null, null, null, null, null, null, null, null]; }
+  function zeroArr() { return [0, 0, 0, 0, 0, 0, 0, 0]; }
   var rushTimer = null, rushDirty = false, rushWriting = false;
   function isRush() { return !!S.cohort && S.cohort.game === "rush"; }
   function phaseOf() { return (S.cohort && S.cohort.phase) || "pitch"; }
 
   function onRush() {
-    $("cohortEyebrow").textContent = "Pi's Point Rush";
+    $("cohortEyebrow").textContent = "Avogadro's Number";
     $("tabs").hidden = true;
     ["panelCard", "panelVote", "panelBoard"].forEach(function (id) { $(id).hidden = true; });
     $("rush").hidden = false;
@@ -1645,8 +1999,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     S.round = round;
     if (round !== S.rushRound) {
       S.rushRound = round;
-      S.guesses = [null, null, null];
-      S.tally = [0, 0, 0];
+      S.guesses = nullArr();
+      S.tally = zeroArr();
       S.rushHydrated = false;
       S.rowsKey = "";
       S.rushView = null;
@@ -1673,7 +2027,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
   function cleanNums(arr, fill) {
     var out = [];
-    for (var i = 0; i < 3; i++) {
+    for (var i = 0; i < 8; i++) {
       var v = Array.isArray(arr) ? arr[i] : null;
       out.push(typeof v === "number" && isFinite(v) ? v : fill);
     }
@@ -1694,11 +2048,21 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     clearTimeout(rushTimer);
     rushTimer = setTimeout(rushFlush, 500);
   }
+  function markSaved() {
+    var ts = document.querySelectorAll("#wordRows .savedtick");
+    for (var q = 0; q < ts.length; q++) {
+      var inp = ts[q].closest("li").querySelector("[data-gi]");
+      if (!inp) continue;
+      var g = S.guesses[Number(inp.dataset.gi)];
+      if (g != null && !ts[q].classList.contains("err")) { ts[q].className = "wsub savedtick ok"; ts[q].textContent = "Saved: " + g; }
+    }
+  }
   async function rushFlush() {
     if (rushWriting || !rushDirty) return;
     rushWriting = true; rushDirty = false;
     try {
       await S.db.doc("cohorts/" + S.slug + "/picks/" + S.me.id).set({ round: S.round, guesses: S.guesses, tally: S.tally, name: S.name || "", at: Date.now() });
+      markSaved();
     } catch (e) { writeFailed(e); }
     rushWriting = false;
     if (rushDirty) { clearTimeout(rushTimer); rushTimer = setTimeout(rushFlush, 200); }
@@ -1729,7 +2093,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   }
   function talliers() {
     return S.picks.filter(function (p) {
-      return p.round === S.round && Array.isArray(p.tally) && p.tally.reduce(function (a, b) { return a + (Number(b) || 0); }, 0) > 0;
+      return !isKicked(p.id) && p.round === S.round && Array.isArray(p.tally) && p.tally.reduce(function (a, b) { return a + (Number(b) || 0); }, 0) > 0;
     });
   }
   function officialCounts() {
@@ -1764,7 +2128,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var host = isHost();
     $("rushPhase").textContent = PHASE_NAME[phase] || "";
     $("rushStats").textContent = "Lecture " + S.round;
-    $("rushHelp").textContent = HELP[phase] || "";
+    $("rushHelp").textContent = phase === "pitch" ? "Pitch single words your prof says a lot, and vote on them. The host locks the top " + maxWords() + (maxWords() === 1 ? " word" : " words") + " when voting is done." : (HELP[phase] || "");
     $("rushPitch").hidden = phase !== "pitch";
     $("rushPlay").hidden = phase === "pitch";
     $("rushResults").hidden = phase !== "done";
@@ -1774,11 +2138,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var hostBox = $("rushHost");
     hostBox.hidden = !host;
     if (host) {
+      $("nWordsLbl").hidden = phase !== "pitch";
+      if (document.activeElement !== $("nWordsSel")) $("nWordsSel").value = String(maxWords());
       var btn = $("rushNext");
-      var label = { pitch: "Lock top 3 words", predict: "Start the lecture", live: "End the lecture", done: "Start next lecture" }[phase];
+      var label = { pitch: "Lock top " + maxWords() + (maxWords() === 1 ? " word" : " words"), predict: "Start the lecture", live: "End the lecture", done: "Start next lecture" }[phase];
       if (!btn.dataset.confirm) btn.textContent = label;
       $("rushHostNote").textContent = {
-        pitch: "When voting is done, lock the 3 top words. Everyone then makes their predictions.",
+        pitch: "When voting is done, lock the top " + maxWords() + (maxWords() === 1 ? " word" : " words") + ". Everyone then makes their predictions.",
         predict: "Start the lecture when class begins. This locks everyone's guesses.",
         live: "End the lecture when class is over. Players' tallies become the official counts.",
         done: "Starts a fresh lecture with new words. This clears everyone's current tallies."
@@ -1792,8 +2158,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var mine = myVotes();
     var list = $("wordList");
     list.textContent = "";
-    items.forEach(function (it, idx) {
-      if (idx === MAX_WORDS) list.appendChild(el("li", "cut", "Below the line: not in this lecture"));
+    var shownW = S.showAllWords ? items : items.slice(0, 12);
+    shownW.forEach(function (it, idx) {
+      if (idx === maxWords()) list.appendChild(el("li", "cut", "Below the line: not in this lecture"));
       if (S.editing === it.id && isMod()) { list.appendChild(editRow(it)); return; }
       var li = el("li", "prompt");
       var vb = el("button", "vote" + (mine.has(it.id) ? " on" : ""), "▲ " + it.v);
@@ -1814,10 +2181,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       }
       list.appendChild(li);
     });
+    var mw = $("moreWords");
+    mw.hidden = items.length <= 12;
+    mw.textContent = S.showAllWords ? "Show fewer words" : "Show all " + items.length + " words (top 12 shown)";
     var used = S.words.filter(function (w) { return w.r === S.round && w.by === S.me.id; }).length;
-    $("wordCount").textContent = used + " of " + MAX_WORDS + " words pitched. Single words only.";
+    $("wordCount").textContent = used + " of " + PITCH_CAP + " words pitched. Single words only.";
     keepEditFocus();
   }
+  $("moreWords").addEventListener("click", function () { S.showAllWords = !S.showAllWords; renderWordList(); });
   $("wordList").addEventListener("click", function (e) {
     var vb = e.target.closest("[data-pid]");
     var rm = e.target.closest("[data-rm]");
@@ -1841,12 +2212,13 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var lower = text.toLowerCase();
     if (rankedWords().some(function (x) { return x.text.toLowerCase() === lower; })) { setStatus("That word is already on the list. Vote for it instead."); return; }
     var used = S.words.filter(function (w) { return w.r === S.round && w.by === S.me.id; }).length;
-    if (used >= MAX_WORDS) { setStatus("You've pitched " + MAX_WORDS + " words. Remove one to pitch another."); return; }
+    if (used >= PITCH_CAP) { setStatus("You've pitched " + PITCH_CAP + " words. Remove one to pitch another."); return; }
     $("wordBtn").disabled = true;
     try {
       var ref = await S.db.collection("cohorts/" + S.slug + "/words").add({ text: text, by: S.me.id, r: S.round, at: Date.now() });
       await S.db.doc("cohorts/" + S.slug + "/votes/" + ref.id + "~" + S.me.id).set({ p: ref.id, u: S.me.id, at: Date.now() });
       input.value = "";
+      pop("Word pitched: " + text);
     } catch (e) { writeFailed(e); }
     $("wordBtn").disabled = !S.canWrite;
   }
@@ -1873,6 +2245,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
         inp.disabled = !S.canWrite;
         inp.setAttribute("aria-label", "Your guess for " + w);
         li.appendChild(inp);
+        var tk = el("span", "wsub savedtick" + (S.guesses[i] == null ? "" : " ok"), S.guesses[i] == null ? "Type a whole number from 0 to 99." : "Saved: " + S.guesses[i]);
+        li.appendChild(tk);
       } else if (phase === "live") {
         var t = el("span", "tally");
         var minus = el("button", "btn", "−"); minus.type = "button"; minus.dataset.ti = String(i); minus.dataset.d = "-1"; minus.setAttribute("aria-label", "One less " + w);
@@ -1896,9 +2270,15 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   $("wordRows").addEventListener("input", function (e) {
     var inp = e.target.closest("[data-gi]");
     if (!inp || phaseOf() !== "predict") return;
-    var digits = inp.value.replace(/\D/g, "").slice(0, 2);
-    if (digits !== inp.value) inp.value = digits;
+    var raw = inp.value, digits = raw.replace(/\D/g, "").slice(0, 2), bad = raw !== digits;
+    if (bad) inp.value = digits;
     S.guesses[Number(inp.dataset.gi)] = digits === "" ? null : parseInt(digits, 10);
+    var tk = inp.closest("li").querySelector(".savedtick");
+    if (tk) {
+      if (bad) { tk.className = "wsub savedtick err"; tk.textContent = "Numbers only: a whole number from 0 to 99."; }
+      else if (digits === "") { tk.className = "wsub savedtick"; tk.textContent = "Type a whole number from 0 to 99."; }
+      else { tk.className = "wsub savedtick"; tk.textContent = "Saving\u2026"; }
+    }
     rushQueueSave();
   });
   $("wordRows").addEventListener("click", function (e) {
@@ -1923,7 +2303,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
   function renderRushBoard() {
     var off = officialCounts();
     var players = S.picks.filter(function (p) {
-      return p.round === S.round && Array.isArray(p.guesses) && p.guesses.some(function (g) { return typeof g === "number"; });
+      return !isKicked(p.id) && p.round === S.round && Array.isArray(p.guesses) && p.guesses.some(function (g) { return typeof g === "number"; });
     });
     var names = aliasNames(players.map(function (p) { return p.id; }));
     players.forEach(function (p) { if (p.name) names[p.id] = String(p.name).slice(0, 20); p.pts = totalPoints(p, off); });
@@ -1973,6 +2353,14 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     });
   }
 
+  $("nWordsSel").addEventListener("change", async function () {
+    if (!guardWrite() || !isRush() || !isHost()) return;
+    var n = Number(this.value);
+    try {
+      await S.db.doc("cohorts/" + S.slug).update({ nwords: n });
+      pop("Each lecture will use the top " + n + (n === 1 ? " word." : " words."));
+    } catch (e) { writeFailed(e); }
+  });
   $("rushNext").addEventListener("click", async function () {
     if (!guardWrite() || !isRush() || !isHost()) return;
     var phase = phaseOf();
@@ -1988,15 +2376,523 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     var ref = S.db.doc("cohorts/" + S.slug);
     try {
       if (phase === "pitch") {
-        var top = rankedWords().slice(0, MAX_WORDS).map(function (x) { return x.text; });
+        var top = rankedWords().slice(0, maxWords()).map(function (x) { return x.text; });
         await ref.update({ words: top, phase: "predict" });
+        pop("Words locked. Everyone can predict now.");
       } else if (phase === "predict") {
         await ref.update({ phase: "live", startedAt: Date.now() });
+        pop("Lecture started. Guesses are locked.");
       } else if (phase === "live") {
         await ref.update({ phase: "done", endedAt: Date.now() });
+        pop("Lecture ended. Results are in.");
       } else {
         await ref.update({ round: (S.cohort.round || 1) + 1, phase: "pitch", words: null });
+        pop("New lecture ready. Pitch your words.");
       }
+    } catch (e) { writeFailed(e); }
+  });
+
+  /* ---------- Pi's Point Rush: write words, ban the obvious, tap when you hear them ---------- */
+  var PI_WINDOW = 8000, PI_DURS = [30, 60, 90, 120, 180, 300], PI_BANS = [3, 5, 8, 10, 15];
+  var piTimerId = null, piSaveT = null, piWriting = false, piDirty = false, piAutoAdv = false, piMic = null, piMicOn = false;
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function isPi() { return !!S.cohort && S.cohort.game === "pi"; }
+  function piPhase() { return (S.cohort && S.cohort.phase) || "lobby"; }
+  function piDur() { var d = S.cohort && S.cohort.piDur; return PI_DURS.indexOf(d) !== -1 ? d : 90; }
+  function piBanN() { var d = S.cohort && S.cohort.piBan; return PI_BANS.indexOf(d) !== -1 ? d : 5; }
+  function piEnd() { return ((S.cohort && S.cohort.wStart) || 0) + piDur() * 1000; }
+  function normWord(t) { return String(t || "").trim().toLowerCase(); }
+  function mmss(ms) { var t = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(t / 60) + ":" + (t % 60 < 10 ? "0" : "") + (t % 60); }
+
+  function onPi() {
+    $("cohortEyebrow").textContent = "Pi's Point Rush";
+    $("tabs").hidden = true;
+    ["panelCard", "panelVote", "panelBoard"].forEach(function (id) { $(id).hidden = true; });
+    $("pi").hidden = false;
+    var round = S.cohort.round || 1;
+    S.round = round;
+    if (round !== S.piRound) {
+      S.piRound = round; S.piWords = []; S.piTaps = []; S.piHydrated = false; S.piView = null; S.piLastTap = {};
+      S.piEvPrimed = false; S.piSeenEv = new Set(); S.piBtnKey = ""; S.piHeardKey = ""; piStopMic();
+    }
+    subscribePi();
+    piHydrate();
+    renderPi();
+  }
+  function subscribePi() {
+    if (S.piSub || !S.db || !S.slug) return;
+    S.piSub = true;
+    var base = "cohorts/" + S.slug;
+    S.unsubs.push(S.db.collection(base + "/pi").onSnapshot(function (snap) {
+      S.pi = snap.docs.map(function (d) { return Object.assign({ id: d.id, owner: d.owner }, d.data()); })
+        .filter(function (c) { return c.owner === undefined || c.owner === c.id; });
+      S.piLoaded = true;
+      piHydrate();
+      renderPi();
+    }, dbError));
+    S.unsubs.push(S.db.collection(base + "/bans").onSnapshot(function (snap) {
+      S.bans = snap.docs.map(function (d) { return Object.assign({ owner: d.owner }, d.data()); })
+        .filter(function (b) { return b.owner === undefined || b.owner === b.u; });
+      if (isPi()) renderPi();
+    }, dbError));
+  }
+  function piHydrate() {
+    if (S.piHydrated || !S.piLoaded || !isPi()) return;
+    S.piHydrated = true;
+    var mine = S.pi.filter(function (c) { return c.id === S.me.id; })[0];
+    if (mine && mine.round === S.round) {
+      var have = S.piWords;
+      S.piWords = (Array.isArray(mine.words) ? mine.words : []).map(normWord).filter(function (w) { return WORD_RE.test(w); }).slice(0, 80);
+      have.forEach(function (w) { if (S.piWords.indexOf(w) === -1) S.piWords.push(w); });
+      S.piTaps = (Array.isArray(mine.taps) ? mine.taps : []).filter(function (t) { return Array.isArray(t) && typeof t[1] === "number"; }).slice(-400)
+        .concat(S.piTaps);
+    }
+  }
+  function piQueueSave() {
+    if (!S.canWrite || !S.slug || !S.db || !S.me.id || !isPi()) return;
+    piDirty = true;
+    clearTimeout(piSaveT);
+    piSaveT = setTimeout(piFlush, 900);
+  }
+  async function piFlush() {
+    if (piWriting || !piDirty) return;
+    piWriting = true; piDirty = false;
+    try {
+      await S.db.doc("cohorts/" + S.slug + "/pi/" + S.me.id).set({ round: S.round, words: S.piWords.slice(0, 80), taps: S.piTaps.slice(-400), name: S.name || "", at: Date.now() });
+    } catch (e) { writeFailed(e); }
+    piWriting = false;
+    if (piDirty) { clearTimeout(piSaveT); piSaveT = setTimeout(piFlush, 300); }
+  }
+
+  /* pool of words, bans, and the crowd-verified score */
+  function piDocs() { return S.pi.filter(function (c) { return c.round === S.round && !isKicked(c.id); }); }
+  function piPool() {
+    var map = {};
+    function put(w, id) { w = normWord(w); if (!WORD_RE.test(w) || BLOCK.test(w)) return; (map[w] = map[w] || { w: w, authors: {} }).authors[id] = 1; }
+    piDocs().forEach(function (c) { if (c.id !== S.me.id) (Array.isArray(c.words) ? c.words : []).forEach(function (w) { put(w, c.id); }); });
+    if (S.me.id && !isKicked(S.me.id)) S.piWords.forEach(function (w) { put(w, S.me.id); });
+    return map;
+  }
+  function piBanned() { return new Set(S.cohort && Array.isArray(S.cohort.banned) ? S.cohort.banned : []); }
+  function piBanCounts() {
+    var seen = {}, counts = {};
+    S.bans.forEach(function (b) {
+      if (b.r !== S.round || isKicked(b.u)) return;
+      var k = b.w + "|" + b.u; if (seen[k]) return; seen[k] = 1;
+      counts[b.w] = (counts[b.w] || 0) + 1;
+    });
+    return counts;
+  }
+  function piCompute() {
+    var pool = piPool(), banned = piBanned(), byUser = {}, taps = {}, users = {};
+    piDocs().forEach(function (c) { byUser[c.id] = Array.isArray(c.taps) ? c.taps : []; });
+    if (S.me.id && !isKicked(S.me.id)) byUser[S.me.id] = S.piTaps;
+    Object.keys(byUser).forEach(function (u) {
+      byUser[u].forEach(function (t) {
+        var w = normWord(t[0]);
+        if (!pool[w] || banned.has(w) || typeof t[1] !== "number") return;
+        (taps[w] = taps[w] || []).push([u, t[1]]); users[u] = 1;
+      });
+    });
+    var players = {};
+    piDocs().forEach(function (c) { if (Array.isArray(c.words) && c.words.length) players[c.id] = 1; });
+    if (S.me.id && !isKicked(S.me.id) && S.piWords.length) players[S.me.id] = 1;
+    var active = Math.max(Object.keys(players).length, Object.keys(users).length);
+    var quorum = active <= 1 ? 1 : Math.min(8, Math.max(2, Math.ceil(active * 0.25)));
+    var events = [], scores = {}, per = {}, wit = {}, caught = {}, said = {};
+    function slot(u, w) { var p = per[u] = per[u] || {}; return p[w] = p[w] || { n: 0, pts: 0, caught: 0, close: 0, mult: 1 }; }
+    function add(u, pts) { scores[u] = (scores[u] || 0) + pts; }
+    var P = Math.max(1, Object.keys(players).length);
+    Object.keys(taps).forEach(function (w) {
+      var arr = taps[w].slice().sort(function (a, b) { return a[1] - b[1]; }), i = 0;
+      while (i < arr.length) {
+        var t0 = arr[i][1], j = i, set = {};
+        while (j < arr.length && arr[j][1] <= t0 + PI_WINDOW) { set[arr[j][0]] = 1; j++; }
+        var who = Object.keys(set);
+        if (who.length >= quorum) {
+          var authors = Object.keys(pool[w].authors).filter(function (u) { return !isKicked(u); });
+          var mult = authors.length <= 1 ? 2 : (authors.length / P <= 0.1 ? 1.5 : 1);
+          var pts = Math.round(w.length * mult);
+          events.push({ w: w, t: arr[j - 1][1], users: who, pts: pts });
+          said[w] = (said[w] || 0) + 1;
+          authors.forEach(function (u) { var x = slot(u, w); x.n++; x.pts += pts; x.mult = mult; add(u, pts); });
+          who.forEach(function (u) {
+            if (pool[w].authors[u]) { slot(u, w).caught++; }
+            else { add(u, 1); wit[u] = (wit[u] || 0) + 1; }
+          });
+          i = j;
+        } else i++;
+      }
+    });
+    // closeness: how many of the times the class confirmed your word did you catch? exact 3, miss one 2, miss two 1
+    Object.keys(per).forEach(function (u) {
+      Object.keys(per[u]).forEach(function (w) {
+        var x = per[u][w], miss = (said[w] || 0) - x.caught;
+        x.close = miss <= 0 ? 3 : miss === 1 ? 2 : miss === 2 ? 1 : 0;
+        x.pts += x.close; add(u, x.close);
+      });
+    });
+    events.sort(function (a, b) { return a.t - b.t; });
+    return { pool: pool, banned: banned, events: events, scores: scores, per: per, wit: wit, active: active, quorum: quorum };
+  }
+
+  /* writing */
+  function piAddWord() {
+    var note = $("piWriteNote");
+    function msg(t, ok) { note.className = "note " + (ok ? "ok" : "err"); note.textContent = t; }
+    if (!guardWrite() || !isPi() || piPhase() !== "write") return;
+    if (Date.now() > piEnd() + 1500) { msg("Time's up. No more words."); return; }
+    var w = normWord($("piWordInput").value);
+    if (!WORD_RE.test(w)) { msg("One word only, letters only (2 to 20 characters)."); return; }
+    if (BLOCK.test(w)) { msg("Keep it off exams, grades and money. Pick a word your prof just says."); return; }
+    if (S.piWords.indexOf(w) !== -1) { msg("You already added “" + w + "”."); return; }
+    if (S.piWords.length >= 80) { msg("That's the most you can add (80 words)."); return; }
+    S.piWords.push(w);
+    $("piWordInput").value = "";
+    msg("Added “" + w + "”. You have " + S.piWords.length + " word" + (S.piWords.length === 1 ? "" : "s") + ".", true);
+    piQueueSave(); renderPiWrite();
+    $("piWordInput").focus();
+  }
+  $("piWordBtn").addEventListener("click", piAddWord);
+  $("piWordInput").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); piAddWord(); } });
+  $("piMine").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-rmw]");
+    if (!b || piPhase() !== "write") return;
+    S.piWords = S.piWords.filter(function (w) { return w !== b.dataset.rmw; });
+    piQueueSave(); renderPiWrite();
+  });
+  function renderPiWrite() {
+    var ul = $("piMine");
+    ul.textContent = "";
+    S.piWords.slice().reverse().forEach(function (w) {
+      var li = el("li", "chip", w);
+      var x = el("button", "", "×"); x.type = "button"; x.dataset.rmw = w; x.setAttribute("aria-label", "Remove " + w);
+      li.appendChild(x); ul.appendChild(li);
+    });
+    var up = Date.now() > piEnd() + 1500;
+    $("piWordInput").disabled = up || !S.canWrite; $("piWordBtn").disabled = up || !S.canWrite;
+  }
+  function piStopTimer() { clearInterval(piTimerId); piTimerId = null; }
+  function piTick() {
+    if (!isPi() || piPhase() !== "write") { piStopTimer(); return; }
+    var left = piEnd() - Date.now(), t = $("piTimer");
+    t.textContent = left > 0 ? mmss(left) : "Time's up";
+    t.classList.toggle("low", left > 0 && left <= 10000);
+    if (left <= -1500) {
+      renderPiWrite();
+      if (isHost() && !piAutoAdv && S.canWrite) {
+        piAutoAdv = true;
+        S.db.doc("cohorts/" + S.slug).update({ phase: "ban" }).catch(function () { piAutoAdv = false; });
+      }
+    }
+  }
+
+  /* ban vote */
+  function piMyBans() { var set = new Set(); S.bans.forEach(function (b) { if (b.r === S.round && b.u === S.me.id) set.add(b.w); }); return set; }
+  function renderPiBan() {
+    var pool = piPool(), counts = piBanCounts(), mine = piMyBans(), n = piBanN();
+    var items = Object.keys(pool).map(function (w) { return { w: w, a: Object.keys(pool[w].authors).length, v: counts[w] || 0 }; });
+    items.sort(function (a, b) { return (b.v - a.v) || (b.a - a.a) || a.w.localeCompare(b.w); });
+    $("piBanNote").textContent = items.length + " word" + (items.length === 1 ? "" : "s") + " from the class. The " + n + " most-banned words are out for this lecture. Words that lots of people wrote are the ones to ban.";
+    var q = S.piFind.trim().toLowerCase();
+    var list = items.filter(function (x) { return !q || x.w.indexOf(q) !== -1; });
+    var shown = q || S.piShowAll ? list : list.slice(0, 25);
+    var ul = $("piBanList"); ul.textContent = "";
+    shown.forEach(function (x) {
+      var rank = items.indexOf(x);
+      if (!q && n > 0 && rank === n) ul.appendChild(el("li", "cut", "Below the line: not banned"));
+      var li = el("li", "prompt");
+      var on = mine.has(x.w);
+      var b = el("button", "vote" + (on ? " on" : ""), (on ? "Banned by you · " : "Ban · ") + x.v);
+      b.type = "button"; b.dataset.banw = x.w; b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.setAttribute("aria-label", (on ? "Remove your ban vote for " : "Vote to ban ") + x.w);
+      li.appendChild(b);
+      li.appendChild(el("span", "ptext", x.w));
+      li.appendChild(el("span", "tag", x.a + (x.a === 1 ? " wrote it" : " wrote it")));
+      ul.appendChild(li);
+    });
+    var mb = $("piBanMore");
+    mb.hidden = q || list.length <= 25;
+    mb.textContent = S.piShowAll ? "Show fewer words" : "Show all " + list.length + " words (top 25 shown)";
+  }
+  $("piBanFind").addEventListener("input", function () { S.piFind = this.value; renderPiBan(); });
+  $("piBanMore").addEventListener("click", function () { S.piShowAll = !S.piShowAll; renderPiBan(); });
+  $("piBanList").addEventListener("click", async function (e) {
+    var b = e.target.closest("[data-banw]");
+    if (!b || !guardWrite() || piPhase() !== "ban") return;
+    var w = b.dataset.banw;
+    var ref = S.db.doc("cohorts/" + S.slug + "/bans/" + S.round + "~" + w + "~" + S.me.id);
+    try {
+      if (piMyBans().has(w)) await ref.delete(); else await ref.set({ w: w, u: S.me.id, r: S.round, at: Date.now() });
+    } catch (err) { writeFailed(err); }
+  });
+
+  /* live: tap when you hear it */
+  function piTap(w, force) {
+    if (!guardWrite() || piPhase() !== "live") return false;
+    w = normWord(w);
+    if (!piPool()[w] || piBanned().has(w)) return false;
+    var now = Date.now(), last = S.piLastTap[w] || 0;
+    if (now - last < (force ? 700 : 1500)) return false;
+    S.piLastTap[w] = now;
+    S.piTaps.push([w, now]);
+    if (S.piTaps.length > 400) S.piTaps.shift();
+    if (navigator.vibrate) { try { navigator.vibrate(18); } catch (e) {} }
+    piQueueSave();
+    renderPiLive();
+    return true;
+  }
+  function piWordBtn(w, small, sub) {
+    var b = el("button", "pword" + (small ? " sm" : ""));
+    b.type = "button"; b.dataset.tapw = w;
+    b.appendChild(el("b", "", w));
+    b.appendChild(el("small", "", sub));
+    return b;
+  }
+  function renderPiLive() {
+    var C = piCompute(), now = Date.now();
+    var mine = S.piWords.filter(function (w) { return C.pool[w] && !C.banned.has(w); });
+    var me = S.me.id;
+    $("piScore").textContent = "You: " + (C.scores[me] || 0) + " pts";
+    $("piLiveNote").textContent = "A word counts once " + C.quorum + (C.quorum === 1 ? " player taps" : " of you tap") + " it within " + (PI_WINDOW / 1000) + " seconds. Longer words are worth more. " + (mine.length ? "" : "You didn't write any words that survived the ban. You can still help confirm words below.");
+    // my word buttons (rebuilt only when the list changes so taps never get lost)
+    var key = mine.join("|");
+    var box = $("piBtns");
+    if (S.piBtnKey !== key) {
+      S.piBtnKey = key; box.textContent = "";
+      mine.forEach(function (w) { box.appendChild(piWordBtn(w, false, "")); });
+    }
+    var recent = {}, mineTap = {};
+    piDocs().forEach(function (c) {
+      var arr = c.id === me ? S.piTaps : (Array.isArray(c.taps) ? c.taps : []);
+      arr.forEach(function (t) {
+        var w = normWord(t[0]);
+        if (c.id === me) { mineTap[w] = Math.max(mineTap[w] || 0, t[1]); return; }
+        if (now - t[1] < 20000) recent[w] = Math.max(recent[w] || 0, t[1]);
+      });
+    });
+    S.piTaps.forEach(function (t) { mineTap[normWord(t[0])] = Math.max(mineTap[normWord(t[0])] || 0, t[1]); });
+    var counts = {};
+    S.piTaps.forEach(function (t) { counts[normWord(t[0])] = (counts[normWord(t[0])] || 0) + 1; });
+    for (var i = 0; i < box.children.length; i++) {
+      var b = box.children[i], w = b.dataset.tapw, mt = mineTap[w] || 0;
+      b.lastChild.textContent = "+" + w.length + " pts each" + (counts[w] ? " · tapped " + counts[w] : "");
+      b.classList.toggle("hit", now - mt < 1500);
+      b.classList.toggle("buzz", !!recent[w] && recent[w] > mt && now - mt >= 1500);
+    }
+    // what others just heard
+    var heard = Object.keys(recent).filter(function (w) { return C.pool[w] && !C.banned.has(w) && mine.indexOf(w) === -1; })
+      .sort(function (a, b) { return recent[b] - recent[a]; }).slice(0, 6);
+    var hk = heard.join("|"), hb = $("piHeard");
+    $("piHeardBox").hidden = heard.length === 0;
+    if (S.piHeardKey !== hk) {
+      S.piHeardKey = hk; hb.textContent = "";
+      heard.forEach(function (w) { hb.appendChild(piWordBtn(w, true, "+1 for helping")); });
+    }
+    // search results
+    var q = normWord($("piFind").value), res = $("piFindRes");
+    res.textContent = "";
+    if (q.length >= 2) {
+      Object.keys(C.pool).filter(function (w) { return !C.banned.has(w) && w.indexOf(q) !== -1; }).sort(function (a, b) { return (a.indexOf(q) === 0 ? 0 : 1) - (b.indexOf(q) === 0 ? 0 : 1) || a.length - b.length; })
+        .slice(0, 6).forEach(function (w) { res.appendChild(piWordBtn(w, true, "+1 for helping")); });
+      if (!res.children.length) res.appendChild(el("p", "note", "No word like that was written. Try another spelling."));
+    }
+    // confirmed feed + my confirmations
+    var feed = $("piFeed"); feed.textContent = "";
+    var evs = C.events.slice(-5).reverse();
+    evs.forEach(function (ev) {
+      var author = !!C.pool[ev.w].authors[me], witness = ev.users.indexOf(me) !== -1;
+      var gain = author ? ev.pts : (witness ? 1 : 0);
+      feed.appendChild(el("li", "", "✓ “" + ev.w + "” confirmed" + (gain ? " · +" + gain + " for you" : "")));
+    });
+    C.events.forEach(function (ev) {
+      var k = ev.w + "|" + ev.t;
+      if (S.piSeenEv.has(k)) return;
+      S.piSeenEv.add(k);
+      if (!S.piEvPrimed) return;
+      if (C.pool[ev.w].authors[me]) { pop("“" + ev.w + "” confirmed · +" + ev.pts + " pts"); if (navigator.vibrate) { try { navigator.vibrate([30, 40, 30]); } catch (e) {} } }
+    });
+    S.piEvPrimed = true;
+  }
+  function piTapClick(e) {
+    var b = e.target.closest("[data-tapw]");
+    if (b) piTap(b.dataset.tapw);
+  }
+  $("piBtns").addEventListener("click", piTapClick);
+  $("piHeard").addEventListener("click", piTapClick);
+  $("piFindRes").addEventListener("click", piTapClick);
+  $("piFind").addEventListener("input", function () { if (isPi() && piPhase() === "live") renderPiLive(); });
+  setInterval(function () { if (isPi() && piPhase() === "live") renderPiLive(); }, 1500);
+
+  /* optional: let the phone listen and tap for you */
+  function piStopMic() {
+    piMicOn = false;
+    if (piMic) { try { piMic.onend = null; piMic.stop(); } catch (e) {} piMic = null; }
+    var b = $("piMic"); if (b) { b.textContent = "Let my phone listen (beta)"; b.setAttribute("aria-pressed", "false"); }
+  }
+  function piStartMic() {
+    if (!SR || piMic) return;
+    var r = new SR(), counted = {};
+    r.continuous = true; r.interimResults = true; r.lang = "en-US";
+    r.onresult = function (ev) {
+      for (var i = ev.resultIndex; i < ev.results.length; i++) {
+        var toks = ev.results[i][0].transcript.toLowerCase().split(/[^\p{L}'’-]+/u).filter(Boolean), cnt = {};
+        toks.forEach(function (t) { cnt[t] = (cnt[t] || 0) + 1; });
+        var prev = counted[i] || {};
+        Object.keys(cnt).forEach(function (w) { if (cnt[w] > (prev[w] || 0)) piTap(w, true); });
+        counted[i] = cnt;
+      }
+    };
+    r.onend = function () { counted = {}; if (piMicOn && piPhase() === "live") { try { r.start(); } catch (e) {} } };
+    r.onerror = function (e) { if (e && (e.error === "not-allowed" || e.error === "service-not-allowed")) { piStopMic(); setStatus("The microphone is blocked, so listening is off."); } };
+    try { r.start(); piMic = r; piMicOn = true; var b = $("piMic"); b.textContent = "Listening… tap to stop"; b.setAttribute("aria-pressed", "true"); } catch (e) { piMic = null; }
+  }
+  $("piMic").addEventListener("click", function () { if (piMicOn) piStopMic(); else piStartMic(); });
+
+  /* results */
+  function piNames(ids) {
+    var names = aliasNames(ids);
+    piDocs().forEach(function (c) { if (c.name) names[c.id] = String(c.name).slice(0, 20); });
+    if (S.me.id && S.name) names[S.me.id] = S.name;
+    return names;
+  }
+  function renderPiBoard() {
+    var C = piCompute();
+    var ids = piDocs().filter(function (c) { return (c.words && c.words.length) || (c.taps && c.taps.length); }).map(function (c) { return c.id; });
+    if (S.me.id && !isKicked(S.me.id) && (S.piWords.length || S.piTaps.length) && ids.indexOf(S.me.id) === -1) ids.push(S.me.id);
+    var names = piNames(ids); S.names = names;
+    ids.sort(function (a, b) { return ((C.scores[b] || 0) - (C.scores[a] || 0)) || String(names[a]).localeCompare(String(names[b])); });
+    var top = {};
+    C.events.forEach(function (ev) { top[ev.w] = (top[ev.w] || 0) + 1; });
+    var topW = Object.keys(top).sort(function (a, b) { return top[b] - top[a]; }).slice(0, 3).map(function (w) { return w + " ×" + top[w]; });
+    $("piResNote").textContent = ids.length === 0 ? "Nobody wrote or tapped anything this lecture."
+      : C.events.length + " word" + (C.events.length === 1 ? "" : "s") + " confirmed by the class" + (topW.length ? " (most heard: " + topW.join(", ") + ")" : "") + ". Tap a row to see that player's words.";
+    var ul = $("piLb"); ul.textContent = "";
+    ids.forEach(function (id, i) {
+      var li = el("li", "link" + (i === 0 && (C.scores[id] || 0) > 0 ? " hit" : ""));
+      li.dataset.id = id; li.tabIndex = 0; li.setAttribute("role", "button");
+      li.setAttribute("aria-label", "View " + names[id] + "'s words");
+      li.appendChild(el("span", "pos", String(i + 1)));
+      li.appendChild(el("span", "who", (id === S.me.id ? "You · " : "") + names[id]));
+      li.appendChild(el("span", "res", (C.scores[id] || 0) + " pts"));
+      ul.appendChild(li);
+    });
+    var v = S.piView, box = $("piViewer");
+    if (!v || ids.indexOf(v) === -1) { S.piView = null; box.hidden = true; ul.hidden = false; $("piResNote").hidden = false; }
+    else {
+      box.hidden = false; ul.hidden = true; $("piResNote").hidden = true;
+      $("piViewTitle").textContent = (names[v] || "Player") + " · " + (C.scores[v] || 0) + " pts" + (C.wit[v] ? " (includes " + C.wit[v] + " for helping confirm)" : "");
+      var list = $("piViewList"); list.textContent = "";
+      var doc = piDocs().filter(function (c) { return c.id === v; })[0];
+      var words = v === S.me.id ? S.piWords : (doc && Array.isArray(doc.words) ? doc.words.map(normWord) : []);
+      var per = C.per[v] || {};
+      words.slice().sort(function (a, b) { return ((per[b] ? per[b].pts : 0) - (per[a] ? per[a].pts : 0)) || a.localeCompare(b); }).forEach(function (w) {
+        var li = el("li", "wrow");
+        li.appendChild(el("span", "wname", w));
+        li.appendChild(el("span", "count", per[w] ? "+" + per[w].pts : "–"));
+        li.appendChild(el("span", "wsub", C.banned.has(w) ? "Banned by the class" : (per[w] ? "Said " + per[w].n + " time" + (per[w].n === 1 ? "" : "s") + " \u00B7 you caught " + per[w].caught + (per[w].mult > 1 ? " \u00B7 rare word \u00D7" + per[w].mult : "") + " \u00B7 +" + per[w].close + " for closeness" : (C.pool[w] ? "Never confirmed" : ""))));
+        list.appendChild(li);
+      });
+    }
+    $("piShare").hidden = false;
+    $("piShare").dataset.score = String(C.scores[S.me.id] || 0);
+  }
+  function openPiRow(e) { var li = e.target.closest("li[data-id]"); if (li) { S.piView = li.dataset.id; renderPiBoard(); } }
+  $("piLb").addEventListener("click", openPiRow);
+  $("piLb").addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPiRow(e); } });
+  $("piViewBack").addEventListener("click", function () { S.piView = null; renderPiBoard(); });
+  $("piShare").addEventListener("click", function () {
+    var url = location.href.split("#")[0] + "#" + (S.slug || "");
+    var text = "I scored " + $("piShare").dataset.score + " points in Pi's Point Rush on Prof Says. Free class game, come beat me:";
+    if (navigator.share) navigator.share({ title: "Prof Says", text: text, url: url }).catch(function () {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(function () { pop("Copied. Paste it in your class chat."); }, function () {});
+  });
+  function earnPi() {
+    if (!S.slug || !S.piRound) return;
+    if (!(S.piWords.length || S.piTaps.length)) return;
+    var key = "p|" + S.slug + "|" + S.piRound;
+    nudgeLater();
+    if (W.credited[key]) return;
+    W.credited[key] = 1;
+    var keys = Object.keys(W.credited);
+    if (keys.length > 10) delete W.credited[keys[0]];
+    playEarn(3, "for finishing a lecture");
+  }
+
+  /* render + host controls */
+  var PI_HELP = {
+    lobby: "Write words your prof might say, ban the obvious ones as a class, then score when your prof actually says yours. Longer words are worth more.",
+    write: "Type as many words as you can that your prof might say before the timer ends. One word at a time.",
+    ban: "Vote to ban words. The most-banned words are out, so only the less obvious words score.",
+    live: "Tap a word every time your prof says it. It counts once enough classmates tap it too. You earn bonus points for catching as many as the class did, so don't miss them and don't spam.",
+    done: "Lecture over. Each time the class confirmed your word you earn its letter count, doubled if only you wrote it. You also earn up to 3 per word for catching as many as the class did. Helping confirm someone else's word earns 1."
+  };
+  var PI_NAME = { lobby: "Step 1 of 4 · Get ready", write: "Step 2 of 4 · Write words", ban: "Step 3 of 4 · Ban words", live: "Step 4 of 4 · Lecture is live", done: "Results" };
+  function renderPi() {
+    queueMembers();
+    if (!isPi()) return;
+    var ph = piPhase(), host = isHost();
+    $("piPhase").textContent = PI_NAME[ph] || "";
+    $("piStats").textContent = "Lecture " + S.round;
+    $("piHelp").textContent = PI_HELP[ph] || "";
+    $("piLobby").hidden = ph !== "lobby";
+    $("piWrite").hidden = ph !== "write";
+    $("piBan").hidden = ph !== "ban";
+    $("piLive").hidden = ph !== "live";
+    $("piResults").hidden = ph !== "done";
+    if (ph !== "write") piAutoAdv = false;
+    if (ph === "write") { renderPiWrite(); piTick(); if (!piTimerId) piTimerId = setInterval(piTick, 250); } else piStopTimer();
+    if (ph === "ban") renderPiBan();
+    if (ph === "live") { renderPiLive(); $("piMic").hidden = !SR; if (!SR) $("piMicNote").hidden = true; else $("piMicNote").hidden = !piMicOn; } else piStopMic();
+    if (ph === "done") { renderPiBoard(); earnPi(); }
+    var hb = $("piHost");
+    hb.hidden = !host;
+    if (!host) return;
+    $("piSettings").hidden = ph !== "lobby";
+    if (document.activeElement !== $("piDur")) $("piDur").value = String(piDur());
+    if (document.activeElement !== $("piBanN")) $("piBanN").value = String(piBanN());
+    var btn = $("piNext");
+    var timeUp = ph === "write" && Date.now() > piEnd();
+    var label = { lobby: "Start the " + mmss(piDur() * 1000) + " writing timer", write: timeUp ? "Open the ban vote" : "End writing early", ban: "Ban the top " + piBanN() + " and start the lecture", live: "End the lecture", done: "Start next lecture" }[ph];
+    if (!btn.dataset.confirm) btn.textContent = label;
+    $("piHostNote").textContent = {
+      lobby: "Set the writing time and how many words get banned, then start. Everyone writes at the same time.",
+      write: "The ban vote opens by itself when the timer ends. You can also open it early.",
+      ban: "Let the class vote, then lock in the bans and start the lecture. Tell everyone to open the app.",
+      live: "End the lecture when class is over. Scores are worked out from what the class tapped.",
+      done: "Starts a fresh lecture and clears this lecture's words and taps."
+    }[ph];
+  }
+  async function piSetting(field, val, msg) {
+    if (!guardWrite() || !isPi() || !isHost()) return;
+    var o = {}; o[field] = val;
+    try { await S.db.doc("cohorts/" + S.slug).update(o); pop(msg); } catch (e) { writeFailed(e); }
+  }
+  $("piDur").addEventListener("change", function () { var v = Number(this.value); piSetting("piDur", v, "Writing time set to " + mmss(v * 1000) + "."); });
+  $("piBanN").addEventListener("change", function () { var v = Number(this.value); piSetting("piBan", v, "The top " + v + " words will be banned."); });
+  $("piNext").addEventListener("click", async function () {
+    if (!guardWrite() || !isPi() || !isHost()) return;
+    var ph = piPhase(), btn = $("piNext");
+    if ((ph === "live" || ph === "done" || (ph === "write" && Date.now() <= piEnd())) && !btn.dataset.confirm) {
+      btn.dataset.confirm = "1";
+      btn.textContent = "Click again to confirm";
+      clearTimeout(confirmTimer);
+      confirmTimer = setTimeout(function () { delete btn.dataset.confirm; renderPi(); }, 4000);
+      return;
+    }
+    delete btn.dataset.confirm;
+    var ref = S.db.doc("cohorts/" + S.slug);
+    try {
+      if (ph === "lobby") { await ref.update({ phase: "write", wStart: Date.now() }); pop("Timer started. Everyone is writing."); }
+      else if (ph === "write") { await ref.update({ phase: "ban" }); pop("Ban vote is open."); }
+      else if (ph === "ban") {
+        var counts = piBanCounts(), n = piBanN();
+        var out = Object.keys(counts).sort(function (a, b) { return (counts[b] - counts[a]) || a.localeCompare(b); }).slice(0, n);
+        await ref.update({ banned: out, phase: "live", startedAt: Date.now() });
+        pop(out.length + " word" + (out.length === 1 ? "" : "s") + " banned. The lecture is live.");
+      }
+      else if (ph === "live") { await ref.update({ phase: "done", endedAt: Date.now() }); pop("Lecture ended. Results are in."); }
+      else { await ref.update({ round: (S.cohort.round || 1) + 1, phase: "lobby", banned: null, wStart: null, startedAt: null, endedAt: null }); pop("New lecture ready."); }
     } catch (e) { writeFailed(e); }
   });
 
@@ -2024,8 +2920,10 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!guardWrite()) return;
     var game = S.pickGame || "bingo";
     var slug = fixedSlug || (slugify(name) + "-" + Math.random().toString(36).slice(2, 5));
-    var body = game === "rush"
-      ? { name: name, host: S.me.id, game: "rush", round: 1, phase: "pitch", words: null, createdAt: Date.now() }
+    var body = game === "pi"
+      ? { name: name, host: S.me.id, game: "pi", round: 1, phase: "lobby", piDur: 90, piBan: 5, banned: null, createdAt: Date.now() }
+      : game === "rush"
+      ? { name: name, host: S.me.id, game: "rush", round: 1, phase: "pitch", words: null, nwords: 3, createdAt: Date.now() }
       : { name: name, host: S.me.id, game: "bingo", round: 0, deck: null, grid: 5, free: 1, createdAt: Date.now() };
     try {
       await S.db.doc("cohorts/" + slug).set(body);
@@ -2042,7 +2940,7 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     hideAll();
     setStatus("");
     $("startPage").hidden = false;
-    $("startGame").textContent = game === "rush" ? "Pi's Point Rush" : "Euler's Bingo";
+    $("startGame").textContent = game === "rush" ? "Avogadro's Number" : (game === "pi" ? "Pi's Point Rush" : "Euler's Bingo");
     $("newName").value = "";
     updateHome();
     $("newName").focus();
@@ -2423,7 +3321,8 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     // spin
     var spun = W.lastSpin === today;
     $("spinBtn").disabled = spun || spinning;
-    $("spinBtn").textContent = spun ? "Spun" : "Spin";
+    $("spinBtn").textContent = spun ? "Spun" : (spinning ? "Spinning" : "Spin");
+    $("wheelWrap").classList.toggle("done", spun);
     $("spinSub").textContent = spun ? "Next spin in " + untilMidnight() + "." : "Free once a day.";
     // weekly
     var got = W.lastWeekly === weekKey();
@@ -2470,27 +3369,147 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     for (var i = 0; i < table.length; i++) { x -= table[i][1]; if (x < 0) return table[i][0]; }
     return table[0][0];
   }
+  var WHEEL = [10, 25, 15, 40, 20, 15, 10, 100, 20, 15], wheelDeg = 0;
+  function buildWheel() {
+    var svg = $("wheelSvg"), N = WHEEL.length, step = 360 / N, ns = "http://www.w3.org/2000/svg";
+    function pt(r, deg) { var a = (deg - 90) * Math.PI / 180; return [100 + r * Math.cos(a), 100 + r * Math.sin(a)]; }
+    function mk(tag, attrs, parent) { var n = document.createElementNS(ns, tag); for (var k in attrs) n.setAttribute(k, attrs[k]); (parent || svg).appendChild(n); return n; }
+    svg.textContent = "";
+    mk("circle", { cx: 100, cy: 100, r: 99, fill: "var(--ink)" });
+    var g = mk("g", { id: "wheelG" });
+    WHEEL.forEach(function (v, i) {
+      var a0 = i * step, a1 = (i + 1) * step, p0 = pt(94, a0), p1 = pt(94, a1), big = v === 100;
+      mk("path", { d: "M100 100 L" + p0[0].toFixed(2) + " " + p0[1].toFixed(2) + " A94 94 0 0 1 " + p1[0].toFixed(2) + " " + p1[1].toFixed(2) + " Z",
+        fill: big ? "var(--win)" : (i % 2 ? "var(--ok-bg)" : "var(--bg)"), stroke: "var(--line)", "stroke-width": 1 }, g);
+      var c = a0 + step / 2, tp = pt(68, c);
+      var t = mk("text", { x: tp[0].toFixed(2), y: tp[1].toFixed(2), "text-anchor": "middle", "dominant-baseline": "central",
+        transform: "rotate(" + c + " " + tp[0].toFixed(2) + " " + tp[1].toFixed(2) + ")",
+        "font-family": "var(--font-display)", "font-weight": 700, "font-size": big ? 19 : 17, fill: big ? "var(--win-ink)" : "var(--ink)" }, g);
+      t.textContent = String(v);
+    });
+    for (var q = 0; q < N; q++) { var pp = pt(96.5, q * step); mk("circle", { cx: pp[0].toFixed(2), cy: pp[1].toFixed(2), r: 2.4, fill: "var(--bg)" }, g); }
+    mk("circle", { cx: 100, cy: 100, r: 15, fill: "var(--ink)" });
+    mk("circle", { cx: 100, cy: 100, r: 5, fill: "var(--bg)" });
+  }
+  buildWheel();
+  $("wheelSvg").parentNode.addEventListener("click", function () { $("spinBtn").click(); });
   $("spinBtn").addEventListener("click", function () {
     var today = dayKey();
     if (spinning || W.lastSpin === today) return;
-    spinning = true; $("spinBtn").disabled = true;
-    var base = weighted(SPIN);
-    var prize = base;
+    spinning = true; $("spinBtn").disabled = true; $("spinBtn").textContent = "Spinning";
+    shopMsg("");
+    var prize = weighted(SPIN);
+    var idx = []; WHEEL.forEach(function (v, k) { if (v === prize) idx.push(k); });
+    var pick = idx[Math.floor(Math.random() * idx.length)], step = 360 / WHEEL.length;
+    var jitter = (Math.random() - .5) * step * .7;
     var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var t0 = Date.now();
+    var g = $("wheelG"), done = false;
     function finish() {
+      if (done) return; done = true;
       W.lastSpin = today; earn(prize); saveWallet();
       spinning = false;
+      var ww = $("wheelWrap"); ww.classList.add("hit"); setTimeout(function () { ww.classList.remove("hit"); }, 700);
       shopMsg("+" + prize + " coins", true);
+      if (prize >= 40) confetti();
       renderShop();
     }
+    wheelDeg = wheelDeg - (wheelDeg % 360) + 360 * 6 + (360 - (pick * step + step / 2) + jitter);
+    g.style.transform = "rotate(" + wheelDeg + "deg)";
     if (still) { finish(); return; }
-    var iv = setInterval(function () {
-      var fake = SPIN[Math.floor(Math.random() * SPIN.length)][0];
-      shopMsg(String(fake), true);
-      if (Date.now() - t0 > 1400) { clearInterval(iv); finish(); }
-    }, 70);
+    g.addEventListener("transitionend", finish, { once: true });
+    setTimeout(finish, 5800);
+    var ptr = document.querySelector(".wptr"), lastIdx = -1;
+    (function tick() {
+      if (done) return;
+      var m = getComputedStyle(g).transform, ang = 0;
+      if (m && m !== "none") { var v = m.match(/matrix\(([^)]+)\)/); if (v) { var n = v[1].split(","); ang = Math.atan2(parseFloat(n[1]), parseFloat(n[0])) * 180 / Math.PI; } }
+      var ix = Math.floor((((360 - ang) % 360) + 360) % 360 / (360 / WHEEL.length) + 0.0001);
+      if (lastIdx !== -1 && ix !== lastIdx && ptr && ptr.animate) ptr.animate([{ transform: "rotate(-24deg)" }, { transform: "rotate(0deg)" }], { duration: 120, easing: "ease-out" });
+      lastIdx = ix;
+      requestAnimationFrame(tick);
+    })();
   });
+  /* mega-box style reveal for new backdrops */
+  var RARITY = { Common: ["#6FA8DC", "COMMON", 1.3], Rare: ["#A06BFF", "RARE", 1.6], Epic: ["#FFB41F", "EPIC", 2.0] };
+  function equipTheme(id) {
+    W.theme = id && W.owned.indexOf(id) !== -1 ? id : "";
+    saveWallet();
+    applyTheme($("board"), W.theme);
+    if (S.deck && S.slug && S.canWrite) { dirty = true; clearTimeout(writeTimer); flush(); }
+  }
+  function showReveal(t, equipped, onClose) {
+    var R = RARITY[t.tier] || RARITY.Common, still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var prevFocus = document.activeElement, closed = false, opened = false;
+    var rv = el("div", "rv"); rv.id = "rv"; rv.style.setProperty("--rc", R[0]); rv.style.setProperty("--shk", R[2] + "s");
+    rv.setAttribute("role", "dialog"); rv.setAttribute("aria-modal", "true"); rv.setAttribute("aria-label", "Backdrop unlocked");
+    rv.appendChild(el("div", "rv-rays"));
+    var stage = el("div", "rv-stage"); rv.appendChild(stage);
+    var box = el("button", "rv-box"); box.type = "button"; box.setAttribute("aria-label", "Open the box");
+    box.innerHTML = '<svg viewBox="0 0 200 190" aria-hidden="true"><ellipse cx="100" cy="180" rx="72" ry="8" fill="rgba(0,0,0,.4)"/>' +
+      '<g><rect x="30" y="88" width="140" height="84" rx="10" fill="var(--rc)"/><rect x="30" y="122" width="140" height="12" fill="rgba(0,0,0,.2)"/><rect x="88" y="88" width="24" height="84" fill="#FFE9A8"/><rect x="82" y="116" width="36" height="26" rx="5" fill="#FFD25E" stroke="#6b4a00" stroke-width="2"/><circle cx="100" cy="127" r="4" fill="#6b4a00"/></g>' +
+      '<g class="rv-lid"><rect x="22" y="56" width="156" height="42" rx="10" fill="var(--rc)"/><rect x="88" y="56" width="24" height="42" fill="#FFE9A8"/><rect x="32" y="62" width="136" height="8" rx="4" fill="rgba(255,255,255,.3)"/><path d="M100 18 l6 14 15 1 -12 10 4 15 -13 -8 -13 8 4 -15 -12 -10 15 -1z" fill="#FFE9A8" stroke="#6b4a00" stroke-width="2"/></g></svg>';
+    var hint = el("p", "rv-hint", "Tap the box to open");
+    stage.appendChild(box); stage.appendChild(hint);
+    var flash = el("div", "rv-flash"); rv.appendChild(flash);
+    var skip = el("button", "rv-skip", "Skip"); skip.type = "button"; rv.appendChild(skip);
+    function bits() {
+      var cols = [R[0], "#FFE9A8", "#ffffff", "#FFB41F", "#FF5C8A", "#4FD1C5"], n = t.tier === "Epic" ? 56 : (t.tier === "Rare" ? 44 : 32);
+      for (var i = 0; i < n; i++) {
+        var b = el("i", "rv-bit"), a = Math.random() * Math.PI * 2, d = 90 + Math.random() * 190;
+        b.style.background = cols[i % cols.length];
+        b.style.setProperty("--dx", Math.round(Math.cos(a) * d) + "px"); b.style.setProperty("--dy", Math.round(Math.sin(a) * d) + "px"); b.style.setProperty("--rot", Math.round(Math.random() * 540) + "deg");
+        rv.appendChild(b);
+        setTimeout(function (n2) { return function () { n2.remove(); }; }(b), 1500);
+      }
+    }
+    function close() {
+      if (closed) return; closed = true;
+      document.removeEventListener("keydown", onKey, true);
+      rv.remove();
+      if (prevFocus && prevFocus.focus) { try { prevFocus.focus(); } catch (e) {} }
+      if (onClose) onClose();
+    }
+    function showCard() {
+      if (opened && rv.classList.contains("done")) return;
+      opened = true; rv.classList.add("done");
+      box.hidden = true; hint.hidden = true;
+      flash.classList.add("go"); bits();
+      var card = el("div", "rv-card");
+      card.appendChild(el("span", "rv-rar", R[1]));
+      card.appendChild(previewNode(t));
+      card.appendChild(el("strong", "rv-name", t.name));
+      card.appendChild(el("small", "", "New backdrop unlocked" + (equipped ? " and in use" : "")));
+      var acts = el("div", "rv-acts");
+      if (!equipped) {
+        var use = el("button", "main", "Use it now"); use.type = "button";
+        use.addEventListener("click", function () { equipTheme(t.id); close(); });
+        var later = el("button", "", "Later"); later.type = "button"; later.addEventListener("click", close);
+        acts.appendChild(use); acts.appendChild(later);
+      } else {
+        var ok = el("button", "main", "Nice"); ok.type = "button"; ok.addEventListener("click", close); acts.appendChild(ok);
+      }
+      card.appendChild(acts);
+      stage.appendChild(card);
+      skip.hidden = true;
+      (acts.firstChild).focus();
+    }
+    function open() {
+      if (opened) return; opened = true;
+      hint.hidden = true;
+      if (still) { opened = false; showCard(); return; }
+      box.classList.add("shake");
+      setTimeout(function () { if (closed) return; box.classList.add("pop"); setTimeout(function () { if (!closed) { opened = false; showCard(); } }, 220); }, R[2] * 1000);
+    }
+    function onKey(e) {
+      if (e.key === "Escape") { e.preventDefault(); if (rv.classList.contains("done")) close(); else { opened = false; showCard(); } }
+      else if (e.key === "Tab") { e.preventDefault(); var f = rv.querySelectorAll("button:not([hidden])"); if (f.length) { var i = Array.prototype.indexOf.call(f, document.activeElement); f[(i + 1) % f.length].focus(); } }
+    }
+    box.addEventListener("click", open);
+    skip.addEventListener("click", function () { opened = false; showCard(); });
+    document.addEventListener("keydown", onKey, true);
+    document.body.appendChild(rv);
+    box.focus();
+  }
   $("weeklyBtn").addEventListener("click", function () {
     if (W.lastWeekly === weekKey()) return;
     var pool = TH.filter(function (t) { return t.tier !== "Epic" && W.owned.indexOf(t.id) === -1; });
@@ -2498,7 +3517,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (pool.length) {
       var t = pool[Math.floor(Math.random() * pool.length)];
       W.owned.push(t.id);
-      shopMsg("This week's gift: the " + t.name + " backdrop.", true);
+      saveWallet();
+      showReveal(t, false, function () { shopMsg("This week's gift: the " + t.name + " backdrop.", true); renderShop(); });
+      return;
     } else {
       earn(WEEKLY_COINS);
       shopMsg("You own every free-gift backdrop. +" + WEEKLY_COINS + " coins instead.", true);
@@ -2554,7 +3575,10 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
       }
       if (!t || W.coins < t.price || W.owned.indexOf(id) !== -1) { buyArm = null; renderShop(); return; }
       W.coins -= t.price; W.owned.push(id); W.theme = id; buyArm = null;
-      shopMsg(t.name + " is yours and in use.", true);
+      saveWallet(); applyTheme($("board"), W.theme);
+      if (S.deck && S.slug && S.canWrite) { dirty = true; clearTimeout(writeTimer); flush(); }
+      showReveal(t, true, function () { shopMsg(t.name + " is yours and in use.", true); renderShop(); });
+      return;
     } else {
       W.theme = id && W.owned.indexOf(id) !== -1 ? id : "";
     }
@@ -2730,8 +3754,9 @@ window.EULER_CONFIG = { url: "https://qicvehmdaxkxtssbqwld.supabase.co", key: "s
     if (!S.cohort) return;
     var ids = {};
     if (S.cohort.host) ids[S.cohort.host] = 1;
-    S.cards.forEach(function (c) { if (c.owner === undefined || c.owner === c.id) ids[c.id] = 1; });
-    S.picks.forEach(function (c) { if (c.owner === undefined || c.owner === c.id) ids[c.id] = 1; });
+    S.cards.forEach(function (c) { if ((c.owner === undefined || c.owner === c.id) && !isKicked(c.id)) ids[c.id] = 1; });
+    S.picks.forEach(function (c) { if ((c.owner === undefined || c.owner === c.id) && !isKicked(c.id)) ids[c.id] = 1; });
+    S.pi.forEach(function (c) { if ((c.owner === undefined || c.owner === c.id) && !isKicked(c.id)) ids[c.id] = 1; });
     var n = Object.keys(ids).length;
     $("cohortEyebrow").textContent = "Cohort · " + n + (n === 1 ? " player" : " players");
   }
